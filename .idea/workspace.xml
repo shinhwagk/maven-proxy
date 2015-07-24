@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert$$anonfun$receive$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert$$anonfun$receive$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response$$anonfun$receive$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response$$anonfun$receive$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/downfile/DownFile.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/downfile/DownFile.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Requert.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Requert.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -153,8 +147,8 @@
       <file leaf-file-name="Response.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6226415">
-              <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.58113205">
+              <caret line="35" column="34" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="34" />
               <folding>
                 <element signature="e#41#63#0" expanded="true" />
               </folding>
@@ -984,7 +978,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437712799544</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="修复相对路径和文件所在OS位置混淆BUG">
+      <created>1437713339885</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1437713339885</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1031,7 +1031,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="aaaaaa" />
     <MESSAGE value="修复没有检测文件是否存在bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复没有检测文件是否存在bug" />
+    <MESSAGE value="修复相对路径和文件所在OS位置混淆BUG" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复相对路径和文件所在OS位置混淆BUG" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1477,8 +1478,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6226415">
-          <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.58113205">
+          <caret line="35" column="34" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="34" />
           <folding>
             <element signature="e#41#63#0" expanded="true" />
           </folding>

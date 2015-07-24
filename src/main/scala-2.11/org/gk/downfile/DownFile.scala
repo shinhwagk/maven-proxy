@@ -3,10 +3,15 @@ package org.gk.downfile
 import java.io._
 import java.util.Date
 
+import akka.actor.Actor
+import akka.actor.Actor.Receive
+import org.gk.config.cfg
+import org.gk.log.GkConsoleLogger
+
 /**
  * Created by goku on 2015/7/22.
  */
-object DownMvnFile {
+class DownFile extends Actor{
   /*
   def main(args: Array[String]) {
     case class DownAccomplish()
@@ -34,24 +39,7 @@ object DownMvnFile {
     }
   }
 
-  class Master(fileUrl:String,downThreadNum: Int, listener: ActorRef) extends Actor {
-    val workerRouter = context.actorOf(RoundRobinPool(5).props(Props[Worker]), "workerRouter")
-    override def receive: Receive = ???
-  }
-  class Worker extends Actor {
 
-    def down(startIndex:Int, endIndex:Int): Double = {
-      var acc = 0.0
-      for (i ← start until (start + nrOfElements))
-        acc += 4.0 * (1 - (i % 2) * 2) / (2 * i + 1)
-      acc
-    }
-
-    def receive = {
-      case Work(start, nrOfElements) ⇒
-        sender ! Result(down(start, nrOfElements)) // perform the work
-    }
-  }
 
   def downMvnFile(fileUrl:String,downThreadNum:Int): Unit ={
     val system = ActorSystem("DownMvnFile")
@@ -61,66 +49,67 @@ object DownMvnFile {
     val master = system.actorOf(Props(new Master(fileUrl, downThreadNum, listener)),name = "master")
   }
 
-  class Listener extends Actor {
-    def receive = {
-      case DownAccomplish =>
-        println("\n\tPi approximation: \t\t%s\n\tCalculation time: \t%s".format("a", "a"))
-        context.system.shutdown()
-    }
-  }
+
 */
+
+
+
+ def sourceR(filePath:String) {
+   println(filePath)
+   import java.net.{HttpURLConnection, URL};
+   var repositoryName =""
+   var fileUrl = ""
+   var fileLength = 0
+   val repositoryMap = org.gk.config.cfg.getRepositoryMap
+   for ((k, v) <- repositoryMap) {
+     val url = new URL(v + filePath)
+     val conn = url.openConnection().asInstanceOf[HttpURLConnection];
+     if (conn.getResponseCode == 200) {
+       repositoryName = k
+       fileUrl = v + filePath
+     }
+     else {
+       println("a")
+     }
+     //获得文件长度
+     fileLength = conn.getContentLength;
+
+   }
+   val downUrl = new URL(fileUrl)
+   val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+   downConn.setConnectTimeout(5000);
+   val downIs = downConn.getInputStream();
+
+   val jarpath = cfg.getLocalRepositoryDir + filePath
+
+   val file = new File(jarpath)
+   println(jarpath)
+   if (file.exists()) {
+     println("文件删除结果" + file.delete())
+   }else{
+     file.getParentFile.mkdirs()
+   }
+   val raf = new RandomAccessFile(cfg.getLocalRepositoryDir + filePath, "rwd");
+   val buffer = new Array[Byte](fileLength)
+   raf.setLength(fileLength);
+
+
+   var tot = 0
+   var start = 0
+   var len = 0
+   while (len != -1 && fileLength != tot) {
+     len = downIs.read(buffer, start, fileLength - tot)
+     start += len
+     tot += len
+     println(tot)
+   }
+   println("下载完成:" + tot)
+   raf.write(buffer)
+   downIs.close()
+   raf.close();
+ }
+
 /*
-  import java.net.{HttpURLConnection, URL};
-  var repositoryName =""
-  var fileUrl = ""
-  var fileLength = 0
-
-  if(!localFileExists){
-    val repositoryMap = org.gk.config.cfg.getRepositoryMap
-    for ((k,v) <- repositoryMap){
-
-      val url = new URL(v + filePath)
-      val conn = url.openConnection().asInstanceOf[HttpURLConnection];
-      if( conn.getResponseCode == 200 ) {
-        repositoryName = k
-        fileUrl = v + filePath
-      }
-      else{
-        println("a")
-      }
-      //获得文件长度
-      fileLength = conn.getContentLength;
-    }
-    println(repositoryName)
-    println(fileUrl)
-    val downUrl = new URL(fileUrl)
-    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000);
-    val downIs = downConn.getInputStream();
-    val file = new File("Z://HTTPClient-0.3-3.jar")
-    if(file.exists()){
-      println("文件删除结果"+ file.delete())
-    }
-    val raf = new RandomAccessFile("Z://HTTPClient-0.3-3.jar", "rwd");
-    val buffer = new Array[Byte](fileLength)
-    raf.setLength(fileLength);
-
-
-    var tot = 0
-    var start = 0
-    var len = 0
-    while(len != -1 && fileLength != tot){
-      len = downIs.read(buffer,start,fileLength-tot)
-      start += len
-      tot += len
-      println(tot)
-    }
-    println("下载完成:"+tot)
-    raf.write(buffer)
-    downIs.close()
-    raf.close();
-
-
 
     val file = new File("Z:\\mavenR\\HTTPClient-0.3-3.jar")
     var fis = new FileInputStream(file);
@@ -149,4 +138,12 @@ object DownMvnFile {
     bis.close()
     socket.close();
   }*/
+  override def receive: Receive = {
+    case path:String =>{
+      GkConsoleLogger.info("下载处理者: 开始寻找文件所在仓库...")
+      sourceR(path)
+      GkConsoleLogger.info("下载处理者: 下载完成...")
+      sender() ! "Down Ok"
+    }
+  }
 }

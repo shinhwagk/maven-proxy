@@ -7,17 +7,19 @@ import akka.actor.Actor
 import akka.actor.Actor.Receive
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
 
+import org.gk.config.cfg
 import org.gk.log.GkConsoleLogger
-;
+import org.gk.httpserver.CaseResponse
 
 /**
  * Created by goku on 2015/7/23.
  */
 class Response extends Actor{
   override def receive: Receive = {
-    case socket:Socket =>{
+    case CaseResponse(path,socket) =>{
+      println(path)
       GkConsoleLogger.info("Response收到请求,开始处理...")
-      abcxx(socket)
+      abcxx(path,socket)
       GkConsoleLogger.info("发送完毕;")
       socket.close()
       sender() ! "over"
@@ -25,8 +27,9 @@ class Response extends Actor{
   }
 
 
-  def abcxx (socket:Socket): Unit ={
-    val file = new File("Z:\\mavenR\\HTTPClient-0.3-3.jar")
+  def abcxx (path:String,socket:Socket): Unit ={
+    val filepath = cfg.getLocalRepositoryDir + path
+    val file = new File(filepath)
     var fis = new FileInputStream(file);
     var bis = new BufferedInputStream(fis);
     var bislength = bis.available();
@@ -34,7 +37,7 @@ class Response extends Actor{
     var bos = new BufferedOutputStream(os);
     var sb = new StringBuilder();
     sb.append("HTTP/1.1 200 OK\n");
-    sb.append("Content-Type: application/java-archive\n");
+//    sb.append("Content-Type: application/java-archive\n");
     sb.append("Content-Type: application/octet-stream\n");
     sb.append("Date: " + new Date() + "\n");
     sb.append("Content-Length: " + (bislength) + "\n");

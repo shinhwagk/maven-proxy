@@ -14,7 +14,7 @@ object cfg {
   def getRepositoryMap ={
 
     val RepositoryMap:Map[String,String] = Map.empty
-    val a = config.getList("RepositoryList").unwrapped()
+    val a = config.getList("RemoteRepositoryList").unwrapped()
     import scala.collection.JavaConversions._
     for (c <- a){
       val Repository = mapAsScalaMap(c.asInstanceOf[java.util.Map[String,String]])
@@ -29,5 +29,11 @@ object cfg {
 
   def main(args: Array[String]) {
     println(getLocalRepositoryDir)
+
   }
+
 }
+
+
+
+

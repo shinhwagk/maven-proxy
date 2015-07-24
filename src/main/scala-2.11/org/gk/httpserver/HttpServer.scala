@@ -4,6 +4,7 @@ import java.io._
 import java.net.{Socket, ServerSocket}
 import java.util.Date
 
+import akka.event.Logging
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import akka.routing.RoundRobinPool
 import org.gk.httpserver.service.maven.{Requert, Response}
@@ -21,32 +22,37 @@ object HttpServer {
   var num = 0
   GkConsoleLogger.info("系统已经启动...")
   def main(args: Array[String]) {
-    GkConsoleLogger.info("准备接受请求...")
+    GkConsoleLogger.info("系统开始接受请求...")
     while (true) {
       val socket = ss.accept();
 //      num += 1
-      listener ! "over"
-//      listener ! socket
+//      listener ! "over"
+      GkConsoleLogger.info("发送请求给requert发送者...")
+      listener ! requertSocket(socket)
     }
   }
 }
 
 case class requertSocket(socket:Socket)
-case class ResponseSocket(socket:Socket)
+case class CaseResponse(path:String,socket:Socket)
 
 class Listener extends Actor{
   val requert = context.actorOf(Props(new Requert), "Requert")
   val response = context.actorOf(Props(new Response), "Response")
   override def receive ={
     case requertSocket(socket) => {
-      println("abccc")
+      GkConsoleLogger.info("requert发送者接受到请求，准备处理...")
+      GkConsoleLogger.info("requert发送者发出请求...")
       requert ! socket
     }
-    case ResponseSocket(socket) => {
+    case CaseResponse(path,socket) => {
+      GkConsoleLogger.info("response接受者收到请求...")
       GkConsoleLogger.info("发送处理请求给Response...")
+      response ! CaseResponse(path,socket)
+
     }
     case "over" =>{
-      println("abcggggggggggg111111")
+      println("请求结束")
     }
   }
 }

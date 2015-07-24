@@ -8,6 +8,7 @@ import akka.actor.Actor.Receive
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
 
 import org.gk.config.cfg
+import org.gk.downfile.DownFile
 import org.gk.log.GkConsoleLogger
 import org.gk.httpserver.CaseResponse
 
@@ -26,9 +27,16 @@ class Response extends Actor{
     }
   }
 
-
+  def DecideLocalFileExists(filePath:String): Boolean ={
+    new File(org.gk.config.cfg.getLocalRepositoryDir + filePath).exists()
+  }
   def abcxx (path:String,socket:Socket): Unit ={
     val filepath = cfg.getLocalRepositoryDir + path
+    val a = new DownFile()
+    if(!DecideLocalFileExists(filepath)){
+      a.sourceR(filepath)
+    }
+
     val file = new File(filepath)
     var fis = new FileInputStream(file);
     var bis = new BufferedInputStream(fis);

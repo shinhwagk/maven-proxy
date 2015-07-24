@@ -11,7 +11,7 @@ import org.gk.log.GkConsoleLogger
 /**
  * Created by goku on 2015/7/22.
  */
-class DownFile extends Actor{
+class DownFile {
   /*
   def main(args: Array[String]) {
     case class DownAccomplish()
@@ -138,12 +138,12 @@ class DownFile extends Actor{
     bis.close()
     socket.close();
   }*/
-  override def receive: Receive = {
-    case path:String =>{
-      GkConsoleLogger.info("下载处理者: 开始寻找文件所在仓库...")
-      sourceR(path)
-      GkConsoleLogger.info("下载处理者: 下载完成...")
-      sender() ! "Down Ok"
-    }
-  }
+//  override def receive: Receive = {
+//    case path:String =>{
+//      GkConsoleLogger.info("下载处理者: 开始寻找文件所在仓库...")
+//      sourceR(path)
+//      GkConsoleLogger.info("下载处理者: 下载完成...")
+//      sender() ! "Down Ok"
+//    }
+//  }
 }

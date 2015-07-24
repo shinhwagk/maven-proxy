@@ -35,9 +35,7 @@ class Requert extends Actor {
     }
     path
   }
-  def DecideLocalFileExists(filePath:String): Boolean ={
-    new File(org.gk.config.cfg.getLocalRepositoryDir + filePath).exists()
-  }
+
 
   val downFile = context.actorOf(Props(new DownFile) ,name = "DownFile")
   def receive ()= {

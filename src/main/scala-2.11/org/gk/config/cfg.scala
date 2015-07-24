@@ -27,6 +27,10 @@ object cfg {
       config.getString("LocalRepositoryDir")
   }
 
+  def getMPPort:Int={
+    config.getInt("port")
+  }
+
   def main(args: Array[String]) {
 //    println(getLocalRepositoryDir)
   val repositoryMap = org.gk.config.cfg.getRepositoryMap

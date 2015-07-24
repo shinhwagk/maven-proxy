@@ -7,6 +7,7 @@ import java.util.Date
 import akka.event.Logging
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import akka.routing.RoundRobinPool
+import org.gk.config.cfg
 import org.gk.httpserver.service.maven.{Requert, Response}
 import org.gk.log.GkConsoleLogger
 
@@ -16,7 +17,7 @@ import org.gk.log.GkConsoleLogger
  */
 object HttpServer {
 
-  val ss = new ServerSocket(8082);
+  val ss = new ServerSocket(cfg.getMPPort);
   val system = ActorSystem("MavenProxy")
 //  val listener = system.actorOf(RoundRobinPool(1).props(Props(new Listener)), name = "listener")
   val listener = system.actorOf(Props[Listener], name = "listener")

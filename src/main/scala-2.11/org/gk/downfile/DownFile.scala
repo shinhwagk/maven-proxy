@@ -1,7 +1,7 @@
 package org.gk.downfile
 
 import java.io._
-import java.net.{HttpURLConnection, URL}
+import java.net.{Socket, HttpURLConnection, URL}
 
 import akka.actor.Actor
 import org.gk.config.cfg
@@ -13,7 +13,23 @@ import scala.collection.mutable.ArrayBuffer
  * Created by goku on 2015/7/22.
  */
 
+case class CaseDownFileOk(filepath:String,socket:Socket)
 class DownFile extends Actor{
+
+  override def receive: Receive = {
+//    case CaseDownFile(filepath,socket) =>{
+//      GkConsoleLogger.info("下载处理者: 收到下载请求...")
+//      GkConsoleLogger.info("下载处理者: 开始寻找文件所在仓库...")
+//      sourceRepo(filepath)
+//      GkConsoleLogger.info("下载处理者: 发送下载下载完成通知...")
+//      sender() ! CaseDownFileOk(filepath,socket)
+//    }
+    case "test"=> {
+
+    }
+  }
+
+
   def downMaster(processNumber:Int,filePath:String){}
   def downWork(path:String, threadId:Int, startIndex:Int, endIndex:Int){}
   def getFileDownUrl(filePath:String):String ={
@@ -38,16 +54,9 @@ class DownFile extends Actor{
 
   }
 
-  override def receive: Receive = {
-    case filepath:String =>{
-      GkConsoleLogger.info("下载处理者: 收到下载请求...")
-      GkConsoleLogger.info("下载处理者: 开始寻找文件所在仓库...")
-      sourceR(filepath)
-      GkConsoleLogger.info("下载处理者: 下载完成...")
-    }
-  }
 
- def sourceR(filePath:String) {
+
+ def sourceRepo(filePath:String) {
    val downurl = getFileDownUrl(filePath)
    GkConsoleLogger.info(".................."+downurl+"..............................")
    import java.net.{HttpURLConnection, URL};

@@ -11,7 +11,28 @@ import org.gk.log.GkConsoleLogger
 /**
  * Created by goku on 2015/7/23.
  */
-class Requert extends Actor {
+object Requert{
+  def props(socket:Socket):Props = Props(new Requert(socket))
+}
+
+class Requert(socket:Socket) extends Actor {
+
+  def receive ()= {
+    case socket:Socket => {
+      GkConsoleLogger.info("requert处理者,接受到请求，准备处理...")
+      GkConsoleLogger.info("requert处理者: 获取请求头信息...")
+      val filepath = parseHttpHead(socket.getInputStream)
+      if(filepath !="no") {
+        GkConsoleLogger.info("requert处理者: 头信息获取完毕...")
+        GkConsoleLogger.info("requert处理者: 转移requert给response...")
+        sender() ! CaseResponse(filepath, socket)
+      }else{
+        socket.close()
+      }
+    }
+  }
+
+
   def parseHttpHead(is:InputStream) = {
     val isr = new InputStreamReader(is)
     val br = new BufferedReader(isr)
@@ -40,18 +61,5 @@ class Requert extends Actor {
   }
 
 
-  def receive ()= {
-    case socket:Socket => {
-      GkConsoleLogger.info("requert处理者,接受到请求，准备处理...")
-      GkConsoleLogger.info("requert处理者: 获取请求头信息...")
-      val filepath = parseHttpHead(socket.getInputStream)
-      if(filepath !="no") {
-        GkConsoleLogger.info("requert处理者: 头信息获取完毕...")
-        GkConsoleLogger.info("requert处理者: 转移requert给response...")
-        sender() ! CaseResponse(filepath, socket)
-      }else{
-        socket.close()
-      }
-    }
-  }
+
 }

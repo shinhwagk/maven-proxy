@@ -33,7 +33,11 @@ object cfg {
 
   def main(args: Array[String]) {
 //    println(getLocalRepositoryDir)
-  val repositoryMap = org.gk.config.cfg.getRepositoryMap
+  val a = getRepositoryMap
+
+    for((k,v)<-getRepositoryMap){
+      println(k)
+    }
 //    repositoryMap.filter(repo => repo._2)
   }
 

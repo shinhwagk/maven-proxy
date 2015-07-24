@@ -32,9 +32,10 @@ class Response extends Actor{
   }
   def abcxx (path:String,socket:Socket): Unit ={
     val filepath = cfg.getLocalRepositoryDir + path
-    val a = new DownFile()
+    val a = new DownFile(path)
     if(!DecideLocalFileExists(filepath)){
-      a.sourceR(filepath)
+      println(filepath+"xxxxxxxxxxxx")
+      a.sourceR()
     }
 
     val file = new File(filepath)

@@ -11,7 +11,7 @@ import org.gk.log.GkConsoleLogger
 /**
  * Created by goku on 2015/7/22.
  */
-class DownFile {
+class DownFile(filePath:String) {
   /*
   def main(args: Array[String]) {
     case class DownAccomplish()
@@ -54,8 +54,8 @@ class DownFile {
 
 
 
- def sourceR(filePath:String) {
-   println(filePath)
+ def sourceR() {
+   println(filePath+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
    import java.net.{HttpURLConnection, URL};
    var repositoryName =""
    var fileUrl = ""
@@ -67,6 +67,7 @@ class DownFile {
      if (conn.getResponseCode == 200) {
        repositoryName = k
        fileUrl = v + filePath
+       println(v)
      }
      else {
        println("a")
@@ -75,6 +76,7 @@ class DownFile {
      fileLength = conn.getContentLength;
 
    }
+   println(fileUrl+"AAAAAAAAAAAAAAAAA")
    val downUrl = new URL(fileUrl)
    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
    downConn.setConnectTimeout(5000);

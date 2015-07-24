@@ -37,7 +37,7 @@ class Requert extends Actor {
   }
 
 
-  val downFile = context.actorOf(Props(new DownFile) ,name = "DownFile")
+//  val downFile = context.actorOf(Props(new DownFile) ,name = "DownFile")
   def receive ()= {
     case socket:Socket => {
       GkConsoleLogger.info("requert处理者,接受到请求，准备处理...")

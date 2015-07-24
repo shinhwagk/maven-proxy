@@ -5,32 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/scala-2.11/test4.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/scala-2.11/test5.scala" />
-      <change type="DELETED" beforePath="Z:\JSKP\typesafe\maven-proxy\target\scala-2.11\classes\org\gk\httpserver\HttpServer$$anonfun$1.class" afterPath="" />
-      <change type="DELETED" beforePath="Z:\JSKP\typesafe\maven-proxy\target\scala-2.11\classes\org\gk\httpserver\Listener$$anonfun$3.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/log/GkConsoleLogger$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/log/GkConsoleLogger$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/log/GkFileLogger$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/log/GkFileLogger$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/HttpServer$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/HttpServer$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener$$anonfun$2.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener$$anonfun$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener$$anonfun$receive$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener$$anonfun$receive$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/Listener.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert$$anonfun$receive$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert$$anonfun$receive$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Requert.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response$$anonfun$receive$1.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response$$anonfun$receive$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/service/maven/Response.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/config/cfg$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/config/cfg$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/requertSocket$.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/requertSocket$.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/requertSocket.class" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/org/gk/httpserver/requertSocket.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/downfile/DownFile.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/downfile/DownFile.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/HttpServer.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/HttpServer.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/log/Logger.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/log/Logger.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Requert.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Requert.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/httpserver/service/maven/Response.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/application.conf" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/config/cfg.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/config/cfg.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala-2.11/test2.scala" afterPath="$PROJECT_DIR$/src/test/scala-2.11/test2.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -1055,7 +1029,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437713557091</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="0.1版本上线">
+      <created>1437725078631</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1437725078631</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1073,7 +1053,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34257206" sideWeight="0.48294243" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22121535" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22121535" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.49573562" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1104,7 +1084,8 @@
     <MESSAGE value="修复没有检测文件是否存在bug" />
     <MESSAGE value="修复相对路径和文件所在OS位置混淆BUG" />
     <MESSAGE value="修复本地文件判断存在与否，文件位置拼接错误" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复本地文件判断存在与否，文件位置拼接错误" />
+    <MESSAGE value="0.1版本上线" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.1版本上线" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

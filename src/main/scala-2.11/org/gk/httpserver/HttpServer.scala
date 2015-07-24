@@ -33,7 +33,7 @@ object HttpServer {
     while (true) {
       val socket = ss.accept();
       num += 1
-      val doorman = system.actorOf(Doorman.props(listener,socket), name ="Doorman"+num)
+      val doorman = system.actorOf(Doorman.props(listener,socket), name ="Doorman_"+num)
       doorman ! "requert"
       GkConsoleLogger.info("发送请求给requert发送者...")
       GkConsoleLogger.info("........................."+num+".....................")
@@ -67,8 +67,8 @@ class Listener extends Actor{
       println("请求结束")
     }
     case "a"=>{
-      println("abc")
-      context.stop(self)
+      println("abc.............................")
+//      println(context.self.path.name)
     }
   }
 }

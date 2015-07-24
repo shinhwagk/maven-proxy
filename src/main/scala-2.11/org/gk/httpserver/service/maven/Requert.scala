@@ -18,7 +18,7 @@ object Requert{
 class Requert(socket:Socket) extends Actor {
 
   def receive ()= {
-    case socket:Socket => {
+    case "requert" => {
       GkConsoleLogger.info("requert处理者,接受到请求，准备处理...")
       GkConsoleLogger.info("requert处理者: 获取请求头信息...")
       val filepath = parseHttpHead(socket.getInputStream)

@@ -3,7 +3,7 @@ package org.gk.httpserver.service.maven
 import java.net.Socket
 import java.util.Date
 
-import akka.actor.Actor
+import akka.actor.{Props, Actor}
 import akka.actor.Actor.Receive
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
 
@@ -16,29 +16,39 @@ import org.gk.httpserver.CaseResponse
  * Created by goku on 2015/7/23.
  */
 class Response extends Actor{
+  val downfile = context.actorOf(Props[DownFile],name ="DownFile2")
+
   override def receive: Receive = {
-    case CaseResponse(path,socket) =>{
-      println(path)
+    case CaseResponse(filepath,socket) =>{
       GkConsoleLogger.info("Response收到请求,开始处理...")
-      abcxx(path,socket)
-      GkConsoleLogger.info("发送完毕;")
-      socket.close()
-      sender() ! "over"
+      GkConsoleLogger.info("Response收到请求: 检查 "+ filepath + "是否存在本地中...")
+      if(!DecideLocalFileExists(filepath)){
+        GkConsoleLogger.info("Response收到请求: 文件 "+ filepath + "不在本地仓库中...")
+        GkConsoleLogger.info("Response收到请求: 发送下载请求...")
+        downfile ! filepath
+        println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        GkConsoleLogger.info("Response收到请求: "+ filepath + "存在本地仓库中...")
+        abcxx(filepath,socket)
+        GkConsoleLogger.info("发送完毕;")
+        socket.close()
+        sender() ! "over"
+      }else{
+        GkConsoleLogger.info("Response收到请求: "+ filepath + "存在本地仓库中...")
+        abcxx(filepath,socket)
+        GkConsoleLogger.info("发送完毕;")
+        socket.close()
+        sender() ! "over"
+      }
     }
   }
 
   def DecideLocalFileExists(filePath:String): Boolean ={
     new File(org.gk.config.cfg.getLocalRepositoryDir + filePath).exists()
   }
-  def abcxx (path:String,socket:Socket): Unit ={
-    val filepath = cfg.getLocalRepositoryDir + path
-    val a = new DownFile(path)
-    if(!DecideLocalFileExists(path)){
-      println(filepath+"xxxxxxxxxxxx")
-      a.sourceR()
-    }
+  def abcxx (filepath:String,socket:Socket): Unit ={
+    val fileUrl = cfg.getLocalRepositoryDir + filepath
 
-    val file = new File(filepath)
+    val file = new File(fileUrl)
     var fis = new FileInputStream(file);
     var bis = new BufferedInputStream(fis);
     var bislength = bis.available();

@@ -18,17 +18,22 @@ object HttpServer {
 
   val ss = new ServerSocket(8082);
   val system = ActorSystem("MavenProxy")
-  val listener = system.actorOf(RoundRobinPool(2).props(Props(new Listener)), name = "listener")
+//  val listener = system.actorOf(RoundRobinPool(1).props(Props(new Listener)), name = "listener")
+  val listener = system.actorOf(Props[Listener], name = "listener")
   var num = 0
   GkConsoleLogger.info("系统已经启动...")
   def main(args: Array[String]) {
     GkConsoleLogger.info("系统开始接受请求...")
     while (true) {
       val socket = ss.accept();
+      num += 1
 //      num += 1
 //      listener ! "over"
       GkConsoleLogger.info("发送请求给requert发送者...")
+      GkConsoleLogger.info("........................."+num+".....................")
       listener ! requertSocket(socket)
+      GkConsoleLogger.info("........................."+num+".....................")
+
     }
   }
 }

@@ -17,7 +17,17 @@ trait FileLogger extends Logger {
   def log(msg:String) { println(msg) }
 }
 
+trait User extends ConsoleLogger{
+  def fasongzheinfo(msg:String){info("user: "+msg)}
+}
+
 object GkConsoleLogger extends ConsoleLogger with Logger
 object GkFileLogger extends FileLogger with Logger
 
 
+object test{
+  object aaa extends User with ConsoleLogger with Logger
+  def main(args: Array[String]) {
+    aaa.fasongzheinfo("aaaaaaaa")
+  }
+}

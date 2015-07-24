@@ -4,7 +4,6 @@ import java.io.{BufferedReader, File, InputStream, InputStreamReader}
 import java.net.Socket
 
 import akka.actor.{Props, Actor}
-import org.gk.downfile.DownFile
 import org.gk.httpserver.CaseResponse
 
 import org.gk.log.GkConsoleLogger
@@ -17,12 +16,16 @@ class Requert extends Actor {
     val isr = new InputStreamReader(is)
     val br = new BufferedReader(isr)
 
-    import scala.collection.mutable.Map
     var path:String = ""
     var line = br.readLine()
     while(line != null && !line.isEmpty){
       line match {
-        case _ if line.contains("GET") => path = line.split(" ")(1);
+        case _ if line.contains("GET") => if(line.split(" ").length >=3){
+          println(line.split(" ").length);
+          path = line.split(" ")(1)
+        } else{
+          path ="no"
+        }
         case _ if line.contains("Host") => print(line) //未处理
         case _ if line.contains("Connection") => println("a")
         case _ if line.contains("Accept") => println("a")
@@ -37,15 +40,18 @@ class Requert extends Actor {
   }
 
 
-//  val downFile = context.actorOf(Props(new DownFile) ,name = "DownFile")
   def receive ()= {
     case socket:Socket => {
       GkConsoleLogger.info("requert处理者,接受到请求，准备处理...")
       GkConsoleLogger.info("requert处理者: 获取请求头信息...")
-      val path = parseHttpHead(socket.getInputStream)
-      GkConsoleLogger.info("requert处理者: 头信息获取完毕...")
-      GkConsoleLogger.info("requert处理者: 转移requert给response...")
-      sender() ! CaseResponse(path,socket)
+      val filepath = parseHttpHead(socket.getInputStream)
+      if(filepath !="no") {
+        GkConsoleLogger.info("requert处理者: 头信息获取完毕...")
+        GkConsoleLogger.info("requert处理者: 转移requert给response...")
+        sender() ! CaseResponse(filepath, socket)
+      }else{
+        socket.close()
+      }
     }
   }
 }

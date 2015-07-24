@@ -3,9 +3,10 @@
  */
 object test2 {
   def main(args: Array[String]) {
+    val b = "aaa"
     case class a(a:Int)
-    a(1) match {
-      case sh => println(sh)
+    b match {
+      case sh:String => println(sh)
       case _ => println("ccc")
     }
 

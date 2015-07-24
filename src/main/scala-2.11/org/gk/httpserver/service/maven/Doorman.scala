@@ -21,7 +21,7 @@ class Doorman(listener:ActorRef,socket:Socket) extends Actor{
       GkConsoleLogger.info("requert发送者发出请求...")
       listener ! "a"
       socket.close()
-      context.stop(self)
+//      context.stop(self)
     }
   }
 }

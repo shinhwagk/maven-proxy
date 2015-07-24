@@ -37,13 +37,15 @@ object HttpServer {
       doorman ! "requert"
       GkConsoleLogger.info("发送请求给requert发送者...")
       GkConsoleLogger.info("........................."+num+".....................")
-      listener ! requertSocket(socket)
-      GkConsoleLogger.info("........................."+num+".....................")
+
 
     }
   }
 }
 
+object head {
+
+}
 case class requertSocket(socket:Socket)
 case class CaseResponse(path:String,socket:Socket)
 

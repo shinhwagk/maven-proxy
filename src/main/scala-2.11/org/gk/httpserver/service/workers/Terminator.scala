@@ -17,8 +17,8 @@ class Terminator extends Actor{
   }
 
   def closeCode(par:(Int,Socket)) = {
-    par match {
-      case 204 => close_204(par._1)
+    par._1 match {
+      case 204 => close_204(par._2);println("关闭无效链接")
       case 200 => par._2.close()
     }
   }

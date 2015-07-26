@@ -70,6 +70,8 @@ class RepoManager extends Actor{
     val remoteRepMap = cfg.getRemoteRepoMap
     val getRemoteRepo_Central = cfg.getRemoteRepoCentral
     val testCentralFileUrl = getRemoteRepo_Central + file
+    println(testCentralFileUrl)
+    println(getTestFileUrlCode(testCentralFileUrl))
     val fileUrl = if(getTestFileUrlCode(testCentralFileUrl) == 200 ){
       testCentralFileUrl
     }else{

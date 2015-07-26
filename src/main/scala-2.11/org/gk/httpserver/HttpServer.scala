@@ -9,7 +9,7 @@ import akka.event.Logging
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
-import org.gk.httpserver.service.workers.{HeadParser, Doorman, Requert, Response}
+import org.gk.httpserver.service.workers._
 import org.gk.log.GkConsoleLogger
 
 
@@ -21,7 +21,7 @@ object HttpServer {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
 //  val listener = system.actorOf(RoundRobinPool(1).props(Props(new Listener)), name = "listener")
-//  val listener = system.actorOf(Props[Listener], name = "listener")
+  val headParser = system.actorOf(Props[HeadParser])
 //  val headParser = system.actorOf(Props[HeadParser])
   var num = 0L
 
@@ -32,6 +32,7 @@ object HttpServer {
 
     while (true) {
       val socket = ss.accept();
+        headParser ! socket
 //      num += 1
 //      val doorman = system.actorOf(Doorman.props(socket), name ="Doorman_"+num)
 //      val test = new BufferedReader(new InputStreamReader(socket.getInputStream))

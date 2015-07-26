@@ -4,7 +4,7 @@ import java.net.Socket
 
 import akka.actor.Actor
 import akka.actor.Actor.Receive
-import org.gk.httpserver.service.maven.{Response, Requert}
+import org.gk.httpserver.service.workers.{Response, Requert}
 
 
 /**

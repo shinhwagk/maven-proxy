@@ -4,7 +4,7 @@
 		module="maven-proxy_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20150722145859"
+		publication="20150726114444"
 	>
 		<description>
 		maven-proxy
@@ -33,7 +33,6 @@
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.11.7" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.11.7" conf="scala-tool->default,optional(default);compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-actor_2.11" rev="2.3.12" conf="compile->default(compile)"/>
-		<dependency org="com.typesafe.scala-logging" name="scala-logging_2.11" rev="3.1.0" conf="compile->default(compile)"/>
-		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.7" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe" name="config" rev="1.3.0" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

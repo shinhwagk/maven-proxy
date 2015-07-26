@@ -1,4 +1,4 @@
-package org.gk.httpserver.service.maven
+package org.gk.httpserver.service.workers
 
 import java.net.Socket
 import java.util.Date
@@ -50,10 +50,10 @@ class Response(socket:Socket) extends Actor{
   }
 
   def DecideLocalFileExists(filePath:String): Boolean ={
-    new File(org.gk.config.cfg.getLocalRepositoryDir + filePath).exists()
+    new File(org.gk.config.cfg.getLocalRepoDir + filePath).exists()
   }
   def sendFile (filepath:String,socket:Socket): Unit ={
-    val fileUrl = cfg.getLocalRepositoryDir + filepath
+    val fileUrl = cfg.getLocalRepoDir + filepath
     val file = new File(fileUrl)
     var fis = new FileInputStream(file);
     var bis = new BufferedInputStream(fis);

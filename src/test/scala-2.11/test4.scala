@@ -8,26 +8,27 @@ import akka.routing.RoundRobinPool
  */
 object test4 {
   val system = ActorSystem("MavenProxy")
-  val listener = system.actorOf(Props[testa], name = "listener")
+  val listener = system.actorOf(Props(new testa), name = "listener")
+//  val listener = system.actorOf(RoundRobinPool(1).props(Props(new testa)), name = "listener")
+
   var lastSender = system.deadLetters
 
   def main(args: Array[String]) {
-    listener !"abb"
-    listener !"abb"
-    listener !"abb"
-    listener !"abb"
-    listener !"abb"
+    listener ! (9,"a")
 //    system.shutdown()
-  }
 
+  }
+  case class bbb(a:Int)
   class testa extends Actor {
     val child = context.actorOf(RoundRobinPool(1).props(Props[WatchActor]), "child")
     override def receive: Receive = {
-      case "abb" => {
-       println("xxxxxxxxx")
-        val a = new URL("http://aaaaa.com")
-        val v = a.openConnection().asInstanceOf[HttpURLConnection];
-        v.setReadTimeout(1000000)
+      case a:Tuple2[Int, String]  => {
+       println("xxxxxxxxx" + a._2)
+//        val a = new URL("http://aaaaa.com.z")
+//        val v = a.openConnection().asInstanceOf[HttpURLConnection];
+//        v.setReadTimeout(1000)
+//        println(v.getResponseCode)
+//        println("sssss")
       }
 
     }

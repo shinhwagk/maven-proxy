@@ -3,7 +3,12 @@
  */
 object test5 {
   def main(args: Array[String]) {
-    val a = for (i <- (1 to 10)) yield i
-    println(a)
+//    val headFirstLine = "GET /a aaa"
+    val headFirstLine = ("b",1)
+    headFirstLine match {
+      case ("a",b:Int) => println("null")
+      case ("b",b:Int) => println("null1")
+      case _ => println("aaaa")
+    }
   }
 }

@@ -9,7 +9,7 @@ import akka.event.Logging
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
-import org.gk.httpserver.service.maven.{Doorman, Requert, Response}
+import org.gk.httpserver.service.workers.{HeadParser, Doorman, Requert, Response}
 import org.gk.log.GkConsoleLogger
 
 
@@ -18,12 +18,12 @@ import org.gk.log.GkConsoleLogger
  */
 object HttpServer {
 
-  val ss = new ServerSocket(cfg.getMPPort);
+  val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
 //  val listener = system.actorOf(RoundRobinPool(1).props(Props(new Listener)), name = "listener")
-  val listener = system.actorOf(Props[Listener], name = "listener")
-  var num = 0
-
+//  val listener = system.actorOf(Props[Listener], name = "listener")
+//  val headParser = system.actorOf(Props[HeadParser])
+  var num = 0L
 
   GkConsoleLogger.info("系统已经启动...")
   def main(args: Array[String]) {
@@ -32,9 +32,12 @@ object HttpServer {
 
     while (true) {
       val socket = ss.accept();
-      num += 1
-      val doorman = system.actorOf(Doorman.props(listener,socket), name ="Doorman_"+num)
-      doorman ! "requert"
+//      num += 1
+//      val doorman = system.actorOf(Doorman.props(socket), name ="Doorman_"+num)
+//      val test = new BufferedReader(new InputStreamReader(socket.getInputStream))
+//      val head = test.readLine()
+//      println((head != null && head.split(" ").length >=3))
+//      headParser ! socket
       GkConsoleLogger.info("发送请求给requert发送者...")
       GkConsoleLogger.info("........................."+num+".....................")
 
@@ -43,9 +46,7 @@ object HttpServer {
   }
 }
 
-object head {
 
-}
 case class requertSocket(socket:Socket)
 case class CaseResponse(path:String,socket:Socket)
 

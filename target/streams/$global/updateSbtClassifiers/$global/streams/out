@@ -62,8 +62,8 @@
 [debug] 	found org.scala-lang#scala-reflect;2.10.4 in sbt-chain
 [debug] 	[2.10.4] org.scala-lang#scala-reflect;2.10.4
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
-[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->runtime(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)]
@@ -703,9 +703,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.8!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
-[debug] :: resolution report :: resolve 1448ms :: artifacts dl 54ms
-[debug] 	report for default#maven-proxy$sbt_2.11;1.0 default produced in Z:\JSKP\typesafe\maven-proxy\target\resolution-cache\reports\default-maven-proxy$sbt_2.11-default.xml
-[debug] 	resolve done (1448ms resolve - 54ms download)
+[debug] :: resolution report :: resolve 2136ms :: artifacts dl 68ms
+[debug] 	report for default#maven-proxy$sbt_2.11;1.0 default produced in /Users/gk/Applications/maven-proxy/target/resolution-cache/reports/default-maven-proxy$sbt_2.11-default.xml
+[debug] 	resolve done (2136ms resolve - 68ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: default#maven-proxy$sources_2.11;1.0
 [debug] 	confs: [default]
@@ -1069,6 +1069,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.8!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.8!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.8!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 304ms :: artifacts dl 49ms
-[debug] 	report for default#maven-proxy$sources_2.11;1.0 default produced in Z:\JSKP\typesafe\maven-proxy\target\resolution-cache\reports\default-maven-proxy$sources_2.11-default.xml
-[debug] 	resolve done (304ms resolve - 49ms download)
+[debug] :: resolution report :: resolve 366ms :: artifacts dl 46ms
+[debug] 	report for default#maven-proxy$sources_2.11;1.0 default produced in /Users/gk/Applications/maven-proxy/target/resolution-cache/reports/default-maven-proxy$sources_2.11-default.xml
+[debug] 	resolve done (366ms resolve - 46ms download)

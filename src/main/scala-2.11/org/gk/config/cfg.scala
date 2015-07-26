@@ -11,7 +11,7 @@ object cfg {
 
   val config = ConfigFactory.load()
 
-  def getRepositoryMap ={
+  def getRemoteRepoMap ={
 
     val RepositoryMap:Map[String,String] = Map.empty
     val a = config.getList("RemoteRepositoryList").unwrapped()
@@ -23,19 +23,23 @@ object cfg {
     RepositoryMap
   }
 
-  def getLocalRepositoryDir: String ={
-      config.getString("LocalRepositoryDir")
+  def getRemoteRepoCentral: String = {
+    config.getString("RemoteRepsCentral")
   }
 
-  def getMPPort:Int={
-    config.getInt("port")
+  def getLocalRepoDir: String ={
+      config.getString("LocalRepoDir")
+  }
+
+  def getMavenProxyPost:Int={
+    config.getInt("MavenPorxyPort")
   }
 
   def main(args: Array[String]) {
 //    println(getLocalRepositoryDir)
-  val a = getRepositoryMap
+  val a = getRemoteRepoMap
 
-    for((k,v)<-getRepositoryMap){
+    for((k,v)<-getRemoteRepoMap){
       println(k)
     }
 //    repositoryMap.filter(repo => repo._2)

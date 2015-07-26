@@ -33,7 +33,7 @@ class DownFile extends Actor{
   def downMaster(processNumber:Int,filePath:String){}
   def downWork(path:String, threadId:Int, startIndex:Int, endIndex:Int){}
   def getFileDownUrl(filePath:String):String ={
-    val repositoryMap = org.gk.config.cfg.getRepositoryMap
+    val repositoryMap = org.gk.config.cfg.getRemoteRepoMap
     val a = repositoryMap.filter(repo => (testRepo(repo._2+filePath) == 200))
     val b = a.map(x => x._2)
     val c = b.asInstanceOf[ArrayBuffer[String]]
@@ -66,7 +66,7 @@ class DownFile extends Actor{
    val fileLength = downConn.getContentLength
    val downIs = downConn.getInputStream();
 
-   val fileOs = cfg.getLocalRepositoryDir + filePath
+   val fileOs = cfg.getLocalRepoDir + filePath
    GkConsoleLogger.info("下载处理者: 下载完成..."+fileOs)
    val file = new File(fileOs)
    if (!file.getParentFile.exists()) {

@@ -1,4 +1,4 @@
-[info] Updating {file:/Z:/JSKP/typesafe/maven-proxy/project/}maven-proxy-build...
+[info] Updating {file:/Users/gk/Applications/maven-proxy/project/}maven-proxy-build...
 [debug] :: resolving dependencies :: default#maven-proxy-build;0.1-SNAPSHOT
 [debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
 [debug] 	validate = true
@@ -16,7 +16,7 @@
 [debug] == resolving dependencies for default#maven-proxy-build;0.1-SNAPSHOT [provided]
 [debug] == resolving dependencies default#maven-proxy-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)]
 [info] Resolving org.scala-lang#scala-library;2.10.4 ...
-[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@568ebf84
+[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@3218b85d
 [debug] sbt-chain: module revision found in cache: org.scala-lang#scala-library;2.10.4
 [debug] 	found org.scala-lang#scala-library;2.10.4 in sbt-chain
 [debug] 	[2.10.4] org.scala-lang#scala-library;2.10.4
@@ -69,32 +69,12 @@
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->master(*)]
 [info] Resolving org.scala-lang#scala-reflect;2.10.4 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-reflect;2.10.4 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
-[info] Resolving org.scala-lang#scala-reflect;2.10.4 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.scala-lang#scala-reflect;2.10.4 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.scala-lang/scala-reflect/2.10.4/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.scala-lang/scala-reflect/2.10.4/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.scala-lang#scala-reflect;2.10.4
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scala-lang/scala-reflect/2.10.4/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scala-lang/scala-reflect/2.10.4/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.scala-lang#scala-reflect;2.10.4
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom
-[debug] 	my-proxy: found md file for org.scala-lang#scala-reflect;2.10.4
-[debug] 		=> http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom (2.10.4)
-[debug] downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom ...
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom.sha1
-[debug] sha1 OK for http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom
-[debug] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.10.4!scala-reflect.pom(pom.original) (1837ms)
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.scala-lang/scala-reflect/2.10.4/jars/scala-reflect.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.scala-lang/scala-reflect/2.10.4/jars/scala-reflect.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scala-lang/scala-reflect/2.10.4/jars/scala-reflect.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scala-lang/scala-reflect/2.10.4/jars/scala-reflect.jar
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar
-[debug] 	found org.scala-lang#scala-reflect;2.10.4 in my-proxy
+[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-reflect;2.10.4
+[debug] 	found org.scala-lang#scala-reflect;2.10.4 in sbt-chain
 [debug] 	[2.10.4] org.scala-lang#scala-reflect;2.10.4
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
-[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->runtime(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)]
@@ -762,8 +742,8 @@
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
-[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->compile]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [runtime->runtime(*)]
@@ -1240,8 +1220,8 @@
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
-[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->compile]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [runtime->runtime(*)]
@@ -1701,8 +1681,8 @@
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->optional(default)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [compile->compile(*)]
+[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(*)]
 [debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->compile(*)]
-[debug] == resolving dependencies org.scala-lang#scala-reflect;2.10.4->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->runtime(*)]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-library;2.10.4 [runtime->compile]
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.10.4->org.scala-lang#scala-reflect;2.10.4 [runtime->runtime(*)]
@@ -1760,12 +1740,7 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#tracking;0.13.8!tracking.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#testing;0.13.8!testing.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.10.4!scala-compiler.jar
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar
-[info] downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar ...
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar.sha1
-[debug] sha1 OK for http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.jar
-[info] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.10.4!scala-reflect.jar (26046ms)
+[debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.10.4!scala-reflect.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#control;0.13.8!control.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#collections;0.13.8!collections.jar
 [debug] 	[NOT REQUIRED] jline#jline;2.11!jline.jar
@@ -1791,19 +1766,19 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 22101ms :: artifacts dl 26115ms
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT provided produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-provided.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT optional produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-optional.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT plugin produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-plugin.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT sources produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-sources.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT docs produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-docs.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT pom produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-pom.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT scala-tool produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-scala-tool.xml
-[debug] 	resolve done (22101ms resolve - 26115ms download)
+[debug] :: resolution report :: resolve 4117ms :: artifacts dl 169ms
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-compile.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-runtime.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-test.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT provided produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-provided.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT optional produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-optional.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile-internal produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-compile-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime-internal produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-runtime-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test-internal produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-test-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT plugin produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-plugin.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT sources produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-sources.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT docs produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-docs.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT pom produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-pom.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT scala-tool produced in /Users/gk/Applications/maven-proxy/project/target/resolution-cache/reports/default-maven-proxy-build-scala-tool.xml
+[debug] 	resolve done (4117ms resolve - 169ms download)
 [info] Done updating.

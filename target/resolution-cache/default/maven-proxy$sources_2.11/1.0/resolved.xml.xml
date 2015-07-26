@@ -4,7 +4,7 @@
 		module="maven-proxy$sources_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20150722145955"
+		publication="20150726122438"
 	/>
 	<configurations>
 		<conf name="default" visibility="public" description=""/>

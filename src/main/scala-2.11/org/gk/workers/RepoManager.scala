@@ -20,20 +20,27 @@ class RepoManager extends Actor{
 
   override def receive: Receive = {
     case (file:String,socket:Socket) =>{
-      if(getFile(file,socket)) {
-        terminator ! 200
+//      if(getFile(file,socket)) {
+//        terminator ! 200
+//      }
+
+      val osFile = cfg.getLocalRepoDir + file
+      val osFileHandle = new File(osFile)
+      if(osFileHandle.exists()){
+        senderr ! (osFile,socket)
+      }else{
+        getFile(file,socket)
+        senderr ! (osFile,socket)
       }
     }
   }
 
-  def getFile(file:String,socket:Socket): Boolean ={
+  def getFile(file:String,socket:Socket): Unit ={
     val osFile = cfg.getLocalRepoDir + file
     val osFileHandle = new File(osFile)
     if(!osFileHandle.exists()){
       downFile(getFileUrl(file),osFile)
     }
-    senderr ! (osFile,socket)
-    true
   }
   def downFile(fileUrl:String,osFile:String): Unit ={
     import java.net.{HttpURLConnection, URL};
@@ -64,6 +71,7 @@ class RepoManager extends Actor{
     raf.write(buffer)
     downIs.close()
     raf.close();
+    println("下载完毕")
   }
 
   def getFileUrl(file:String): String ={

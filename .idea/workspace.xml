@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -53,7 +52,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.15120275">
-              <caret line="18" column="51" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
+              <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -969,7 +968,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437978023002</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="0.1.7 本地文件返回Bug">
+      <created>1437978154676</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1437978154676</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1421,7 +1426,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15120275">
-          <caret line="18" column="51" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
+          <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
           <folding />
         </state>
       </provider>

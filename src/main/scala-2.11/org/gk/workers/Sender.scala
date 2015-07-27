@@ -35,7 +35,6 @@ class Sender extends Actor with akka.actor.ActorLogging{
       bis.read(buffer, 0, bislength);
       bos.write(buffer);
       bos.flush();
-      terminator ! "200"
     }
   }
 }

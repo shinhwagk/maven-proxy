@@ -15,8 +15,8 @@ import scala.collection.mutable.ArrayBuffer
  * Created by gk on 15/7/26.
  */
 class RepoManager extends Actor with akka.actor.ActorLogging{
-  val senderr = context.actorOf(Props[Sender])
-  val terminator = context.actorOf(Props[Terminator])
+  val senderr = context.actorOf(Props[Sender],name ="Sender")
+  val terminator = context.actorOf(Props[Terminator],name = "terminator")
 
   override def receive: Receive = {
     case (file:String,socket:Socket) =>{

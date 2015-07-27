@@ -23,6 +23,9 @@ object cfg {
     RepositoryMap
   }
 
+  def getDownFilePorcessNumber:Int = {
+    config.getString("DownFilePorcessNumber").toInt
+  }
   def getRemoteRepoCentral: String = {
     config.getString("RemoteRepsCentral")
   }

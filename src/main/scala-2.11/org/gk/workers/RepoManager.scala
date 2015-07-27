@@ -8,6 +8,7 @@ import org.gk.config.cfg
 import java.net.Socket
 
 import org.gk.log.GkConsoleLogger
+import org.gk.workers.down.Downloader
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -17,6 +18,7 @@ import scala.collection.mutable.ArrayBuffer
 class RepoManager extends Actor with akka.actor.ActorLogging{
   val senderr = context.actorOf(Props[Sender],name ="Sender")
   val terminator = context.actorOf(Props[Terminator],name = "terminator")
+  val downLoader = context.actorOf(Props[Downloader], name = "downLoader")
 
   override def receive: Receive = {
     case (file:String,socket:Socket) =>{
@@ -24,15 +26,18 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
       val osFile = cfg.getLocalRepoDir + file
       val osFileHandle = new File(osFile)
       osFileHandle.exists() match {
-        case true =>{
+        case true => {
           log.debug("文件:{} 存在本地...",osFile)
         }
-        case false =>{
+        case false => {
           log.debug("文件:{} 不在本地...",osFile)
-          getFile(file,socket)
+          downLoader ! (getFileUrl(file),osFile,socket)
+//          getFile(file,socket)
         }
       }
-      senderr ! (osFile,socket)
+    }
+    case ("DownSuccess",fileOs:String,socket:Socket) =>{
+      senderr ! (fileOs,socket)
     }
   }
 

@@ -11,10 +11,13 @@ object test4 {
   val listener = system.actorOf(Props(new testa), name = "listener")
 //  val listener = system.actorOf(RoundRobinPool(1).props(Props(new testa)), name = "listener")
 
-  var lastSender = system.deadLetters
+//  var lastSender = system.deadLetters
 
   def main(args: Array[String]) {
-    listener ! (9,"a")
+    listener ! "1"
+    println("aaaaaaaaaaaaaaaaaaaaaa")
+    listener ! "1"
+    println("bbbb")
 //    system.shutdown()
 
   }
@@ -22,7 +25,13 @@ object test4 {
   class testa extends Actor {
     val child = context.actorOf(RoundRobinPool(1).props(Props[WatchActor]), "child")
     override def receive: Receive = {
+      case "1" =>{
+        println("xxx")
+        Thread.sleep(100000)
+      }
       case a:Tuple2[Int, String]  => {
+        println("xxxxxxxxx" + a._2)
+
        println("xxxxxxxxx" + a._2)
 //        val a = new URL("http://aaaaa.com.z")
 //        val v = a.openConnection().asInstanceOf[HttpURLConnection];

@@ -91,8 +91,8 @@
       <file leaf-file-name="Sender.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6975945">
-              <caret line="40" column="0" selection-start-line="40" selection-start-column="2" selection-end-line="42" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.77319586">
+              <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -986,7 +986,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437978415027</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="0.1.7 本地文件返回Bug">
+      <created>1437978517396</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1437978517396</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1437,8 +1443,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6975945">
-          <caret line="40" column="0" selection-start-line="40" selection-start-column="2" selection-end-line="42" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.77319586">
+          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
           <folding />
         </state>
       </provider>

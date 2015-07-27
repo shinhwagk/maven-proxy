@@ -11,7 +11,7 @@ import org.gk.workers._
 /**
  * Created by gk on 15/7/21.
  */
-object HttpServer {
+object Proxy {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
   val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")

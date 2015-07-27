@@ -14,7 +14,9 @@ class HeadParser extends Actor {
 
   override def receive: Receive = {
     case socket:Socket =>{
-      headParse(socket)
+      val file  = getFile(socket)
+      repoManager ! (file,socket)
+//      headParse(socket)
     }
   }
 
@@ -27,5 +29,19 @@ class HeadParser extends Actor {
       case _ if headFirstLine.split(" ")(1) == "/" => terminator ! (204,socket)
       case _ => repoManager ! (headFirstLine.split(" ")(1),socket)
     }
+  }
+
+  def deBugLockHead(socket:Socket): Unit ={
+    val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
+    for(i <- 1 to  10){
+      print(i+" : ")
+      println(headBuffers.readLine())
+    }
+  }
+
+  def getFile(socket:Socket): String ={
+    val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
+    val headFirstLine = headBuffers.readLine()
+    headFirstLine.split(" ")(1)
   }
 }

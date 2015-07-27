@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownLoader.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownLoader.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala-2.11/doww.scala" afterPath="$PROJECT_DIR$/src/test/scala-2.11/doww.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -1067,7 +1065,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437987961777</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="0.1.9 增加多线程下载">
+      <created>1437988389798</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1437988389798</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="ToolWindowManager">

@@ -28,7 +28,10 @@ class Downloader extends Actor with akka.actor.ActorLogging{
     if (!file.getParentFile.exists()) {
       file.getParentFile.mkdirs()
     }
+
     log.info("待下载文件{},需要下载{}...",fileOs,fileLength)
+
+    log.info("定位在下文件{}...",fileOs)
     val raf = new RandomAccessFile(fileOs, "rwd");
     raf.setLength(fileLength);
 

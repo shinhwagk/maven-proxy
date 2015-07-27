@@ -9,8 +9,8 @@ import akka.actor.{Props, Actor}
  * Created by goku on 2015/7/27.
  */
 class HeadParser extends Actor with akka.actor.ActorLogging{
-  val terminator = context.actorOf(Props[Terminator])
-  val repoManager = context.actorOf(Props[RepoManager])
+  val terminator = context.actorOf(Props[Terminator] ,name = "terminator")
+  val repoManager = context.actorOf(Props[RepoManager],name = "repoManager")
 
   override def receive: Receive = {
     case socket:Socket =>{

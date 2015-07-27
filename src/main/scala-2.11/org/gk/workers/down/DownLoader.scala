@@ -13,13 +13,19 @@ import org.gk.config.cfg
 class Downloader extends Actor with akka.actor.ActorLogging{
   val processNum = cfg.getDownFilePorcessNumber
   val worker = context.actorOf(RoundRobinPool(processNum).props(Props[Worker]),name ="worker")
-
+  var downSuccessNumber:Int = _
   override def receive: Actor.Receive = {
+
     case (fileUrl:String,fileOs:String,socket:Socket) =>{
       downFile(fileUrl,fileOs)
       sender() ! ("DownSuccess",fileOs,socket)
     }
+    case "downSuccess" => {
+      downSuccessNumber += 1
+      if(downSuccessNumber == processNum) println(sender().path.name)
+    }
   }
+
   def downFile(fileUrl:String,fileOs:String): Unit ={
     val httpConn = getHttpConn(fileUrl)
     val fileLength = httpConn.getContentLength
@@ -65,12 +71,12 @@ class Worker extends Actor with akka.actor.ActorLogging{
   override def receive: Actor.Receive = {
     case Work(url,thread,startIdex,endIndex,fileOs) => {
       log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOs)
-      down(url,thread,startIdex,endIndex,fileOs)
+      sender() ! down(url,thread,startIdex,endIndex,fileOs)
       log.debug("线程: {} 下载完毕{}...",thread,fileOs)
     };
   }
 
-  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String) {
+  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String):String = {
     log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url)
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
@@ -96,6 +102,7 @@ class Worker extends Actor with akka.actor.ActorLogging{
     is.close()
     raf.close()
     println("下载完毕")
+    "downSuccess"
   }
 }
 

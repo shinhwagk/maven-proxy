@@ -23,10 +23,12 @@ class Downloader extends Actor with akka.actor.ActorLogging{
   def downFile(fileUrl:String,fileOs:String): Unit ={
     val httpConn = getHttpConn(fileUrl)
     val fileLength = httpConn.getContentLength
+
     val file = new File(fileOs)
     if (!file.getParentFile.exists()) {
       file.getParentFile.mkdirs()
     }
+    log.info("待下载文件{},需要下载{}...",fileOs,fileLength)
     val raf = new RandomAccessFile(fileOs, "rwd");
     raf.setLength(fileLength);
 

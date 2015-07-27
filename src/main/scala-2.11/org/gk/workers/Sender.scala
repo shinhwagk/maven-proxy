@@ -1,4 +1,4 @@
-package org.gk.httpserver.service.workers
+package org.gk.workers
 
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
 import java.util.Date

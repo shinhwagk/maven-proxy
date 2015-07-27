@@ -1,16 +1,11 @@
-package org.gk.httpserver
+package org.gk
 
-import java.io._
-import java.net.{Socket, ServerSocket}
-import java.util.Date
+import java.net.{ServerSocket, Socket}
 
-import akka.actor.Actor.Receive
-import akka.event.Logging
-import akka.actor.{ActorRef, Props, ActorSystem, Actor}
-import akka.routing.RoundRobinPool
+import akka.actor.{Actor, ActorSystem, Props}
 import org.gk.config.cfg
-import org.gk.httpserver.service.workers._
 import org.gk.log.GkConsoleLogger
+import org.gk.workers._
 
 
 /**

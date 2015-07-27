@@ -1,4 +1,4 @@
-package org.gk.httpserver.service.workers
+package org.gk.workers
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.Socket

@@ -1,7 +1,7 @@
 import akka.actor.{Props, ActorSystem, Actor}
 import akka.actor.Actor.Receive
 import com.typesafe.config.ConfigFactory
-import org.gk.httpserver.service.workers.HeadParser
+import org.gk.workers.HeadParser
 
 /**
  * Created by gk on 15/7/26.

@@ -1,4 +1,4 @@
-package org.gk.httpserver.service.workers
+package org.gk.workers
 
 import java.net.{ServerSocket, Socket}
 

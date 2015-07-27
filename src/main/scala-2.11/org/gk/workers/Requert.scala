@@ -1,10 +1,10 @@
-package org.gk.httpserver.service.workers
+package org.gk.workers
 
 import java.io.{BufferedReader, File, InputStream, InputStreamReader}
 import java.net.Socket
 
 import akka.actor.{Props, Actor}
-import org.gk.httpserver.CaseResponse
+import org.gk.CaseResponse
 
 import org.gk.log.GkConsoleLogger
 

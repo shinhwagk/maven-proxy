@@ -1,4 +1,4 @@
-package org.gk.httpserver.service.workers
+package org.gk.workers
 
 import java.net.Socket
 import java.util.Date
@@ -7,10 +7,10 @@ import akka.actor.{Props, Actor}
 import akka.actor.Actor.Receive
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
 
+import org.gk.CaseResponse
 import org.gk.config.cfg
 import org.gk.downfile.{CaseDownFileOk, DownFile}
 import org.gk.log.GkConsoleLogger
-import org.gk.httpserver.CaseResponse
 
 /**
  * Created by goku on 2015/7/23.

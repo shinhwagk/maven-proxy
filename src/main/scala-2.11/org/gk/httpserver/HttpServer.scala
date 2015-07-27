@@ -17,32 +17,23 @@ import org.gk.log.GkConsoleLogger
  * Created by gk on 15/7/21.
  */
 object HttpServer {
-
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
+  val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
 //  val listener = system.actorOf(RoundRobinPool(1).props(Props(new Listener)), name = "listener")
-  val headParser = system.actorOf(Props[HeadParser])
-//  val headParser = system.actorOf(Props[HeadParser])
-  var num = 0L
+
 
   GkConsoleLogger.info("系统已经启动...")
+
   def main(args: Array[String]) {
     GkConsoleLogger.info("系统开始接受请求...")
 
 
     while (true) {
       val socket = ss.accept();
-        headParser ! socket
-//      num += 1
-//      val doorman = system.actorOf(Doorman.props(socket), name ="Doorman_"+num)
-//      val test = new BufferedReader(new InputStreamReader(socket.getInputStream))
-//      val head = test.readLine()
-//      println((head != null && head.split(" ").length >=3))
-//      headParser ! socket
+      headParser ! socket
       GkConsoleLogger.info("发送请求给requert发送者...")
-      GkConsoleLogger.info("........................."+num+".....................")
-
-
+//      GkConsoleLogger.info("........................."+num+".....................")
     }
   }
 }

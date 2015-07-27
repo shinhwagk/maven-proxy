@@ -59,7 +59,7 @@ class RepoManager extends Actor{
       len = downIs.read(buffer, start, fileLength - tot)
       start += len
       tot += len
-      println(tot)
+      println(tot+"/"+fileLength)
     }
     raf.write(buffer)
     downIs.close()

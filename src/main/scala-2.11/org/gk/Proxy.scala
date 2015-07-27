@@ -27,7 +27,7 @@ object Proxy {
     while (true) {
       val socket = ss.accept();
       headParser ! socket
-      GkConsoleLogger.info("发送请求给requert发送者...")
+      GkConsoleLogger.info("发送请求给headParser...")
 //      GkConsoleLogger.info("........................."+num+".....................")
     }
   }

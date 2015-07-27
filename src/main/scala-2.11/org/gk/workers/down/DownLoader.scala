@@ -10,7 +10,6 @@ import org.gk.config.cfg
 /**
  * Created by goku on 2015/7/22.
  */
-case class
 class Downloader extends Actor with akka.actor.ActorLogging{
   val processNum = cfg.getDownFilePorcessNumber
   val worker = context.actorOf(RoundRobinPool(processNum).props(Props[Worker]),name ="worker")

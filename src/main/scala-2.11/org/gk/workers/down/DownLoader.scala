@@ -41,11 +41,11 @@ class Downloader extends Actor with akka.actor.ActorLogging{
     for (thread <- 1 to processNum) {
       thread match {
         case _ if thread == processNum =>{
-          worker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,raf)
+          worker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileOs)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
-          worker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,raf)
+          worker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileOs)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
       }
@@ -58,7 +58,7 @@ class Downloader extends Actor with akka.actor.ActorLogging{
   }
 }
 
-case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,raf:RandomAccessFile)
+case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String)
 class Worker extends Actor with akka.actor.ActorLogging{
   override def receive: Actor.Receive = {
     case Work(url,thread,startIdex,endIndex,raf) => {
@@ -68,13 +68,14 @@ class Worker extends Actor with akka.actor.ActorLogging{
     };
   }
 
-  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,raf:RandomAccessFile) {
+  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String) {
     log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url)
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength
+    val raf = new RandomAccessFile(fileOs, "rwd");
     raf.seek(startIndex);
 
     var currentLength = 0
@@ -91,6 +92,7 @@ class Worker extends Actor with akka.actor.ActorLogging{
     }
     raf.write(buffer)
     is.close()
+    raf.close()
     println("下载完毕")
   }
 }

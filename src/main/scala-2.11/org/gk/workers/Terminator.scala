@@ -14,6 +14,9 @@ class Terminator extends Actor{
     case parameter:(Int,Socket) => {
       closeCode(parameter)
     }
+    case socket:Socket =>{
+      socket.close()
+    }
   }
 
   def closeCode(par:(Int,Socket)) = {

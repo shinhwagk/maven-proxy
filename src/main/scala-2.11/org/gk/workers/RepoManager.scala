@@ -20,20 +20,19 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
 
   override def receive: Receive = {
     case (file:String,socket:Socket) =>{
-//      if(getFile(file,socket)) {
-//        terminator ! 200
-//      }
 
       val osFile = cfg.getLocalRepoDir + file
       val osFileHandle = new File(osFile)
-      if(osFileHandle.exists()){
-        log.debug("文件:{} 存在本地...",osFile)
-        senderr ! (osFile,socket)
-      }else{
-        log.debug("文件:{} 不在本地...",osFile)
-        getFile(file,socket)
-        senderr ! (osFile,socket)
+      osFileHandle.exists() match {
+        case true =>{
+          log.debug("文件:{} 存在本地...",osFile)
+        }
+        case false =>{
+          log.debug("文件:{} 不在本地...",osFile)
+          getFile(file,socket)
+        }
       }
+      senderr ! (osFile,socket)
     }
   }
 

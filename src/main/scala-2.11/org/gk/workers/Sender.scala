@@ -29,12 +29,15 @@ class Sender extends Actor with akka.actor.ActorLogging{
       sb.append("Connection: Keep-Alive\n")
       sb.append("Keep-Alive: true\n");
       sb.append("\n");
-
+      log.debug("发送头文件编辑完毕。。。")
       bos.write(sb.toString().getBytes);
+      log.debug("发送头文件。。。")
       val buffer = new Array[Byte](bislength);
       bis.read(buffer, 0, bislength);
       bos.write(buffer);
+      log.debug("发送文件。。。")
       bos.flush();
+      log.debug("发送文件OK。。。")
     }
   }
 }

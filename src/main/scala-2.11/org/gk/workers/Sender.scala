@@ -38,9 +38,9 @@ class Sender extends Actor with akka.actor.ActorLogging{
       log.debug("发送文件。。。")
       bos.flush();
       log.debug("发送文件OK。。。")
-      bos.close()
-      bis.close()
-      socket.close()
+//      bos.close()
+//      bis.close()
+//      socket.close()
     }
   }
 }

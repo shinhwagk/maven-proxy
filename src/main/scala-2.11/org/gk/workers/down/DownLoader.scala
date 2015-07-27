@@ -34,6 +34,7 @@ class Downloader extends Actor with akka.actor.ActorLogging{
     log.info("定位在下文件{}...",fileOs)
     val raf = new RandomAccessFile(fileOs, "rwd");
     raf.setLength(fileLength);
+    raf.close()
 
     val endLength = fileLength%processNum
     val step = (fileLength-endLength)/processNum
@@ -59,12 +60,13 @@ class Downloader extends Actor with akka.actor.ActorLogging{
 }
 
 case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String)
+
 class Worker extends Actor with akka.actor.ActorLogging{
   override def receive: Actor.Receive = {
-    case Work(url,thread,startIdex,endIndex,raf) => {
-      log.debug("线程: {} 下载请求收到,开始下载...",thread)
-      down(url,thread,startIdex,endIndex,raf)
-      log.debug("线程: {} 下载完毕...",thread)
+    case Work(url,thread,startIdex,endIndex,fileOs) => {
+      log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOs)
+      down(url,thread,startIdex,endIndex,fileOs)
+      log.debug("线程: {} 下载完毕{}...",thread,fileOs)
     };
   }
 

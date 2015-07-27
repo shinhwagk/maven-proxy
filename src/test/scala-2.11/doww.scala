@@ -27,8 +27,9 @@ class doww extends Actor with akka.actor.ActorLogging{
   def downFile11(fileUrl:String): Unit ={
     val httpConn = getHttpConn(fileUrl)
     val fileLength = httpConn.getContentLength
-    val raf = new RandomAccessFile("Z:\\maven-bundle-plugin-2.5.0-javadoc.jar", "rwd");
+    val raf = new RandomAccessFile("Z:\\apache-14.pom.sha1111", "rwd");
     raf.setLength(fileLength);
+    raf.close()
 
     println(fileLength)
 
@@ -56,7 +57,7 @@ class doww extends Actor with akka.actor.ActorLogging{
 
   override def receive: Actor.Receive = {
     case "a" =>{
-      downFile11("https://repo1.maven.org/maven2/org/apache/maven/plugins/maven-shade-plugin/2.3/maven-shade-plugin-2.3-javadoc.jar  ")
+      downFile11("https://repo1.maven.org/maven2/org/apache/apache/14/apache-14.pom.sha1")
     }
   }
 }
@@ -78,7 +79,7 @@ class Worker extends Actor with akka.actor.ActorLogging{
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength
-    val raf =  new RandomAccessFile("Z:\\maven-bundle-plugin-2.5.0-javadoc.jar", "rwd");
+    val raf =  new RandomAccessFile("Z:\\apache-14.pom.sha1111", "rwd");
     raf.seek(startIndex);
 
     var currentLength = 0

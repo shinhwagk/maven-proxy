@@ -8,13 +8,16 @@ import akka.actor.{Props, Actor}
 /**
  * Created by goku on 2015/7/27.
  */
-class HeadParser extends Actor {
+class HeadParser extends Actor with akka.actor.ActorLogging{
   val terminator = context.actorOf(Props[Terminator])
   val repoManager = context.actorOf(Props[RepoManager])
 
   override def receive: Receive = {
     case socket:Socket =>{
+      log.debug("headParser收到请求....")
       val file  = getFile(socket)
+      log.debug("headParser解析出需要下载的文件:{}....",file)
+      log.debug("headParser发送请求给RepoManager")
       repoManager ! (file,socket)
 //      headParse(socket)
     }

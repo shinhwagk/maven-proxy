@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Sender.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Terminator.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Terminator.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -1060,7 +1058,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437978818874</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="0.1.7 本地文件返回Bug">
+      <created>1437978994877</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1437978994877</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="ToolWindowManager">

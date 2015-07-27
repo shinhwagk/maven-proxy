@@ -51,8 +51,8 @@
       <file leaf-file-name="Proxy.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15120275">
-              <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.16838488">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -974,7 +974,13 @@
       <option name="project" value="LOCAL" />
       <updated>1437978154676</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="0.1.7 本地文件返回Bug">
+      <created>1437978344921</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1437978344921</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1425,8 +1431,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15120275">
-          <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.16838488">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -15,8 +15,8 @@ import org.gk.workers._
 object Proxy {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
-//  val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
-  val headParser = system.actorOf(RoundRobinPool(1).props(Props(new HeadParser)), name = "headParser")
+  val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
+//  val headParser = system.actorOf(RoundRobinPool(1).props(Props(new HeadParser)), name = "headParser")
 
 
   GkConsoleLogger.info("系统已经启动...")

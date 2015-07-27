@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * Created by gk on 15/7/26.
  */
-class RepoManager extends Actor{
+class RepoManager extends Actor with akka.actor.ActorLogging{
   val senderr = context.actorOf(Props[Sender])
   val terminator = context.actorOf(Props[Terminator])
 
@@ -27,8 +27,10 @@ class RepoManager extends Actor{
       val osFile = cfg.getLocalRepoDir + file
       val osFileHandle = new File(osFile)
       if(osFileHandle.exists()){
+        log.debug("文件:{} 存在本地...",osFile)
         senderr ! (osFile,socket)
       }else{
+        log.debug("文件:{} 不在本地...",osFile)
         getFile(file,socket)
         senderr ! (osFile,socket)
       }

@@ -46,6 +46,6 @@ class DownWorker extends Actor with akka.actor.ActorLogging{
     is.close()
     raf.close()
     println("下载完毕")
-    "DownloasdSuccess"
+    "WorkerDownLoadSuccess"
   }
 }

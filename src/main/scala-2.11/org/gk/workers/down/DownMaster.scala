@@ -14,14 +14,15 @@ import org.gk.config.cfg
 class DownMaster(processNumber:Int,downManager:ActorRef) extends Actor with ActorLogging{
 
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
-  var downSuccessNumber:Int = 0
+  var downSuccessNumber:Int = _
+  println("当前"+ downSuccessNumber)
   var fileOS:String = _
   override def receive: Receive = {
     case ("DownloadFile",fileUrl:String,fileOS:String) =>{
       this.fileOS = fileOS
       downFile (fileUrl,fileOS,processNumber)
     }
-    case ("DownloasdSuccess") =>{
+    case ("WorkerDownLoadSuccess") =>{
       downSuccessNumber += 1
       log.info("Worker下载完成数量{}/{}",downSuccessNumber,processNumber)
       if(downSuccessNumber == processNumber) downManager ! ("FileDownSuccess",fileOS)

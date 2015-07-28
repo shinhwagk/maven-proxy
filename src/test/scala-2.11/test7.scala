@@ -1,9 +1,10 @@
 import java.net.{HttpURLConnection, URL}
+import java.util.Random
 
+import akka.actor.SupervisorStrategy.{Resume, Restart, Stop}
 import akka.actor._
-import akka.actor.Actor.Receive
-import akka.routing.RoundRobinPool
-import org.gk.workers.HeadParser
+import akka.event.LoggingReceive
+import scala.concurrent.duration._
 
 /**
  * Created by gk on 15/7/27.
@@ -11,31 +12,58 @@ import org.gk.workers.HeadParser
 object test7 {
   def main(args: Array[String]) {
     val system = ActorSystem("MavenProxy")
-    val ab = system.actorOf(Props[ab], name = "a")
+    val ab = system.actorOf(Props[ab], name = "a1")
 
     ab ! "a"
-    ab ! "b"
-    ab ! "c"
+
    }
-  class bb extends Actor {
-    var bbb:Int = _
-    override def receive: Actor.Receive = {
-      case (ccc:Int,l:String) => {
-        bbb +=ccc
-        sender() ! (bbb,l)
+
+  class StorageException(msg: String) extends RuntimeException(msg)
+  class ab extends Actor {
+
+    override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 3, withinTimeRange = 1 seconds) {
+      case _: StorageException =>{
+        println("1xxxxxxxxxxxxxxxxx")
+//        Resume
+//        Stop
+        Restart
+      }
+      case _:java.lang.NullPointerException =>{
+        println("zzz")
+        Restart
+      }
+    }
+
+    val cc = context.actorOf(Props[cc], name = "b1")
+    val bb = context.watch(cc)
+    override def receive: Receive = {
+      case "a" =>{
+        bb ! "b"
+      }
+      case "hahaha" =>{
+        println("bbbbbbbb")
+      }
+      case _ =>
+        println("vvvvvvvvv")
+
+    }
+  }
+  class cc extends Actor{
+    override def receive: Receive = {
+      case a:String =>{
+        println("mmm")
+        abc
+        println("xxxx")
       }
     }
   }
-  class ab extends Actor {
-    val bb = context.actorOf(RoundRobinPool(3).props(Props[bb]),name ="downWorker")
-//    val bb = context.actorOf(Props(new bb),name ="downWorker")
-    override def receive: Receive = {
-      case a:String =>{
-          bb ! (1,a)
-      }
-      case (ccc:Int,l:String)=>{
-        println(ccc+l)
-      }
+  def abc(): Unit ={
+    val m = new Random()
+    val m1 = m.nextInt(100)
+    println(m1)
+    if( m1%2 == 0)
+    {
+      throw new StorageException("hahaha")
     }
   }
 }

@@ -40,6 +40,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
         downManager ! ("FileDownSuccess",this.fileOS)
       }
     }
+    case _ => println("mommmmm")
   }
 
   def downFile(fileUrl:String,fileTmpOS:String,processNumber:Int): Unit ={

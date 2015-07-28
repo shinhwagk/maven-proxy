@@ -3,13 +3,13 @@ package org.gk.workers.down
 import java.io.RandomAccessFile
 import java.net.{URL, HttpURLConnection}
 
-import akka.actor.Actor
+import akka.actor.{ActorLogging, Actor}
 
 /**
  * Created by goku on 2015/7/28.
  */
 
-class DownWorker extends Actor with akka.actor.ActorLogging{
+class DownWorker extends Actor with ActorLogging{
   override def receive: Actor.Receive = {
     case Work(url,thread,startIdex,endIndex,fileOs) => {
       log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOs)

@@ -14,6 +14,7 @@ import org.gk.config.cfg
 class DownMaster(processNumber:Int,downManager:ActorRef) extends Actor with ActorLogging{
 
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
+  context.watch(downWorker)
   var downSuccessNumber:Int = _
   println("当前"+ downSuccessNumber)
   var fileOS:String = _

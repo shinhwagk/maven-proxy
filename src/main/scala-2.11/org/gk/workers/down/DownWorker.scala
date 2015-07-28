@@ -22,6 +22,7 @@ class DownWorker extends Actor with akka.actor.ActorLogging{
     log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    downConn.setConnectTimeout(5000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;

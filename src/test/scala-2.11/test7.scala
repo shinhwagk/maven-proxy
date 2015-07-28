@@ -1,5 +1,8 @@
-import akka.actor.{Props, ActorSystem, Actor}
+import java.net.{HttpURLConnection, URL}
+
+import akka.actor.{ReceiveTimeout, Props, ActorSystem, Actor}
 import akka.actor.Actor.Receive
+import akka.routing.RoundRobinPool
 import org.gk.workers.HeadParser
 
 /**
@@ -8,34 +11,39 @@ import org.gk.workers.HeadParser
 object test7 {
   def main(args: Array[String]) {
     val system = ActorSystem("MavenProxy")
-    val a = system.actorOf(Props(new a("b")), name = "a")
+    val a = system.actorOf(Props[a], name = "a")
+    val downWorker = system.actorOf(RoundRobinPool(5).props(Props[a]),name ="downWorker")
     a ! "a"
     a ! "b"
    }
 
-  class a(abc:String) extends Actor {
-    val bz = context.actorOf(Props[b], name = "bz")
-    var aaa: String = _
-    println(aaa)
+  class a extends Actor {
 
+    import akka.actor.OneForOneStrategy
+    import akka.actor.SupervisorStrategy._
+    import scala.concurrent.duration._
     override def receive: Receive = {
-      case a: String => aaa = a; println(aaa)
+      case a: String => {
+        println(a)
+        val url = new URL("https://repo.maven.apache.org/maven2/HTTPClient/HTTPClient/maven-metadata.xml")
+        val conn = url.openConnection().asInstanceOf[HttpURLConnection];
+        try{
+          conn.setConnectTimeout(100)
+          println(conn.getResponseCode)
+        }catch {
+          case ex:Exception => {
+            println(ex.getMessage);
+          }
+        }
+        println("xxxxxxxxxxxxxxxxxxxxxxx")
 
+      }
+//      case ReceiveTimeout =>{
+//        // No progress within 15 seconds, ServiceUnavailable
+//        println("xxxxxxxx")
+//      }
     }
-  }
-  class b extends Actor{
-    val c = context.actorOf(Props[c], name = "b")
-    override def receive: Receive = {
-      case "b" => c ! "c" ;
-      case "c" => sender() ! "z";
-      case "z" => println("aaa")
-    }
-  }
-  class c extends Actor{
-    override def receive: Receive = {
-      case "c" => sender() ! "c"
-      case "z" => println("haha")
-    }
+//    context.setReceiveTimeout(3 seconds)
   }
 }
 

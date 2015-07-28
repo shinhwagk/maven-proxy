@@ -40,13 +40,15 @@ class DownWorker extends Actor with akka.actor.ActorLogging{
       start += len
       currentLength += len
       println(currentLength + "/" + workFileLength)
-      log.info("线程: {}下载进度 {}/{} 下载完毕...",thread,currentLength,workFileLength)
+      log.info("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
+      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
+      Thread.sleep(1000)
     }
 
     raf.write(buffer)
     is.close()
     raf.close()
-    println("下载完毕")
+    log.info("线程:{},下载完毕",thread)
     "WorkerDownLoadSuccess"
   }
 }

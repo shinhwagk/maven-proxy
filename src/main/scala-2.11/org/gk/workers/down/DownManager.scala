@@ -12,9 +12,9 @@ import org.gk.config.cfg
  */
 class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLogging{
   println("DownManager准备" + repoManager.toString())
-  val processNumber = cfg.getDownFilePorcessNumber
+
   val repoSearcher = context.actorOf(Props[RepoSearcher],name ="repoSearcher")
-  val downMaster = context.actorOf(Props(new DownMaster(processNumber,self)),name ="downMaster")
+  val downMaster = context.actorOf(Props(new DownMaster(self)),name ="downMaster")
   var downSuccessNumber:Int = _
   var repoManagerActor:ActorRef = _
   override def receive: Actor.Receive = {

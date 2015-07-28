@@ -1,6 +1,6 @@
 import java.net.{HttpURLConnection, URL}
 
-import akka.actor.{ReceiveTimeout, Props, ActorSystem, Actor}
+import akka.actor._
 import akka.actor.Actor.Receive
 import akka.routing.RoundRobinPool
 import org.gk.workers.HeadParser
@@ -11,39 +11,32 @@ import org.gk.workers.HeadParser
 object test7 {
   def main(args: Array[String]) {
     val system = ActorSystem("MavenProxy")
-    val a = system.actorOf(Props[a], name = "a")
-    val downWorker = system.actorOf(RoundRobinPool(5).props(Props[a]),name ="downWorker")
-    a ! "a"
-    a ! "b"
+    val ab = system.actorOf(Props[ab], name = "a")
+
+    ab ! "a"
+    ab ! "b"
+    ab ! "c"
    }
-
-  class a extends Actor {
-
-    import akka.actor.OneForOneStrategy
-    import akka.actor.SupervisorStrategy._
-    import scala.concurrent.duration._
-    override def receive: Receive = {
-      case a: String => {
-        println(a)
-        val url = new URL("https://repo.maven.apache.org/maven2/HTTPClient/HTTPClient/maven-metadata.xml")
-        val conn = url.openConnection().asInstanceOf[HttpURLConnection];
-        try{
-          conn.setConnectTimeout(100)
-          println(conn.getResponseCode)
-        }catch {
-          case ex:Exception => {
-            println(ex.getMessage);
-          }
-        }
-        println("xxxxxxxxxxxxxxxxxxxxxxx")
-
+  class bb extends Actor {
+    var bbb:Int = _
+    override def receive: Actor.Receive = {
+      case (ccc:Int,l:String) => {
+        bbb +=ccc
+        sender() ! (bbb,l)
       }
-//      case ReceiveTimeout =>{
-//        // No progress within 15 seconds, ServiceUnavailable
-//        println("xxxxxxxx")
-//      }
     }
-//    context.setReceiveTimeout(3 seconds)
+  }
+  class ab extends Actor {
+    val bb = context.actorOf(RoundRobinPool(3).props(Props[bb]),name ="downWorker")
+//    val bb = context.actorOf(Props(new bb),name ="downWorker")
+    override def receive: Receive = {
+      case a:String =>{
+          bb ! (1,a)
+      }
+      case (ccc:Int,l:String)=>{
+        println(ccc+l)
+      }
+    }
   }
 }
 

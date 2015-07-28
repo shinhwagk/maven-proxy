@@ -26,6 +26,7 @@ class DownMaster(processNumber:Int,downManager:ActorRef) extends Actor with Acto
       downSuccessNumber += 1
       log.info("Worker下载完成数量{}/{}",downSuccessNumber,processNumber)
       if(downSuccessNumber == processNumber) downManager ! ("FileDownSuccess",fileOS)
+      context.stop(self)
     }
   }
 

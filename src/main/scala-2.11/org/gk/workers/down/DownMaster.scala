@@ -36,7 +36,7 @@ class DownMaster(processNumber:Int,downManager:ActorRef) extends Actor with Acto
         val fileTmpOS = new File(this.fileTmpOS)
         fileTmpOS.renameTo(fileOS)
 
-        downManager ! ("FileDownSuccess",fileOS)
+        downManager ! ("FileDownSuccess",this.fileOS)
       }
     }
   }

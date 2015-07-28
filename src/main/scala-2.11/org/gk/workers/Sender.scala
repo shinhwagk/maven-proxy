@@ -12,7 +12,7 @@ import java.net.Socket
 class Sender extends Actor with akka.actor.ActorLogging{
   val terminator = context.actorOf(Props[Terminator])
   override def receive: Receive = {
-    case (osFile:String,socket:Socket) => {
+    case ("SenderRequert",osFile:String,socket:Socket) => {
       log.debug("准备发送文件{}。。。",osFile)
       val file = new File(osFile)
       val bis = new BufferedInputStream(new FileInputStream(file));

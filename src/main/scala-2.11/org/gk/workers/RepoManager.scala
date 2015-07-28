@@ -8,7 +8,7 @@ import org.gk.config.cfg
 import java.net.Socket
 
 import org.gk.log.GkConsoleLogger
-import org.gk.workers.down.Downloader
+import org.gk.workers.down.DownManager
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -18,89 +18,28 @@ import scala.collection.mutable.ArrayBuffer
 class RepoManager extends Actor with akka.actor.ActorLogging{
   val senderr = context.actorOf(Props[Sender],name ="Sender")
   val terminator = context.actorOf(Props[Terminator],name = "terminator")
-  val downLoader = context.actorOf(Props[Downloader], name = "downLoader")
-
+  val downLoader = context.actorOf(Props(new DownManager(self)), name = "downLoader")
+  var socket:Socket = _
   override def receive: Receive = {
     case (file:String,socket:Socket) =>{
-
-      val osFile = cfg.getLocalRepoDir + file
-      val osFileHandle = new File(osFile)
+      this.socket = socket
+      val fileOs = cfg.getLocalRepoDir + file
+      val osFileHandle = new File(fileOs)
       osFileHandle.exists() match {
         case true => {
-          log.debug("文件:{} 存在本地...",osFile)
+          log.debug("文件:{} 存在本地...",fileOs)
+          senderr ! (fileOs,this.socket)
         }
         case false => {
-          log.debug("文件:{} 不在本地...",osFile)
-          downLoader ! (getFileUrl(file),osFile,socket)
+          log.debug("文件:{} 不在本地...",fileOs)
+//          downLoader ! (getFileUrl(file),fileOs,socket)
+          downLoader ! ("DownFileRequest",file)
 //          getFile(file,socket)
         }
       }
     }
-    case ("DownSuccess",fileOs:String,socket:Socket) =>{
-      senderr ! (fileOs,socket)
+    case ("DownSuccess",fileOS:String) =>{
+      senderr ! ("SenderRequert",fileOS,socket)
     }
-  }
-
-  def getFile(file:String,socket:Socket): Unit ={
-    val osFile = cfg.getLocalRepoDir + file
-    val osFileHandle = new File(osFile)
-    if(!osFileHandle.exists()){
-      downFile(getFileUrl(file),osFile)
-    }
-  }
-  def downFile(fileUrl:String,osFile:String): Unit ={
-    import java.net.{HttpURLConnection, URL};
-    val downUrl = new URL(fileUrl)
-    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000);
-    val fileLength = downConn.getContentLength
-    val downIs = downConn.getInputStream();
-
-    val file = new File(osFile)
-    if (!file.getParentFile.exists()) {
-      file.getParentFile.mkdirs()
-    }
-    val raf = new RandomAccessFile(osFile, "rwd");
-    val buffer = new Array[Byte](fileLength)
-    raf.setLength(fileLength);
-
-
-    var tot = 0
-    var start = 0
-    var len = 0
-    while (len != -1 && fileLength != tot) {
-      len = downIs.read(buffer, start, fileLength - tot)
-      start += len
-      tot += len
-      println(tot+"/"+fileLength)
-    }
-    raf.write(buffer)
-    downIs.close()
-    raf.close();
-    println("下载完毕")
-  }
-
-  def getFileUrl(file:String): String ={
-    val remoteRepMap = cfg.getRemoteRepoMap
-    val getRemoteRepo_Central = cfg.getRemoteRepoCentral
-    val testCentralFileUrl = getRemoteRepo_Central + file
-    println(testCentralFileUrl)
-    println(getTestFileUrlCode(testCentralFileUrl))
-    val fileUrl = if(getTestFileUrlCode(testCentralFileUrl) == 200 ){
-      testCentralFileUrl
-    }else{
-      val a = remoteRepMap.filter(repo => (getTestFileUrlCode(repo._2+file) == 200))
-      val b = a.map(x => x._2)
-      val c = b.asInstanceOf[ArrayBuffer[String]]
-      c(0)+file
-    }
-    fileUrl
-  }
-  def getTestFileUrlCode(fileUrl:String): Int ={
-    import java.net.{HttpURLConnection, URL};
-    val downUrl = new URL(fileUrl)
-    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000)
-    downConn.getResponseCode
   }
 }

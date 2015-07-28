@@ -34,6 +34,10 @@ object cfg {
       config.getString("LocalRepoDir")
   }
 
+  def getLocalRepoTmpDir: String ={
+    config.getString("LocalRepoTmpDir")
+  }
+
   def getMavenProxyPost:Int={
     config.getInt("MavenPorxyPort")
   }

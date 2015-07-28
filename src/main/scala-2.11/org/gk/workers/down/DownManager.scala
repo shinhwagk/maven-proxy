@@ -22,8 +22,9 @@ class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLoggi
       repoSearcher ! file
     }
     case ("RepoSreachSuccess",fileUrl:String,file:String) =>{
-      val fileOs = cfg.getLocalRepoDir + file
-      downMaster ! ("DownloadFile",fileUrl,fileOs)
+//      val fileOs = cfg.getLocalRepoDir + file
+//      downMaster ! ("DownloadFile",fileUrl,fileOs)
+      downMaster ! ("DownloadFile",fileUrl,file)
     }
     case ("FileDownSuccess",fileOS:String) => {
       repoManager ! ("DownSuccess",fileOS)

@@ -28,7 +28,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
       osFileHandle.exists() match {
         case true => {
           log.debug("文件:{} 存在本地...",fileOs)
-          senderr ! (fileOs,this.socket)
+          senderr ! ("SenderRequert",fileOs,this.socket)
         }
         case false => {
           log.debug("文件:{} 不在本地...",fileOs)

@@ -11,6 +11,7 @@ import org.gk.config.cfg
  * Created by goku on 2015/7/22.
  */
 class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLogging{
+  println("DownManager准备" + repoManager.toString())
   val processNumber = cfg.getDownFilePorcessNumber
   val repoSearcher = context.actorOf(Props[RepoSearcher],name ="repoSearcher")
   val downMaster = context.actorOf(Props(new DownMaster(processNumber,self)),name ="downMaster")
@@ -24,11 +25,6 @@ class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLoggi
       val fileOs = cfg.getLocalRepoDir + file
       downMaster ! ("DownloadFile",fileUrl,fileOs)
     }
-//    case (fileUrl:String,fileOs:String,socket:Socket,repoManager:ActorRef) =>{
-//      repoManagerActor = repoManager
-//      downFile(fileUrl,fileOs)
-//      sender() ! ("DownSuccess",fileOs,socket)
-//    }
     case ("FileDownSuccess",fileOS:String) => {
       repoManager ! ("DownSuccess",fileOS)
     }

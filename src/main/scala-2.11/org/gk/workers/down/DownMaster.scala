@@ -25,7 +25,10 @@ class DownMaster(processNumber:Int,downManager:ActorRef) extends Actor with Acto
     case ("WorkerDownLoadSuccess") =>{
       downSuccessNumber += 1
       log.info("Worker下载完成数量{}/{}",downSuccessNumber,processNumber)
-      if(downSuccessNumber == processNumber) downSuccessNumber = 0;downManager ! ("FileDownSuccess",fileOS)
+      if(downSuccessNumber == processNumber) {
+        downSuccessNumber = 0;
+        downManager ! ("FileDownSuccess",fileOS)
+      }
     }
   }
 

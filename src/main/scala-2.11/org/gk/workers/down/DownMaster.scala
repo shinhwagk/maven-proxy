@@ -50,6 +50,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     case Terminated(actorRef) =>{
       println(actorRef.path.name+"被关闭")
       val actorRefName = actorRef.path.name
+      println(downMap.size+"xxxxxxxxxxxxxxxxx")
       context.watch(context.actorOf(Props[DownWorker],name= actorRefName)) ! downMap(actorRefName)
     }
   }

@@ -14,12 +14,21 @@ import org.gk.config.cfg
  */
 object WorkerDownDB{
   var downMap = Map[String, Work]()
+  var actorId = 0;
   def saveDownMap(a:String, b:Work) = synchronized {
     downMap += (a -> b)
   }
   def load(key: String): Work = synchronized {
     downMap(key)
   }
+  def getActorId:Int  = synchronized{
+    actorId += 1
+    actorId
+  }
+
+}
+case class DownFileSliced(url:String,startIndex:Int,endIndex:Int,fileOs:String){
+
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
   import WorkerDownDB._
@@ -62,7 +71,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
       }
       println(actorRef.path.name+"被关闭")
       val actorRefName = actorRef.path.name
-      context.watch(context.actorOf(Props[DownWorker],name= actorRefName)) ! downMap(actorRefName)
+      context.watch(context.actorOf(Props[DownWorker],name= actorRefName+"_"+getActorId)) ! downMap(actorRefName)
     }
   }
 

@@ -109,21 +109,14 @@ class B extends Actor {
       start += len
       currentLength += len
       println(currentLength + "/" + workFileLength)
-//      println(abc(currentLength))
-
-      if(currentLength >42335)
-        throw new Exception("aaa")
+      //      println(abc(currentLength))
     }
-
-    raf.write(buffer)
-    is.close()
-    raf.close()
-    println("线程:{},下载完毕")
+      raf.write(buffer)
+      is.close()
+      raf.close()
+      println("线程:{},下载完毕",context.parent.path.name)
     "WorkerDownLoadSuccess"
-
   }
-
-
 }
 
 

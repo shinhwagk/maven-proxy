@@ -1,16 +1,18 @@
-import akka.actor.Actor
+import akka.actor.{ActorRef, Actor}
 import akka.actor.Actor.Receive
 
 /**
  * Created by goku on 2015/7/30.
  */
-class HotSwapActor extends Actor {
-  override def receive: Receive = ???
-}
-
-
-object test2 {
+object HotSwapActor{
   def main(args: Array[String]) {
-
+    var a = Map[String,Option[Int]]()
+    var backlog = IndexedSeq.empty[(String, DownFileActorRefDB)]
+    backlog :+= ("abc",DownFileActorRefDB("AAA"))
+    backlog :+= ("abc",DownFileActorRefDB("AAA"))
+    println(backlog.)
   }
 }
+
+case class DownFileDB()
+case class DownFileActorRefDB(ActorName:String)

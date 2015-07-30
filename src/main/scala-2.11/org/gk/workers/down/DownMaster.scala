@@ -71,14 +71,14 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
       thread match {
         case _ if thread == processNumber =>{
           downMap += ("downWoker_" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
-          context.actorOf(Props[DownWorker],name ="downWoker" + thread) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
+          context.watch(context.actorOf(Props[DownWorker],name ="downWoker" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
 //            downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
           downMap += ("downWoker_" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
 //          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
-          context.actorOf(Props[DownWorker],name ="downWoker" + thread) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
+          context.watch(context.actorOf(Props[DownWorker],name ="downWoker" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
           //
           log.debug("线程: {} 下载请求已经发送...",thread)
 

@@ -18,7 +18,7 @@ object WorkerDownDB{
     downMap += (a -> b)
   }
   def load(key: String): Work = synchronized {
-    downMap.get(key)
+    downMap(key)
   }
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{

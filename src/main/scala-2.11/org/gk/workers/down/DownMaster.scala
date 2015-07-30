@@ -4,6 +4,7 @@ import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
 
 import akka.actor.Actor.Receive
+import akka.actor.SupervisorStrategy.Stop
 import akka.actor._
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
@@ -20,6 +21,11 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
   println("当前"+ downSuccessNumber)
   var fileOS:String = _
   var fileTmpOS:String = _
+
+  override val supervisorStrategy = OneForOneStrategy(){
+    case _: Exception => Stop
+  }
+
   override def receive: Receive = {
     case ("DownloadFile",fileUrl:String,file:String) =>{
       this.fileOS = cfg.getLocalRepoDir + file

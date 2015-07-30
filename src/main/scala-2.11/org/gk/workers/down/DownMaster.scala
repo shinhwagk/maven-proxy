@@ -97,15 +97,17 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     for (thread <- 1 to processNumber) {
       thread match {
         case _ if thread == processNumber =>{
-          saveDownMap("downWoker_" + thread ,Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
-          context.watch(context.actorOf(Props[DownWorker],name ="downWoker_" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
+          val actorName = "downWoker_"+ getActorId
+          saveDownMap(actorName ,Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
+          context.watch(context.actorOf(Props[DownWorker],name = actorName)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
 //            downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
-          saveDownMap("downWoker_" + thread , Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
+          val actorName = "downWoker_"+ getActorId
+          saveDownMap(actorName , Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
 //          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
-          context.watch(context.actorOf(Props[DownWorker],name ="downWoker_" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
+          context.watch(context.actorOf(Props[DownWorker],name = actorName)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
           //
           log.debug("线程: {} 下载请求已经发送...",thread)
 

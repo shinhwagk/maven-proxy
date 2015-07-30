@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/scala-2.11/classes/application.conf" afterPath="$PROJECT_DIR$/target/scala-2.11/classes/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala-2.11/test14.scala" afterPath="$PROJECT_DIR$/src/test/scala-2.11/test14.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala-2.11/test2.scala" afterPath="$PROJECT_DIR$/src/test/scala-2.11/test2.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -57,7 +54,7 @@
       <file leaf-file-name="aa.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/aa.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.633333">
+            <state vertical-scroll-proportion="10.966666">
               <caret line="129" column="13" selection-start-line="129" selection-start-column="6" selection-end-line="129" selection-end-column="13" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
@@ -73,7 +70,7 @@
         <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test2.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+              <caret line="9" column="28" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="28" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -84,8 +81,8 @@
       <file leaf-file-name="test14.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test14.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-70.333336">
-              <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
+            <state vertical-scroll-proportion="-53.533333">
+              <caret line="82" column="32" selection-start-line="82" selection-start-column="32" selection-end-line="82" selection-end-column="32" />
               <folding>
                 <element signature="e#1#32#0" expanded="true" />
               </folding>
@@ -96,7 +93,7 @@
       <file leaf-file-name="DownWorker.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.0">
+            <state vertical-scroll-proportion="-15.4">
               <caret line="21" column="28" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="28" />
               <folding>
                 <element signature="e#29#60#0" expanded="true" />
@@ -108,8 +105,8 @@
       <file leaf-file-name="DownMaster.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.36120403">
-              <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+            <state vertical-scroll-proportion="-0.17725752">
+              <caret line="97" column="20" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
               <folding>
                 <element signature="e#29#68#0" expanded="true" />
               </folding>
@@ -850,12 +847,6 @@
       <option name="number" value="Default" />
       <updated>1437527991826</updated>
     </task>
-    <task id="LOCAL-00032" summary="0.1.7 本地文件返回Bug">
-      <created>1437979003731</created>
-      <option name="number" value="00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1437979003731</updated>
-    </task>
     <task id="LOCAL-00033" summary="0.1.8 基本功能完成">
       <created>1437979398260</created>
       <option name="number" value="00033" />
@@ -1144,7 +1135,13 @@
       <option name="project" value="LOCAL" />
       <updated>1438241150695</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="0.2.2 修复各种bug">
+      <created>1438243398429</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1438243398429</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1162,7 +1159,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34950495" sideWeight="0.48280802" order="2" side_tool="false" content_ui="tabs" x="37" y="29" width="1876" height="925" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22867803" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="87" y="4" width="403" height="830" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11140725" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="87" y="4" width="403" height="830" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24856733" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1574,7 +1571,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/aa.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.633333">
+        <state vertical-scroll-proportion="10.966666">
           <caret line="129" column="13" selection-start-line="129" selection-start-column="6" selection-end-line="129" selection-end-column="13" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
@@ -1588,7 +1585,7 @@
     <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test2.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="28" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
@@ -1597,8 +1594,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test14.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-70.333336">
-          <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
+        <state vertical-scroll-proportion="-53.533333">
+          <caret line="82" column="32" selection-start-line="82" selection-start-column="32" selection-end-line="82" selection-end-column="32" />
           <folding>
             <element signature="e#1#32#0" expanded="true" />
           </folding>
@@ -1607,7 +1604,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.0">
+        <state vertical-scroll-proportion="-15.4">
           <caret line="21" column="28" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="28" />
           <folding>
             <element signature="e#29#60#0" expanded="true" />
@@ -1617,8 +1614,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.36120403">
-          <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+        <state vertical-scroll-proportion="-0.17725752">
+          <caret line="97" column="20" selection-start-line="97" selection-start-column="20" selection-end-line="97" selection-end-column="20" />
           <folding>
             <element signature="e#29#68#0" expanded="true" />
           </folding>

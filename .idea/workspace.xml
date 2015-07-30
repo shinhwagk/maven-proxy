@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" line="37" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" line="40" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
@@ -103,8 +103,8 @@
       <file leaf-file-name="DownMaster.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6087551">
-              <caret line="52" column="45" selection-start-line="52" selection-start-column="45" selection-end-line="52" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.81942546">
+              <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
               <folding>
                 <element signature="e#29#68#0" expanded="true" />
               </folding>
@@ -845,12 +845,6 @@
       <option name="number" value="Default" />
       <updated>1437527991826</updated>
     </task>
-    <task id="LOCAL-00020" summary="0.1.7 本地文件返回Bug">
-      <created>1437977409206</created>
-      <option name="number" value="00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1437977409206</updated>
-    </task>
     <task id="LOCAL-00021" summary="0.1.7 本地文件返回Bug">
       <created>1437977451529</created>
       <option name="number" value="00021" />
@@ -1139,7 +1133,13 @@
       <option name="project" value="LOCAL" />
       <updated>1438237436026</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="0.2.2 修复各种bug">
+      <created>1438237770424</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1438237770424</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1611,8 +1611,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6087551">
-          <caret line="52" column="45" selection-start-line="52" selection-start-column="45" selection-end-line="52" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.81942546">
+          <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
           <folding>
             <element signature="e#29#68#0" expanded="true" />
           </folding>

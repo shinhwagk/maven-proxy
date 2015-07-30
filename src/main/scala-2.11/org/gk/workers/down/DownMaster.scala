@@ -12,8 +12,11 @@ import org.gk.config.cfg
 /**
  * Created by goku on 2015/7/28.
  */
-class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
+object WorkerDownDB{
   var downMap = Map[String, Work]()
+}
+class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
+  import WorkerDownDB._
   val processNumber = cfg.getDownFilePorcessNumber
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
   context.watch(downWorker)

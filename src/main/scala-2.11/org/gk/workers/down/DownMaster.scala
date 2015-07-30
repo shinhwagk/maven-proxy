@@ -14,8 +14,8 @@ import org.gk.config.cfg
  */
 object WorkerDownDB{
   var downMap = Map[String, Work]()
-  def getdownMap = synchronized {
-    downMap
+  def getdownMap(a:String, b:Work) = synchronized {
+    downMap += (a -> b)
   }
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
@@ -56,8 +56,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     case Terminated(actorRef) =>{
       println(actorRef.path.name+"被关闭")
       val actorRefName = actorRef.path.name
-      println(getdownMap.size+"xxxxxxxxxxxxxxxxx")
-      context.watch(context.actorOf(Props[DownWorker],name= actorRefName)) ! getdownMap(actorRefName)
+      context.watch(context.actorOf(Props[DownWorker],name= actorRefName)) ! downMap(actorRefName)
     }
   }
 
@@ -83,13 +82,13 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     for (thread <- 1 to processNumber) {
       thread match {
         case _ if thread == processNumber =>{
-          getdownMap += ("downWoker_" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
+          getdownMap("downWoker_" + thread ,Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
           context.watch(context.actorOf(Props[DownWorker],name ="downWoker" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
 //            downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
-          getdownMap += ("downWoker_" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
+          getdownMap("downWoker_" + thread , Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
 //          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
           context.watch(context.actorOf(Props[DownWorker],name ="downWoker" + thread)) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
           //

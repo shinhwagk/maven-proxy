@@ -41,6 +41,7 @@ object test14 {
 
 
 class A extends Actor {
+  val rom = new Random
   var a = 0
   import context.dispatcher
 //  val escalator = OneForOneStrategy() {
@@ -61,13 +62,14 @@ class A extends Actor {
 override val supervisorStrategy = OneForOneStrategy(){
   case _: Exception => Stop
 }
-  val b1 = context.watch(context.actorOf(Props[B],name= "b1"))
 //  val b2 = context.watch(context.actorOf(Props[B],name= "b2"))
 
   def receive = LoggingReceive {
     case "a" =>{
-      b1 ! 1
-//      b2 ! 1
+
+      context.watch(context.actorOf(Props[B],name= "b1_"+rom.nextInt(100))) ! 1
+      context.watch(context.actorOf(Props[B],name= "b1_"+rom.nextInt(100))) ! 1
+      context.watch(context.actorOf(Props[B],name= "b1_"+rom.nextInt(100))) ! 1
     }
     case Terminated(actorRef) =>{
       println(actorRef.path.name+"被关闭")
@@ -109,7 +111,8 @@ class B extends Actor {
       println(currentLength + "/" + workFileLength)
 //      println(abc(currentLength))
 
-      Thread.sleep(1000)
+      if(currentLength >42335)
+        throw new Exception("aaa")
     }
 
     raf.write(buffer)

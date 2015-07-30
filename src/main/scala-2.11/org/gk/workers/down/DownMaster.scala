@@ -4,7 +4,7 @@ import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
 
 import akka.actor.Actor.Receive
-import akka.actor.{ActorRef, Props, ActorLogging, Actor}
+import akka.actor._
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
 
@@ -12,6 +12,7 @@ import org.gk.config.cfg
  * Created by goku on 2015/7/28.
  */
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
+  var downMap:Map[String,Work] = _
   val processNumber = cfg.getDownFilePorcessNumber
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
   context.watch(downWorker)
@@ -40,7 +41,11 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
         downManager ! ("FileDownSuccess",this.fileOS)
       }
     }
-    case _ => println("mommmmm")
+    case Terminated(actorRef) =>{
+      println(actorRef.path.name+"被关闭")
+      val actorRefName = actorRef.path.name
+      context.watch(context.actorOf(Props[DownWorker],name= actorRefName)) ! downMap(actorRefName)
+    }
   }
 
   def downFile(fileUrl:String,fileTmpOS:String,processNumber:Int): Unit ={
@@ -65,12 +70,18 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     for (thread <- 1 to processNumber) {
       thread match {
         case _ if thread == processNumber =>{
-          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
+          downMap += ("downWoker" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS))
+          context.actorOf(Props[DownWorker],name ="downWoker" + thread) ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
+//            downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)
           log.debug("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
-          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
+          downMap += ("downWoker" + thread -> Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS))
+//          downWorker ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
+          context.actorOf(Props[DownWorker],name ="downWoker" + thread) ! Work(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)
+          //
           log.debug("线程: {} 下载请求已经发送...",thread)
+
         }
       }
     }

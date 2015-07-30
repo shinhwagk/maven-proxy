@@ -12,26 +12,40 @@ import org.gk.config.cfg
 /**
  * Created by goku on 2015/7/28.
  */
-object WorkerDownDB{
-  var downMap = Map[String, Work]()
+object WorkerActorDownDB{
+  var actorIdMap = Map[String, Work]()
   var actorId = 0;
   def saveDownMap(a:String, b:Work) = synchronized {
-    downMap += (a -> b)
+    actorIdMap += (a -> b)
   }
   def load(key: String): Work = synchronized {
-    downMap(key)
+    actorIdMap(key)
   }
   def getActorId:Int  = synchronized{
     actorId += 1
     actorId
   }
+}
+object WorkDownFileDB{
+  var downFileMap = Map[String, Map[String,Work]]()
 
+  def saveDownMap(fileName:String,actorName:String,work:Work):Unit = synchronized {
+//    downFileMap(fileName) += (actorName ->work)
+
+  }
+  def load(key: String): Map[String,Work] = synchronized {
+    downFileMap(key)
+  }
+
+  def remove(key:String): Unit = synchronized{
+    downFileMap -= key
+  }
 }
 case class DownFileSliced(url:String,startIndex:Int,endIndex:Int,fileOs:String){
 
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
-  import WorkerDownDB._
+  import WorkerActorDownDB._
   val processNumber = cfg.getDownFilePorcessNumber
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
   context.watch(downWorker)
@@ -66,12 +80,12 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
       }
     }
     case Terminated(actorRef) =>{
-      for((k,v) <- downMap){
+      for((k,v) <- actorIdMap){
         println("查看当前map数量  "+ k)
       }
       println(actorRef.path.name+"被关闭")
-      val actorRefName = actorRef.path.name
-      context.watch(context.actorOf(Props[DownWorker],name= actorRefName+"_"+getActorId)) ! downMap(actorRefName)
+      val actorRefName = actorRef.path.name +"_"+getActorId
+      context.watch(context.actorOf(Props[DownWorker],name = actorRefName)) ! actorIdMap(actorRefName)
     }
   }
 

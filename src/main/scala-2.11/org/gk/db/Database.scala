@@ -1,28 +1,10 @@
-import akka.actor.{ActorRef, Actor}
-import akka.actor.Actor.Receive
+package org.gk.db
+
 import org.gk.workers.down.Work
 
 /**
  * Created by goku on 2015/7/30.
  */
-object HotSwapActor{
-  def main(args: Array[String]) {
-    val a = WorkDownFileDB
-    a.saveDownMap("aaaa")
-    a.load("aaaa").saveDownMap("a","b")
-    a.saveDownMap("bbbb")
-    a.load("bbbb").saveDownMap("a1","b1")
-    a.load("bbbb").saveDownMap("a2","b2")
-
-    for((k,v) <- WorkDownFileDB.downFileMap){
-      println(k+"xxxx")
-      for((k,v) <- v.actorIdMap){
-        println(k + " " +v)
-      }
-    }
-
-  }
-}
 
 class WorkerActorDownDB{
   var actorIdMap = Map[String, Work]()

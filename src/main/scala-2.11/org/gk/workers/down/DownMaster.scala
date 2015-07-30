@@ -12,7 +12,7 @@ import org.gk.config.cfg
  * Created by goku on 2015/7/28.
  */
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
-  val downMap:scala.collection.mutable.Map[String,Work] = _
+  var downMap = Map[String, Work]()
   val processNumber = cfg.getDownFilePorcessNumber
   val downWorker = context.actorOf(RoundRobinPool(processNumber).props(Props[DownWorker]),name ="downWorker")
   context.watch(downWorker)

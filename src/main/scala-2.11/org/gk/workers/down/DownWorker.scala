@@ -43,8 +43,7 @@ class DownWorker extends Actor with ActorLogging{
       println(currentLength + "/" + workFileLength)
       log.info("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
       log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
-      if(currentLength >50741)
-        throw new Exception("aaa")
+
     }
 
     raf.write(buffer)

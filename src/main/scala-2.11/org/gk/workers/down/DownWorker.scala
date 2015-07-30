@@ -13,12 +13,13 @@ class DownWorker extends Actor with ActorLogging{
   override def receive: Actor.Receive = {
     case Work(url,thread,startIdex,endIndex,fileOs) => {
       log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOs)
-      sender() ! down(url,thread,startIdex,endIndex,fileOs)
+//      sender() !
+        down(url,thread,startIdex,endIndex,fileOs)
       log.debug("线程: {} 下载完毕{}...",thread,fileOs)
     }
   }
 
-  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String):String = {
+  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String):Unit = {
     log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
@@ -49,6 +50,6 @@ class DownWorker extends Actor with ActorLogging{
     is.close()
     raf.close()
     log.info("线程:{},下载完毕",thread)
-    "WorkerDownLoadSuccess"
+    log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
   }
 }

@@ -4,7 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" line="40" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="">
+    <list default="true" id="41361c91-a641-4c2b-ac89-4482810959b5" name="Default" comment="0.2.2 修复各种bug">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -126,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.45072272">
-              <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+              <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -845,12 +845,6 @@
       <option name="number" value="Default" />
       <updated>1437527991826</updated>
     </task>
-    <task id="LOCAL-00022" summary="0.1.7 本地文件返回Bug">
-      <created>1437977762796</created>
-      <option name="number" value="00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1437977762796</updated>
-    </task>
     <task id="LOCAL-00023" summary="0.1.7 本地文件返回Bug">
       <created>1437977845624</created>
       <option name="number" value="00023" />
@@ -1139,7 +1133,13 @@
       <option name="project" value="LOCAL" />
       <updated>1438237931564</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="0.2.2 修复各种bug">
+      <created>1438238089519</created>
+      <option name="number" value="00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1438238089519</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1570,11 +1570,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala">
+    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test14.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-          <folding />
+        <state vertical-scroll-proportion="-43.166668">
+          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+          <folding>
+            <element signature="e#1#32#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1591,16 +1593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test14.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-43.166668">
-          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
-          <folding>
-            <element signature="e#1#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.833333">
@@ -1611,10 +1603,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.45072272">
-          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+          <caret line="26" column="25" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
           <folding />
         </state>
       </provider>

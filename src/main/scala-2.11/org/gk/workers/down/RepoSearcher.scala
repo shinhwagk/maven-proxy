@@ -3,25 +3,31 @@ package org.gk.workers.down
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging}
 import org.gk.config.cfg
+import org.gk.workers.down.DownManager.RequertDownFile
+import org.gk.workers.down.DownMaster.DownFile
+import org.gk.workers.down.RepoSearcher.SearchPepo
 
 import scala.collection.mutable.ArrayBuffer
 
 /**
  * Created by goku on 2015/7/28.
  */
+object RepoSearcher{
+
+  case class SearchPepo(file:String)
+}
 class RepoSearcher extends Actor with ActorLogging{
   override def receive: Receive = {
-    case file:String =>{
+    case SearchPepo(file) =>
+      log.info("仓库搜索{}",file)
       val fileUrl = getFileUrl(file)
-      sender() ! ("RepoSreachSuccess",fileUrl,file)
-    }
+      sender() ! RequertDownFile(fileUrl,file)
+
   }
   def getFileUrl(file:String): String ={
     val remoteRepMap = cfg.getRemoteRepoMap
     val getRemoteRepo_Central = cfg.getRemoteRepoCentral
     val testCentralFileUrl = getRemoteRepo_Central + file
-    println(testCentralFileUrl)
-    println(getTestFileUrlCode(testCentralFileUrl))
     val fileUrl = if(getTestFileUrlCode(testCentralFileUrl) == 200 ){
       testCentralFileUrl
     }else{

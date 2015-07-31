@@ -23,22 +23,28 @@ object cfg {
     RepositoryMap
   }
 
-  def getDownFilePorcessNumber:Int = {
-    config.getString("DownFilePorcessNumber").toInt
-  }
   def getRemoteRepoCentral: String = {
     config.getString("RemoteRepsCentral")
   }
 
-  def getLocalRepoDir: String ={
-      config.getString("LocalRepoDir")
+  def getPerProcessForBytes: Int = {
+    config.getInt("PerProcessForBytes")
   }
 
-  def getLocalRepoTmpDir: String ={
-    config.getString("LocalRepoTmpDir")
+
+  def getLocalMainDir: String = {
+    config.getString("LocalMainDir")
   }
 
-  def getMavenProxyPost:Int={
+  def getLocalRepoDir: String = {
+    getLocalMainDir + "\\cache"
+  }
+
+  def getLocalRepoTmpDir: String = {
+    getLocalMainDir + "\\tmp\\cache"
+  }
+
+  def getMavenProxyPost:Int = {
     config.getInt("MavenPorxyPort")
   }
 

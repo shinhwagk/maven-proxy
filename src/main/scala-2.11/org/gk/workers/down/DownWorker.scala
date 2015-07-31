@@ -12,18 +12,18 @@ import akka.actor.{ActorLogging, Actor}
 class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:String) extends Actor with ActorLogging{
   override def receive: Actor.Receive = {
     case Work => {
-      log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOsTmp)
+      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileOsTmp)
 //      sender() !
-        down()
-      log.debug("线程: {} 下载完毕{}...",thread,fileOsTmp)
+        down
+      log.info("线程: {} 下载[];完毕{}...",thread,url,fileOsTmp)
     }
   }
   override def preStart: Unit ={
-    down()
+    down
   }
 
-  def down():Unit = {
-    log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
+  def down = {
+    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(5000)
@@ -43,10 +43,8 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
       len = is.read(buffer, start, workFileLength - currentLength)
       start += len
       currentLength += len
-      println(currentLength + "/" + workFileLength)
-      log.info("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
+      log.debug(currentLength + "/" + workFileLength)
       log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
-
     }
 
     raf.write(buffer)
@@ -54,5 +52,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
     raf.close()
     log.info("线程:{},下载完毕",thread)
     log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
+    sender() ! ProcessDownSuccess(url)
+    context.stop(self)
   }
 }

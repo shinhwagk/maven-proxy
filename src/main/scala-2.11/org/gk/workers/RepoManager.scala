@@ -8,38 +8,52 @@ import org.gk.config.cfg
 import java.net.Socket
 
 import org.gk.log.GkConsoleLogger
+import org.gk.workers.RepoManager.{RuntrunFile, RequertReturnFile}
 import org.gk.workers.down.DownManager
+import org.gk.workers.down.DownManager.RequertDownRepo
 
 import scala.collection.mutable.ArrayBuffer
 
 /**
  * Created by gk on 15/7/26.
  */
+object RepoManager {
+  case class RequertReturnFile(file:String,socket:Socket)
+  case class RuntrunFile(fileOS:String,socket:Socket)
+}
+
 class RepoManager extends Actor with akka.actor.ActorLogging{
-  val senderr = context.actorOf(Props[Sender],name ="Sender")
-  val terminator = context.actorOf(Props[Terminator],name = "terminator")
-  val downLoader = context.actorOf(Props(new DownManager(self)), name = "downLoader")
-  var socket:Socket = _
+
+  val retrunFile = context.actorOf(Props[RetrunFile],name ="retrunFile")
+  val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
+
   override def receive: Receive = {
-    case (file:String,socket:Socket) =>{
-      this.socket = socket
-      val fileOs = cfg.getLocalRepoDir + file
-      val osFileHandle = new File(fileOs)
-      osFileHandle.exists() match {
+    case RequertReturnFile(file,socket) =>
+
+      val fileOS = cfg.getLocalRepoDir + file
+
+      /*
+      判断文件是否已经缓存在本地仓库
+       */
+      decodeFileExists(fileOS) match {
         case true => {
-          log.debug("文件:{} 存在本地...",fileOs)
-          senderr ! ("SenderRequert",fileOs,this.socket)
+          log.info("文件:{} 存在本地,准备返回给请求者...",file)
+          retrunFile ! RuntrunFile(fileOS,socket)
         }
         case false => {
-          log.debug("文件:{} 不在本地...",fileOs)
-//          downLoader ! (getFileUrl(file),fileOs,socket)
-          downLoader ! ("DownFileRequest",file)
-//          getFile(file,socket)
+          log.info("文件:{} 不在本地...",file)
+          downManager ! RequertDownRepo(file)
         }
       }
-    }
+
     case ("DownSuccess",fileOS:String) =>{
-      senderr ! ("SenderRequert",fileOS,socket)
+      retrunFile ! ("SenderRequert",fileOS)
     }
+  }
+
+  //查看文件是否存在本地仓库
+  def decodeFileExists(fileOs:String): Boolean = {
+    val osFileHandle = new File(fileOs)
+    osFileHandle.exists()
   }
 }

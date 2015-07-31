@@ -4,7 +4,7 @@
 		module="maven-proxy$sources_javadoc_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20150726122439"
+		publication="20150731143204"
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>

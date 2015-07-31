@@ -57,7 +57,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     case ("DownloadFile",fileUrl:String,file:String) =>{
       this.fileOS = cfg.getLocalRepoDir + file
       this.fileTmpOS = cfg.getLocalRepoTmpDir + file
-      allocationWork (fileUrl,fileTmpOS,processNumber)
+      allocationWork (fileUrl,fileTmpOS,1)
     }
     case ("WorkerDownLoadSuccess") =>{
         downManager ! ("FileDownSuccess",this.fileOS)

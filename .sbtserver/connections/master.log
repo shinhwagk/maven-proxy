@@ -1,0 +1,10 @@
+New log file opened at Fri Jul 31 14:29:21 CST 2015 by 6228@gk
+Taking next connection to: 4486
+New client attempting to connect on port: 4487-4486
+  Address = /192.168.210.1:4486
+This client on port 4487 has uuid 19e4df3c-a890-41a4-bdc0-22c6145de4a6 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-19e4df3c-a890-41a4-bdc0-22c6145de4a6
+Taking next connection to: 4486
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 4486

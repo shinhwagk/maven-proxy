@@ -2,7 +2,7 @@ package org.gk.workers
 
 import java.io.BufferedOutputStream
 
-import akka.actor.Actor
+import akka.actor.{ActorRef, Actor}
 import akka.actor.Actor.Receive
 import java.net.Socket;
 
@@ -11,9 +11,9 @@ import java.net.Socket;
  */
 class Terminator extends Actor with akka.actor.ActorLogging{
   override def receive: Receive = {
-    case socket:Socket => {
+    case socket:Socket =>
       socket.close()
       log.debug("连接关闭...")
-    }
+
   }
 }

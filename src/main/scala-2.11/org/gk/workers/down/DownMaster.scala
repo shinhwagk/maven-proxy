@@ -91,8 +91,11 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     case WorkDownSuccess(url) =>
       downFileSuccess.addOnceFileWorkSuccess(url)
       downFileSuccess.getProgress(url)
-//      context.stop(sender())
-
+      val name =sender().path.name
+      println(name)
+      context.unwatch(sender())
+      context.stop(sender())
+      println(name +"关闭  。。。。")
 //    case ("WorkerDownLoadSuccess") =>{
 //        downManager ! ("FileDownSuccess",this.fileOS)
 //    }

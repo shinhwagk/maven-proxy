@@ -46,7 +46,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
       len = is.read(buffer, start, workFileLength - currentLength)
       start += len
       currentLength += len
-      log.debug("[]下载完成进度",url,currentLength + "/" + workFileLength)
+      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
       log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
 

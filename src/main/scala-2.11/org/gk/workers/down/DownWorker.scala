@@ -9,17 +9,20 @@ import akka.actor.{ActorLogging, Actor}
  * Created by goku on 2015/7/28.
  */
 
-class DownWorker extends Actor with ActorLogging{
+class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:String) extends Actor with ActorLogging{
   override def receive: Actor.Receive = {
-    case Work(url,thread,startIdex,endIndex,fileOs) => {
-      log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOs)
+    case Work => {
+      log.debug("线程: {} 下载请求收到,开始下载{}...",thread,fileOsTmp)
 //      sender() !
-        down(url,thread,startIdex,endIndex,fileOs)
-      log.debug("线程: {} 下载完毕{}...",thread,fileOs)
+        down()
+      log.debug("线程: {} 下载完毕{}...",thread,fileOsTmp)
     }
   }
+  override def preStart: Unit ={
+    down()
+  }
 
-  def down(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String):Unit = {
+  def down():Unit = {
     log.debug("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
@@ -27,7 +30,7 @@ class DownWorker extends Actor with ActorLogging{
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
-    val raf = new RandomAccessFile(fileOs, "rwd");
+    val raf = new RandomAccessFile(fileOsTmp, "rwd");
     raf.seek(startIndex);
 
     var currentLength = 0

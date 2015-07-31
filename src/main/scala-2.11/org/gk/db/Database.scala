@@ -7,10 +7,10 @@ import org.gk.workers.down.Work
  */
 
 class WorkerActorDownDB{
-  var actorIdMap = Map[String, Work]()
+  var actorIdMap = Map[String, String]()
   var actorId = 0;
-  def addActor(actorName:String, work:Work) = synchronized {
-    actorIdMap += (actorName -> Work)
+  def addActor(actorName:String, work:String) = synchronized {
+    actorIdMap += (actorName -> work)
   }
   def load(key: String): String = synchronized {
     actorIdMap(key)

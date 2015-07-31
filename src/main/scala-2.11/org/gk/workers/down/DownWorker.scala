@@ -4,6 +4,7 @@ import java.io.RandomAccessFile
 import java.net.{URL, HttpURLConnection}
 
 import akka.actor.{ActorLogging, Actor}
+import org.gk.workers.down.DownMaster.WorkDownSuccess
 
 /**
  * Created by goku on 2015/7/28.
@@ -18,6 +19,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
       log.info("线程: {} 下载[];完毕{}...",thread,url,fileOsTmp)
     }
   }
+
   override def preStart: Unit ={
     down
   }
@@ -27,6 +29,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(5000)
+    downConn.setReadTimeout(2000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
@@ -43,7 +46,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
       len = is.read(buffer, start, workFileLength - currentLength)
       start += len
       currentLength += len
-      log.debug(currentLength + "/" + workFileLength)
+      log.debug("[]下载完成进度",url,currentLength + "/" + workFileLength)
       log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
 
@@ -52,7 +55,6 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
     raf.close()
     log.info("线程:{},下载完毕",thread)
     log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
-    sender() ! ProcessDownSuccess(url)
-    context.stop(self)
+    sender() ! WorkDownSuccess(url)
   }
 }

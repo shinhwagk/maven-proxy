@@ -2,13 +2,13 @@ package org.gk.workers.down
 
 import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
-
+import scala.concurrent.duration._
 import akka.actor.Actor.Receive
 import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor._
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
-import org.gk.workers.down.DownMaster.{ProcessDownSuccess, DownFile}
+import org.gk.workers.down.DownMaster.{WorkDownSuccess, DownFile}
 
 /**
  * Created by goku on 2015/7/28.
@@ -42,14 +42,43 @@ import org.gk.workers.down.DownMaster.{ProcessDownSuccess, DownFile}
 //    downFileMap -= key
 //  }
 //}
+class DownCount(val worksNum:Int,var successNum:Int)
+object downFileSuccess {
+  var a = Map[String,DownCount]()
+
+  def addFileUrl(fileUrl:String,downCount:DownCount) = synchronized{
+      a = Map(fileUrl -> downCount)
+  }
+
+  def addOnceFileWorkSuccess(fileUrl:String) = synchronized{
+    val b = a(fileUrl)
+    b.successNum +=1
+    println(fileUrl +  b.successNum)
+  }
+
+  def getWorksNum(fileUrl:String) = synchronized{
+    val b = a(fileUrl)
+    b.worksNum
+  }
+  def getSuccessNum(fileUrl:String) = synchronized {
+    val b = a(fileUrl)
+    b.successNum
+  }
+
+  def getProgress(fileUrl:String) = synchronized{
+    println("进度"+getSuccessNum(fileUrl)+"/"+getWorksNum(fileUrl))
+  }
+}
+
 
 object DownMaster {
   case class DownFile(fileUrl:String,file:String)
-  case class ProcessDownSuccess(url:String)
+  case class WorkDownSuccess(url:String)
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
 
-  override val supervisorStrategy = OneForOneStrategy(){
+  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 10,
+    withinTimeRange = 300 seconds){
     case _: Exception => Restart
   }
 
@@ -59,8 +88,10 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
       val fileTmpOS = cfg.getLocalRepoTmpDir + file
       allocationWork (fileUrl,fileTmpOS)
 
-    case ProcessDownSuccess(url) =>
-
+    case WorkDownSuccess(url) =>
+      downFileSuccess.addOnceFileWorkSuccess(url)
+      downFileSuccess.getProgress(url)
+//      context.stop(sender())
 
 //    case ("WorkerDownLoadSuccess") =>{
 //        downManager ! ("FileDownSuccess",this.fileOS)
@@ -90,6 +121,12 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     val endLength = fileLength % workNumber
     //步长
     val step = (fileLength-endLength)/workNumber
+
+
+    val downaa = new DownCount(workNumber,0)
+    downFileSuccess.addFileUrl(fileUrl,downaa)
+
+
 
     for (thread <- 1 to workNumber) {
       thread match {

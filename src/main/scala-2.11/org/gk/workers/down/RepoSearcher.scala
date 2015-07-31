@@ -22,6 +22,7 @@ class RepoSearcher extends Actor with ActorLogging{
       log.info("仓库搜索{}",file)
       val fileUrl = getFileUrl(file)
       sender() ! RequertDownFile(fileUrl,file)
+      log.info("找到仓库已经返回",file)
 
   }
   def getFileUrl(file:String): String ={

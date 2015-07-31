@@ -3,7 +3,6 @@ package org.gk.workers
 import java.net.{ServerSocket, Socket}
 
 import akka.actor.{ActorRef, Props, Actor}
-import org.gk.log.GkConsoleLogger
 
 /**
  * Created by goku on 2015/7/24.
@@ -15,8 +14,8 @@ class Doorman(socket:Socket) extends Actor{
   val terminator = context.actorOf(Props[Terminator])
   override def receive: Receive = {
     case socket =>{
-      GkConsoleLogger.info("requert发送者接受到请求，准备处理...")
-      GkConsoleLogger.info("requert发送者发出请求...")
+      println("requert发送者接受到请求，准备处理...")
+      println("requert发送者发出请求...")
 
     }
   }

@@ -5,16 +5,19 @@ import java.net.{URL, HttpURLConnection}
 
 import akka.actor.{ActorLogging, Actor}
 import org.gk.workers.down.DownMaster.WorkDownSuccess
+import org.gk.workers.down.DownWorker.Down
 
 /**
  * Created by goku on 2015/7/28.
  */
 
+object DownWorker{
+  case object Down{}
+}
 class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:String) extends Actor with ActorLogging{
   override def receive: Actor.Receive = {
-    case Work => {
+    case Down => {
       log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileOsTmp)
-//      sender() !
         down
       log.info("线程: {} 下载[];完毕{}...",thread,url,fileOsTmp)
     }
@@ -23,6 +26,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
   override def preStart: Unit ={
     down
   }
+
 
   def down = {
     log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)

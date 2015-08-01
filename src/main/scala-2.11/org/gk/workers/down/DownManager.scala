@@ -21,6 +21,7 @@ class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLoggi
 
   val repoSearcher = context.actorOf(Props[RepoSearcher],name ="repoSearcher")
   val downMaster = context.actorOf(Props(new DownMaster(self)),name ="downMaster")
+
   var downSuccessNumber:Int = _
   var repoManagerActor:ActorRef = _
   override def receive: Actor.Receive = {
@@ -36,7 +37,7 @@ class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLoggi
   }
 }
 
-case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String)
+//case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String)
 
 
 

@@ -2,6 +2,8 @@ package org.gk.workers.down
 
 import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
+import org.gk.workers.down.DownWorker.Down
+
 import scala.concurrent.duration._
 import akka.actor.Actor.Receive
 import akka.actor.SupervisorStrategy.{Restart, Stop}
@@ -43,6 +45,7 @@ import org.gk.workers.down.DownMaster.{WorkDownSuccess, DownFile}
 //  }
 //}
 class DownCount(val worksNum:Int,var successNum:Int)
+
 object downFileSuccess {
   var a = Map[String,DownCount]()
 
@@ -52,7 +55,7 @@ object downFileSuccess {
 
   def addOnceFileWorkSuccess(fileUrl:String) = synchronized{
     val b = a(fileUrl)
-    b.successNum +=1
+    b.successNum += 1
     println(fileUrl +  b.successNum)
   }
 
@@ -69,7 +72,6 @@ object downFileSuccess {
     println("进度"+getSuccessNum(fileUrl)+"/"+getWorksNum(fileUrl))
   }
 }
-
 
 object DownMaster {
   case class DownFile(fileUrl:String,file:String)
@@ -125,20 +127,17 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     //步长
     val step = (fileLength-endLength)/workNumber
 
-
     val downaa = new DownCount(workNumber,0)
     downFileSuccess.addFileUrl(fileUrl,downaa)
-
-
 
     for (thread <- 1 to workNumber) {
       thread match {
         case _ if thread == workNumber =>{
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)))) ! Work
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)))) ! Down
           log.info("线程: {} 下载请求已经发送...",thread)
         }
         case _ =>{
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)))) ! Work
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)))) ! Down
           log.info("线程: {} 下载请求已经发送...",thread)
 
         }

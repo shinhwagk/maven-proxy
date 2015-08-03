@@ -12,6 +12,6 @@ libraryDependencies += "com.typesafe.akka" % "akka-actor_2.11" % "2.3.12"
 
 libraryDependencies += "com.typesafe" % "config" % "1.3.0"
 
-
+libraryDependencies += "com.typesafe.slick" %% "slick" % "3.0.0"
 
 fork in run := true

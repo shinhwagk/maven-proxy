@@ -2469,7 +2469,7 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 6535ms :: artifacts dl 162ms
+[debug] :: resolution report :: resolve 1988ms :: artifacts dl 86ms
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile.xml
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime.xml
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test.xml
@@ -2483,5 +2483,5 @@
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT docs produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-docs.xml
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT pom produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-pom.xml
 [debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT scala-tool produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-scala-tool.xml
-[debug] 	resolve done (6535ms resolve - 162ms download)
+[debug] 	resolve done (1988ms resolve - 86ms download)
 [info] Done updating.

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea_modules/maven-proxy.iml" filepath="$PROJECT_DIR$/.idea_modules/maven-proxy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea_modules/maven-proxy-build.iml" filepath="$PROJECT_DIR$/.idea_modules/maven-proxy-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/maven-proxy.iml" filepath="$PROJECT_DIR$/.idea/modules/maven-proxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/maven-proxy-build.iml" filepath="$PROJECT_DIR$/.idea/modules/maven-proxy-build.iml" />
     </modules>
   </component>
 </project>

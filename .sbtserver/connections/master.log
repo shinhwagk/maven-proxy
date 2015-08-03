@@ -5,3 +5,6 @@ New client attempting to connect on port: 9376-9375
 This client on port 9376 has uuid f705e689-6b1c-47fb-8a6c-6d96983d03bd configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
 Connected Clients: activator-f705e689-6b1c-47fb-8a6c-6d96983d03bd
 Taking next connection to: 9375
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 9375

@@ -24,7 +24,7 @@ object RepoManager {
 class RepoManager extends Actor with akka.actor.ActorLogging{
 
   val retrunFile = context.actorOf(Props[RetrunFile],name ="retrunFile")
-  val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
+  val downManager = context.actorOf(Props[DownManager], name = "DownManager")
 
   override def receive: Receive = {
     case RequertReturnFile(file,socket) =>

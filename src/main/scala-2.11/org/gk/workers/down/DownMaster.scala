@@ -2,6 +2,8 @@ package org.gk.workers.down
 
 import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
+import org.gk.db.MetaData._
+import org.gk.db.Tables._
 import org.gk.workers.down.DownWorker.Down
 
 import scala.concurrent.Await
@@ -12,7 +14,13 @@ import akka.actor._
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
 import org.gk.workers.down.DownMaster.{WorkDownSuccess, DownFile}
+import slick.driver.H2Driver.api._
+import slick.dbio.DBIO
+import slick.jdbc.meta.MTable
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
+import scala.concurrent.Await
 /**
  * Created by goku on 2015/7/28.
  */
@@ -20,9 +28,11 @@ class DownCount(val worksNum:Int,var successNum:Int)
 
 object DownMaster {
   case class DownFile(fileUrl:String,file:String)
-  case class WorkDownSuccess(url:String,file:String)
+  case class WorkDownSuccess(url:String,file:String,startIndex:Int)
 }
-class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
+class DownMaster extends Actor with ActorLogging{
+
+  var downManager:ActorRef = _
 
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 10,
     withinTimeRange = 300 seconds){
@@ -32,26 +42,28 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
   override def receive: Receive = {
 
     case DownFile(fileUrl,file) =>
+      downManager = sender()
       allocationWork (fileUrl,file)
 
-    case WorkDownSuccess(url,file) =>
+    case WorkDownSuccess(url,file,startIndex) =>
+      Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
       val name = sender().path.name
       import org.gk.db.DML._
       val wokerSuccessNumber = countDownSuccessNumber(url)
       val fileDownNumber = selectDownNumber(url)
-      println("完成数量++++++++" +wokerSuccessNumber )
-      println("应该完成数量++++++++" + wokerSuccessNumber )
-      println("查看worknumber " +selectDownNumber(url))
+      println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
       context.unwatch(sender())
       context.stop(sender())
       println(name +"关闭  。。。。")
       if(wokerSuccessNumber == fileDownNumber){
-        import org.gk.db.MetaData._
-        import org.gk.db.Tables._
         deleteDownWorker(url)
         deleteDownfile(url)
         val fileOS = cfg.getLocalRepoDir + file
         val fileTempOS = fileOS + ".DownTmp"
+
+        println("下载完成啦")
+        println(fileOS)
+        println(fileTempOS)
         val fileOSHeadle = new File(fileOS);
         val fileTempOSHeadle = new File(fileTempOS);
         fileTempOSHeadle.renameTo(fileOSHeadle)

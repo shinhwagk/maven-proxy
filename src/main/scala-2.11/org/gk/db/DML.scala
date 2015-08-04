@@ -35,10 +35,11 @@ object DML {
   }
 
   def updateDownWorker(fileUrl:String,startIndex:Int): Unit = {
-    val update = DBIO.seq(
-      downFileWorkList.filter(_.fileUrl === fileUrl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)
-    )
-      Await.result(db.run(update), Duration.Inf)
+
+      Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileUrl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
+
+
+
   }
 
   def deleteDownWorker(fileUrl:String): Unit ={
@@ -62,4 +63,5 @@ object DML {
   def selectDownNumber(fileUrl:String) : Int = {
     Await.result(db.run(downFileList.filter(_.fileUrl === fileUrl).map(p => (p.WorksNumber)).result),Duration.Inf).head
   }
+
 }

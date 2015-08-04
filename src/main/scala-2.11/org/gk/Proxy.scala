@@ -5,7 +5,7 @@ import java.net.{ServerSocket, Socket}
 import akka.actor.{Actor, ActorSystem, Props}
 import org.gk.config.cfg
 import org.gk.workers._
-
+import org.gk.workers.down.DownMaster
 
 
 /**
@@ -15,9 +15,15 @@ object Proxy extends {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
   val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
+  val downMaster = system.actorOf(Props[DownMaster], name = "downMaster")
 
+  //创建数据库表,如果没有的话
   import org.gk.db.InitDatabase._
   initTable
+
+  //下载未完成的work
+
+
 
   println("系统已经启动...")
 

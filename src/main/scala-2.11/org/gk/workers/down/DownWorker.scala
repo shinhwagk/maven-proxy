@@ -5,9 +5,14 @@ import java.net.{URL, HttpURLConnection}
 
 import akka.actor.{ActorLogging, Actor}
 import org.gk.config.cfg
+import org.gk.db.MetaData._
+import org.gk.db.Tables._
 
 import org.gk.workers.down.DownMaster.WorkDownSuccess
 import org.gk.workers.down.DownWorker.Down
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
  * Created by goku on 2015/7/28.
@@ -29,7 +34,6 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
   override def preStart: Unit ={
     down
   }
-
 
   def down = {
     log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
@@ -53,8 +57,8 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
       len = is.read(buffer, start, workFileLength - currentLength)
       start += len
       currentLength += len
-      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
-      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
+//      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
+//      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
 
     raf.write(buffer)
@@ -62,9 +66,8 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
     raf.close()
     log.info("线程:{},下载完毕",thread)
     log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
+//    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
 
-    import org.gk.db.DML._
-    updateDownWorker(url,startIndex)
-    sender() ! WorkDownSuccess(url,file)
+    sender() ! WorkDownSuccess(url,file,startIndex)
   }
 }

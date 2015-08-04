@@ -13,7 +13,27 @@ import org.gk.workers.down.DownWorker.Down
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import java.io.{RandomAccessFile, File}
+import java.net.HttpURLConnection
+import org.gk.db.MetaData._
+import org.gk.db.Tables._
+import org.gk.workers.down.DownWorker.Down
 
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import akka.actor.Actor.Receive
+import akka.actor.SupervisorStrategy.{Restart, Stop}
+import akka.actor._
+import akka.routing.RoundRobinPool
+import org.gk.config.cfg
+import org.gk.workers.down.DownMaster._
+import slick.driver.H2Driver.api._
+import slick.dbio.DBIO
+import slick.jdbc.meta.MTable
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+
+import scala.concurrent.Await
 /**
  * Created by goku on 2015/7/28.
  */
@@ -31,9 +51,10 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
     case Down => {
-      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
+      log.info("线程{},收到下载请求",self.path.name)
+//      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
       down
-      log.info("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
+//      log.info("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
     }
   }
 
@@ -42,11 +63,11 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
   }
 
   def down = {
-    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
+//    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(2000)
-    downConn.setReadTimeout(2000)
+    downConn.setConnectTimeout(5000)
+    downConn.setReadTimeout(5000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
@@ -66,13 +87,17 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
 //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
 
+
     import DownWorker._
     storeWorkFile(fileTmpOS,startIndex,buffer)
     is.close()
 
-    log.info("线程:{},下载完毕",thread)
-    log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
+//    log.info("线程:{},下载完毕",thread)
+//    log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
 //    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
+//    sender() ! "aaaaa"
+    //本work下载完毕,更新数据库
+    db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1))
 
     sender() ! WorkDownSuccess(url,file,startIndex)
   }

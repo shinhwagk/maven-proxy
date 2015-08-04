@@ -13,7 +13,7 @@ import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor._
 import akka.routing.RoundRobinPool
 import org.gk.config.cfg
-import org.gk.workers.down.DownMaster.{WorkDownSuccess, DownFile}
+import org.gk.workers.down.DownMaster._
 import slick.driver.H2Driver.api._
 import slick.dbio.DBIO
 import slick.jdbc.meta.MTable
@@ -27,67 +27,63 @@ import scala.concurrent.Await
 class DownCount(val worksNum:Int,var successNum:Int)
 
 object DownMaster {
+  var sequence_id = 0
   case class DownFile(fileUrl:String,file:String)
   case class WorkDownSuccess(url:String,file:String,startIndex:Int)
+  def getSequence :Int = synchronized{
+    sequence_id += 1
+    sequence_id
+  }
 }
 class DownMaster extends Actor with ActorLogging{
-
+import DownMaster._
   var downManager:ActorRef = _
 
   //在启动时下载为下载完的部分
   Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
     case (file, fileUrl, startIndex, enIndex, success) =>
-      context.watch(context.actorOf(Props(new DownWorker(fileUrl,1,startIndex,enIndex,file)))) ! Down
+      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl,1,startIndex,enIndex,file)),name ="work"+getSequence))
+      worker ! Down
   }),Duration.Inf)
 
 
 
-  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 3, withinTimeRange = 150 seconds){
+  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 10, withinTimeRange = 150 seconds){
     case _: Exception => Restart
   }
 
   override def receive: Receive = {
-
+    case "aaaaa" =>{
+      println("xxxxxxxxxxxxx")
+    }
     case DownFile(fileUrl,file) =>
       context.setReceiveTimeout(15 seconds)
       downManager = sender()
       allocationWork (fileUrl,file)
 
-    case WorkDownSuccess(url,file,startIndex) =>
-      Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
-      val name = sender().path.name
-      import org.gk.db.DML._
-      val wokerSuccessNumber = countDownSuccessNumber(url)
-      val fileDownNumber = selectDownNumber(url)
-      println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
-//      context.unwatch(sender())
-//      context.stop(sender())
-//      println(name +"关闭  。。。。")
-      if(wokerSuccessNumber == fileDownNumber){
-        deleteDownWorker(url)
-        deleteDownfile(url)
-        val fileOS = cfg.getLocalRepoDir + file
-        val fileTempOS = fileOS + ".DownTmp"
-
-        println("下载完成啦")
-        println(fileOS)
-        println(fileTempOS)
-        val fileOSHeadle = new File(fileOS);
-        val fileTempOSHeadle = new File(fileTempOS);
-        fileTempOSHeadle.renameTo(fileOSHeadle)
-      }
-
-//    case ("WorkerDownLoadSuccess") =>{
-//        downManager ! ("FileDownSuccess",this.fileOS)
-//    }
+    case WorkDownSuccess(url,file,startIndex) => {
+      println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+//      Thread.sleep(10000)
+//      import org.gk.db.DML._
+//      val wokerSuccessNumber = countDownSuccessNumber(url)
+//      val fileDownNumber = selectDownNumber(url)
+//      println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
+//      if(wokerSuccessNumber == fileDownNumber){
+//        deleteDownWorker(url)
+//        deleteDownfile(url)
+//        val fileOS = cfg.getLocalRepoDir + file
+//        val fileTempOS = fileOS + ".DownTmp"
+//
+//        println("下载完成啦")
+//        println(fileOS)
+//        println(fileTempOS)
+//        val fileOSHeadle = new File(fileOS);
+//        val fileTempOSHeadle = new File(fileTempOS);
+//        fileTempOSHeadle.renameTo(fileOSHeadle)
+//      }
+    }
     case Terminated(actorRef) =>{
       println(actorRef.path.name+"被中置")
-//      for((k,v) <- actorIdMap){
-//        println("查看当前map数量  "+ k)
-//      }
-//      println(actorRef.path.name+"被关闭")
-//      val actorRefName = actorRef.path.name +"_"+getActorId
-//      context.watch(context.actorOf(Props[DownWorker],name = actorRefName)) ! actorIdMap(actorRefName)
     }
   }
 
@@ -121,15 +117,15 @@ class DownMaster extends Actor with ActorLogging{
           val startIndex = (thread - 1)*step
           val endIndex = thread*step+endLength
           insertDownWorker(file,fileUrl,startIndex,endIndex,0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)))) ! Down
-          log.info("线程: {} 下载请求已经发送...",thread)
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Down
+//          log.info("线程: {} 下载请求已经发送...",thread)
 
         case _ =>
           val startIndex = (thread - 1)*step
           val endIndex = thread*step+endLength-1
           insertDownWorker(file,fileUrl,startIndex,endIndex,0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)))) ! Down
-          log.info("线程: {} 下载请求已经发送...",thread)
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Down
+//          log.info("线程: {} 下载请求已经发送...",thread)
 
 
       }
@@ -139,8 +135,8 @@ class DownMaster extends Actor with ActorLogging{
     import java.net.{HttpURLConnection, URL};
     val downUrl = new URL(Url)
     val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(2000)
-    conn.setReadTimeout(2000)
+    conn.setConnectTimeout(5000)
+    conn.setReadTimeout(5000)
     conn
   }
 

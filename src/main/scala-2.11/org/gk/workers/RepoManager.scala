@@ -7,7 +7,6 @@ import akka.actor.Actor.Receive
 import org.gk.config.cfg
 import java.net.Socket
 
-import org.gk.log.GkConsoleLogger
 import org.gk.workers.RepoManager.{RuntrunFile, RequertReturnFile}
 import org.gk.workers.down.DownManager
 import org.gk.workers.down.DownManager.RequertDownRepo

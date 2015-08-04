@@ -4,6 +4,8 @@ import java.io.RandomAccessFile
 import java.net.{URL, HttpURLConnection}
 
 import akka.actor.{ActorLogging, Actor}
+import org.gk.config.cfg
+
 import org.gk.workers.down.DownMaster.WorkDownSuccess
 import org.gk.workers.down.DownWorker.Down
 
@@ -14,12 +16,13 @@ import org.gk.workers.down.DownWorker.Down
 object DownWorker{
   case object Down{}
 }
-class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:String) extends Actor with ActorLogging{
+class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String) extends Actor with ActorLogging{
+  val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
     case Down => {
-      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileOsTmp)
-        down
-      log.info("线程: {} 下载[];完毕{}...",thread,url,fileOsTmp)
+      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
+      down
+      log.info("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
     }
   }
 
@@ -37,7 +40,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
-    val raf = new RandomAccessFile(fileOsTmp, "rwd");
+    val raf = new RandomAccessFile(fileTmpOS, "rwd");
     raf.seek(startIndex);
 
     var currentLength = 0
@@ -59,6 +62,9 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOsTmp:St
     raf.close()
     log.info("线程:{},下载完毕",thread)
     log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
-    sender() ! WorkDownSuccess(url)
+
+    import org.gk.db.DML._
+    updateDownWorker(url,startIndex)
+    sender() ! WorkDownSuccess(url,file)
   }
 }

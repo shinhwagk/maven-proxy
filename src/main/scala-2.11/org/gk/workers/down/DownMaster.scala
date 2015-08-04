@@ -4,6 +4,7 @@ import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
 import org.gk.workers.down.DownWorker.Down
 
+import scala.concurrent.Await
 import scala.concurrent.duration._
 import akka.actor.Actor.Receive
 import akka.actor.SupervisorStrategy.{Restart, Stop}
@@ -15,67 +16,11 @@ import org.gk.workers.down.DownMaster.{WorkDownSuccess, DownFile}
 /**
  * Created by goku on 2015/7/28.
  */
-//object WorkerActorDownDB{
-//  var actorIdMap = Map[String, Work]()
-//  var actorId = 0;
-//  def saveDownMap(a:String, b:Work) = synchronized {
-//    actorIdMap += (a -> b)
-//  }
-//  def load(key: String): Work = synchronized {
-//    actorIdMap(key)
-//  }
-//  def getActorId:Int  = synchronized{
-//    actorId += 1
-//    actorId
-//  }
-//}
-//object WorkDownFileDB{
-//  var downFileMap = Map[String, Map[String,Work]]()
-//
-//  def saveDownMap(fileName:String,actorName:String,work:Work):Unit = synchronized {
-////    downFileMap(fileName) += (actorName ->work)
-//
-//  }
-//  def load(key: String): Map[String,Work] = synchronized {
-//    downFileMap(key)
-//  }
-//
-//  def remove(key:String): Unit = synchronized{
-//    downFileMap -= key
-//  }
-//}
 class DownCount(val worksNum:Int,var successNum:Int)
-
-object downFileSuccess {
-  var a = Map[String,DownCount]()
-
-  def addFileUrl(fileUrl:String,downCount:DownCount) = synchronized{
-      a = Map(fileUrl -> downCount)
-  }
-
-  def addOnceFileWorkSuccess(fileUrl:String) = synchronized{
-    val b = a(fileUrl)
-    b.successNum += 1
-    println(fileUrl +  b.successNum)
-  }
-
-  def getWorksNum(fileUrl:String) = synchronized{
-    val b = a(fileUrl)
-    b.worksNum
-  }
-  def getSuccessNum(fileUrl:String) = synchronized {
-    val b = a(fileUrl)
-    b.successNum
-  }
-
-  def getProgress(fileUrl:String) = synchronized{
-    println("进度"+getSuccessNum(fileUrl)+"/"+getWorksNum(fileUrl))
-  }
-}
 
 object DownMaster {
   case class DownFile(fileUrl:String,file:String)
-  case class WorkDownSuccess(url:String)
+  case class WorkDownSuccess(url:String,file:String)
 }
 class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
 
@@ -87,17 +32,31 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
   override def receive: Receive = {
 
     case DownFile(fileUrl,file) =>
-      val fileTmpOS = cfg.getLocalRepoTmpDir + file
-      allocationWork (fileUrl,fileTmpOS)
+      allocationWork (fileUrl,file)
 
-    case WorkDownSuccess(url) =>
-      downFileSuccess.addOnceFileWorkSuccess(url)
-      downFileSuccess.getProgress(url)
-      val name =sender().path.name
-      println(name)
+    case WorkDownSuccess(url,file) =>
+      val name = sender().path.name
+      import org.gk.db.DML._
+      val wokerSuccessNumber = countDownSuccessNumber(url)
+      val fileDownNumber = selectDownNumber(url)
+      println("完成数量++++++++" +wokerSuccessNumber )
+      println("应该完成数量++++++++" + wokerSuccessNumber )
+      println("查看worknumber " +selectDownNumber(url))
       context.unwatch(sender())
       context.stop(sender())
       println(name +"关闭  。。。。")
+      if(wokerSuccessNumber == fileDownNumber){
+        import org.gk.db.MetaData._
+        import org.gk.db.Tables._
+        deleteDownWorker(url)
+        deleteDownfile(url)
+        val fileOS = cfg.getLocalRepoDir + file
+        val fileTempOS = fileOS + ".DownTmp"
+        val fileOSHeadle = new File(fileOS);
+        val fileTempOSHeadle = new File(fileTempOS);
+        fileTempOSHeadle.renameTo(fileOSHeadle)
+      }
+
 //    case ("WorkerDownLoadSuccess") =>{
 //        downManager ! ("FileDownSuccess",this.fileOS)
 //    }
@@ -111,7 +70,9 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
 //    }
   }
 
-  def allocationWork(fileUrl:String,fileTmpOS:String): Unit ={
+  def allocationWork(fileUrl:String,file:String): Unit ={
+
+    val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
     val httpConn = getHttpConn(fileUrl)
     val fileLength = httpConn.getContentLength
 
@@ -124,23 +85,32 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     createTmpfile(fileTmpOS,fileLength)
 
     val endLength = fileLength % workNumber
+
     //步长
     val step = (fileLength-endLength)/workNumber
 
     val downaa = new DownCount(workNumber,0)
-    downFileSuccess.addFileUrl(fileUrl,downaa)
+
+    import org.gk.db.DML._
+    insertDownMaster(file,fileUrl,workNumber)
 
     for (thread <- 1 to workNumber) {
       thread match {
-        case _ if thread == workNumber =>{
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step+endLength,fileTmpOS)))) ! Down
-          log.info("线程: {} 下载请求已经发送...",thread)
-        }
-        case _ =>{
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,(thread - 1)*step,thread*step-1,fileTmpOS)))) ! Down
+        case _ if thread == workNumber =>
+          val startIndex = (thread - 1)*step
+          val endIndex = thread*step+endLength
+          insertDownWorker(file,fileUrl,startIndex,endIndex,0)
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)))) ! Down
           log.info("线程: {} 下载请求已经发送...",thread)
 
-        }
+        case _ =>
+          val startIndex = (thread - 1)*step
+          val endIndex = thread*step+endLength-1
+          insertDownWorker(file,fileUrl,startIndex,endIndex,0)
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)))) ! Down
+          log.info("线程: {} 下载请求已经发送...",thread)
+
+
       }
     }
   }
@@ -154,7 +124,7 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     val processForBytes = cfg.getPerProcessForBytes
     fileLength / processForBytes
   }
-  def createTmpfile(fileTmpOS:String,fileLength:Int): Unit ={
+  def createTmpfile(fileTmpOS:String,fileLength:Int): Unit = {
     val file = new File(fileTmpOS)
     if (!file.getParentFile.exists()) {
       file.getParentFile.mkdirs()
@@ -164,5 +134,9 @@ class DownMaster(downManager:ActorRef) extends Actor with ActorLogging{
     raf.close()
 
     log.info("创建临时文件{}...",fileTmpOS)
+  }
+
+  def renameFile(fileTemp:String): Unit = {
+
   }
 }

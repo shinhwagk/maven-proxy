@@ -1,10 +1,31 @@
-New log file opened at Mon Aug 03 09:03:05 CST 2015 by 6964@gk
-Taking next connection to: 9375
-New client attempting to connect on port: 9376-9375
-  Address = /10.0.0.5:9375
-This client on port 9376 has uuid f705e689-6b1c-47fb-8a6c-6d96983d03bd configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
-Connected Clients: activator-f705e689-6b1c-47fb-8a6c-6d96983d03bd
-Taking next connection to: 9375
+New log file opened at Mon Aug 03 12:55:44 CST 2015 by 13816@gk
+Taking next connection to: 3076
+New client attempting to connect on port: 3077-3076
+  Address = /10.0.0.5:3076
+This client on port 3077 has uuid 6fbe0177-48a1-46b1-b8e8-2f2d3fd2924c configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-6fbe0177-48a1-46b1-b8e8-2f2d3fd2924c
+Taking next connection to: 3076
 Checking to see if clients are empty...
 We have 1 non-daemon clients, continuing serving connections.
-Taking next connection to: 9375
+Taking next connection to: 3076
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 3076
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 3076
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 3076
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 3076
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 3076
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 13816@gk logs at Mon Aug 03 13:16:45 CST 2015, goodbye.

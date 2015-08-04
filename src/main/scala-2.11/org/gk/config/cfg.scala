@@ -37,12 +37,9 @@ object cfg {
   }
 
   def getLocalRepoDir: String = {
-    getLocalMainDir + "\\cache"
+    getLocalMainDir + "/cache"
   }
 
-  def getLocalRepoTmpDir: String = {
-    getLocalMainDir + "\\tmp\\cache"
-  }
 
   def getMavenProxyPost:Int = {
     config.getInt("MavenPorxyPort")

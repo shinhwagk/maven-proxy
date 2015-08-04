@@ -7,6 +7,7 @@ import org.gk.config.cfg
 import org.gk.workers._
 
 
+
 /**
  * Created by gk on 15/7/21.
  */
@@ -14,6 +15,9 @@ object Proxy extends {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
   val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
+
+  import org.gk.db.InitDatabase._
+  initTable
 
   println("系统已经启动...")
 

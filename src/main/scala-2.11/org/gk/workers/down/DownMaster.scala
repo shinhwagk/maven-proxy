@@ -42,7 +42,7 @@ class DownMaster extends Actor with ActorLogging{
 
 
 
-  override val supervisorStrategy = OneForOneStrategy(){
+  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 3, withinTimeRange = 150 seconds){
     case _: Exception => Restart
   }
 
@@ -60,9 +60,9 @@ class DownMaster extends Actor with ActorLogging{
       val wokerSuccessNumber = countDownSuccessNumber(url)
       val fileDownNumber = selectDownNumber(url)
       println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
-      context.unwatch(sender())
-      context.stop(sender())
-      println(name +"关闭  。。。。")
+//      context.unwatch(sender())
+//      context.stop(sender())
+//      println(name +"关闭  。。。。")
       if(wokerSuccessNumber == fileDownNumber){
         deleteDownWorker(url)
         deleteDownfile(url)
@@ -80,14 +80,15 @@ class DownMaster extends Actor with ActorLogging{
 //    case ("WorkerDownLoadSuccess") =>{
 //        downManager ! ("FileDownSuccess",this.fileOS)
 //    }
-//    case Terminated(actorRef) =>{
+    case Terminated(actorRef) =>{
+      println(actorRef.path.name+"被中置")
 //      for((k,v) <- actorIdMap){
 //        println("查看当前map数量  "+ k)
 //      }
 //      println(actorRef.path.name+"被关闭")
 //      val actorRefName = actorRef.path.name +"_"+getActorId
 //      context.watch(context.actorOf(Props[DownWorker],name = actorRefName)) ! actorIdMap(actorRefName)
-//    }
+    }
   }
 
   def allocationWork(fileUrl:String,file:String): Unit ={
@@ -137,7 +138,10 @@ class DownMaster extends Actor with ActorLogging{
   def getHttpConn(Url:String): HttpURLConnection ={
     import java.net.{HttpURLConnection, URL};
     val downUrl = new URL(Url)
-    downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(2000)
+    conn.setReadTimeout(2000)
+    conn
   }
 
   def getWorkNum(fileLength:Int): Int = {

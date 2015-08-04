@@ -17,10 +17,10 @@ object DownManager {
   case class RequertDownRepo(file:String)
   case class RequertDownFile(fileUrl:String,file:String)
 }
-class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLogging{
+class DownManager extends Actor with akka.actor.ActorLogging{
 
   val repoSearcher = context.actorOf(Props[RepoSearcher],name ="repoSearcher")
-  val downMaster = context.actorOf(Props(new DownMaster(self)),name ="downMaster")
+  val downMaster = context.actorOf(Props[DownMaster],name ="downMaster")
 
   var downSuccessNumber:Int = _
   var repoManagerActor:ActorRef = _
@@ -32,7 +32,7 @@ class DownManager(repoManager:ActorRef) extends Actor with akka.actor.ActorLoggi
       downMaster ! DownFile(fileUrl,file)
 
     case ("FileDownSuccess",fileOS:String) =>
-      repoManager ! ("DownSuccess",fileOS)
+//      repoManager ! ("DownSuccess",fileOS)
 
   }
 }

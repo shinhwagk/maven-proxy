@@ -34,14 +34,22 @@ class DownMaster extends Actor with ActorLogging{
 
   var downManager:ActorRef = _
 
-  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 10,
-    withinTimeRange = 300 seconds){
+  //在启动时下载为下载完的部分
+  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
+    case (file, fileUrl, startIndex, enIndex, success) =>
+      context.watch(context.actorOf(Props(new DownWorker(fileUrl,1,startIndex,enIndex,file)))) ! Down
+  }),Duration.Inf)
+
+
+
+  override val supervisorStrategy = OneForOneStrategy(){
     case _: Exception => Restart
   }
 
   override def receive: Receive = {
 
     case DownFile(fileUrl,file) =>
+      context.setReceiveTimeout(15 seconds)
       downManager = sender()
       allocationWork (fileUrl,file)
 

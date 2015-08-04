@@ -19,7 +19,13 @@ import scala.concurrent.duration.Duration
  */
 
 object DownWorker{
-  case object Down{}
+  case object Down
+  def storeFile(fileTempOS:String,startIndex:Int,buffer:Array[Byte]) = synchronized{
+    val raf = new RandomAccessFile(fileTempOS, "rwd");
+    raf.seek(startIndex);
+    raf.write(buffer)
+    raf.close()
+  }
 }
 class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String) extends Actor with ActorLogging{
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
@@ -44,8 +50,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
-    val raf = new RandomAccessFile(fileTmpOS, "rwd");
-    raf.seek(startIndex);
+
 
     var currentLength = 0
     var start = 0
@@ -57,17 +62,19 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
       len = is.read(buffer, start, workFileLength - currentLength)
       start += len
       currentLength += len
-//      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
+      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
 //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
 
-    raf.write(buffer)
+    DownWorker.storeFile(fileTmpOS,startIndex,buffer)
     is.close()
-    raf.close()
+
     log.info("线程:{},下载完毕",thread)
     log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
 //    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
 
     sender() ! WorkDownSuccess(url,file,startIndex)
   }
+
+
 }

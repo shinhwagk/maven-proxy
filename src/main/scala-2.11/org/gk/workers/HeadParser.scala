@@ -4,14 +4,28 @@ import java.io.{BufferedReader, InputStreamReader}
 import java.net.Socket
 
 import akka.actor.{Props, Actor}
+import org.gk.db.Tables._
 import org.gk.workers.RepoManager.RequertReturnFile
+import org.gk.workers.down.DownWorker
+import org.gk.workers.down.DownWorker.Down
+import slick.driver.H2Driver.api._
+import slick.dbio.DBIO
+import slick.jdbc.meta.MTable
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 
+import scala.concurrent.Await
 /**
  * Created by goku on 2015/7/27.
  */
 class HeadParser extends Actor with akka.actor.ActorLogging{
 
   val repoManager = context.actorOf(Props[RepoManager],name = "repoManager")
+
+  import org.gk.db.MetaData._
+
+
+
 
   override def receive: Receive = {
     case socket:Socket =>{

@@ -99,6 +99,6 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
 
     log.debug("ActorRef:{}; 下载完毕",self.path.name)
     downConn.disconnect()
-    sender() ! WorkDownSuccess(url,file,startIndex)
+    sender() ! WorkDownSuccess(url,file,fileTmpOS,startIndex)
   }
 }

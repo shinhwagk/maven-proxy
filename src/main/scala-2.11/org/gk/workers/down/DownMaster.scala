@@ -66,6 +66,7 @@ class DownMaster extends Actor with ActorLogging {
 
       Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileurl).map(p => (p.success)).result), Duration.Inf).toList.sum
 
+      storeWorkFile(fileTmpOS,startIndex,buffer)
       closeActorRef(sender())
 
       import org.gk.db.DML._
@@ -132,7 +133,6 @@ class DownMaster extends Actor with ActorLogging {
           context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file)))) ! Downming
         //          log.info("线程: {} 下载请求已经发送...",thread)
 
-
       }
     }
   }
@@ -164,5 +164,14 @@ class DownMaster extends Actor with ActorLogging {
   def closeActorRef(actor: ActorRef): Unit = {
     context.unwatch(actor)
     context.stop(actor)
+  }
+}
+
+object DownMaster{
+  def storeWorkFile(fileTempOS:String,startIndex:Int,buffer:Array[Byte]) = synchronized{
+    val raf = new RandomAccessFile(fileTempOS, "rwd");
+    raf.seek(startIndex);
+    raf.write(buffer)
+    raf.close()
   }
 }

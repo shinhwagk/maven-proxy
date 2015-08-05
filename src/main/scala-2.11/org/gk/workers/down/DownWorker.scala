@@ -70,6 +70,12 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
     downConn.setReadTimeout(5000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     downConn.setRequestProperty("Accept-Encoding","gzip")
+    downConn.setRequestProperty("Cache-control","no-cache")
+    downConn.setRequestProperty("Cache-store","no-cache")
+    downConn.setRequestProperty("Pragma","no-cache")
+    downConn.setRequestProperty("Expires","0")
+    downConn.setRequestProperty("Connection","Keep-Alive")
+
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
 

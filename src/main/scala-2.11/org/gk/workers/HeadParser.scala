@@ -35,6 +35,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging{
       val headFirstLine = headBuffers.readLine()
       val file = headFirstLine.split(" ")(1)
 
+      println("hhhhhhhhhhhhhhh")
       println(headBuffers.readLine())
       println(headBuffers.readLine())
       println(headBuffers.readLine())
@@ -48,6 +49,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging{
       println(headBuffers.readLine())
       println(headBuffers.readLine())
       println(headBuffers.readLine())
+      println("hhhhhhhhhhhhhhh")
 
       log.info("headParser解析出需要下载的文件:{}....",file)
       log.info("headParser发送请求给RepoManager")

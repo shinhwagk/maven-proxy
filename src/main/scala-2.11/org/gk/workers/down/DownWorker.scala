@@ -51,9 +51,9 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
     case Downming => {
-//      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
+      log.debug("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
       down
-//      log.info("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
+      log.debug("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
     }
   }
 
@@ -93,20 +93,12 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
 //      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
 //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
     }
-
-
     import DownWorker._
     storeWorkFile(fileTmpOS,startIndex,buffer)
     is.close()
 
-//    log.info("线程:{},下载完毕",thread)
-//    log.info("WorkerDownLoadSuccess   {}   下载完成",self.path.name)
-//    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
-//    sender() ! "aaaaa"
-    //本work下载完毕,更新数据库
-println("下载完毕"+ self.path.name)
+    log.debug("ActorRef:{}; 下载完毕",self.path.name)
+    downConn.disconnect()
     sender() ! WorkDownSuccess(url,file,startIndex)
   }
-
-
 }

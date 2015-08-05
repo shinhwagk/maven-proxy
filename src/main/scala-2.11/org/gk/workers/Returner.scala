@@ -11,7 +11,7 @@ import org.gk.workers.RepoManager.RuntrunFile
 /**
  * Created by gk on 15/7/26.
  */
-class RetrunFile extends Actor with akka.actor.ActorLogging{
+class Returner extends Actor with akka.actor.ActorLogging{
 
   val terminator = context.actorOf(Props[Terminator])
 

@@ -3,7 +3,7 @@ package org.gk.workers.down
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging}
 import org.gk.config.cfg
-import org.gk.workers.down.DownManager.RequertDownFile
+import org.gk.workers.down.DownManager.{RequertGetFile}
 import org.gk.workers.down.DownMaster.DownFile
 import org.gk.workers.down.RepoSearcher.SearchPepo
 
@@ -21,9 +21,7 @@ class RepoSearcher extends Actor with ActorLogging{
     case SearchPepo(file) =>
       log.info("仓库搜索{}",file)
       val fileUrl = getFileUrl(file)
-      sender() ! RequertDownFile(fileUrl,file)
-      log.info("找到仓库已经返回:{}",file)
-
+      sender() ! RequertGetFile(fileUrl,file)
   }
   def getFileUrl(file:String): String ={
     val remoteRepMap = cfg.getRemoteRepoMap

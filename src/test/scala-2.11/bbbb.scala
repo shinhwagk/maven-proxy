@@ -13,42 +13,35 @@ object bbbb {
     //preStart在actorOf的时候执行
     val a = system.actorOf(Props[A], name = "a")
 
-    a !"a"
+
     //在stop的时候执行postStop
     val b = system.actorOf(Props[A], name = "ab")
 
+    a ! "a"
+    a ! "b"
 
     b ! "a"
+    b ! "b"
+
+    for( i <- 1 to 100){
+      val a = system.actorOf(Props[A])
+      a ! "a"
+
+
+      a ! "b"
+    }
+
   }
 }
 
-
 class A extends Actor {
-  var a:Int = 0
-  println("aaaa")
+  var a:Int = _
   override def receive: Receive = {
     case "a" =>
-      a += 1
-      println("xxxxxx" + a)
+      a = 1
+      println(self.path.name + " " + a)
     case "b" =>
-      throw new Exception("hwaaa ")
+      println(a)
   }
-  override def preStart {
-    println("actor:" + self.path + ",child preStart .")
-  }
-  override def postStop {
-    println("actor:" + self.path + ",child postStop .")
-  }
-  override def preRestart(reason: Throwable, message: Option[Any]) {
-    println("actor:" + self.path + ",preRestart child, reason:" + reason + ", message:" + message)
-  }
-  override def postRestart(reason: Throwable) {
-    println("actor:" + self.path + ",postRestart child, reason:" + reason)
-    Thread.sleep(3000)
-    context.stop(self)
-    println("jieshu")
-    Thread.sleep(3000)
-    println("jieshu2")
-    Thread.sleep(3000)
-  }
+
 }

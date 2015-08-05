@@ -9,7 +9,7 @@ import java.net.Socket
 
 import org.gk.workers.RepoManager.{RuntrunFile, RequertReturnFile}
 import org.gk.workers.down.DownManager
-import org.gk.workers.down.DownManager.RequertDownRepo
+import org.gk.workers.down.DownManager.{SendFile, RequertDownRepo}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -23,7 +23,7 @@ object RepoManager {
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
 
-  val retrunFile = context.actorOf(Props[RetrunFile],name ="retrunFile")
+  val retrunFile = context.actorOf(Props[Returner],name ="RetrunFile")
   val downManager = context.actorOf(Props[DownManager], name = "DownManager")
 
   override def receive: Receive = {
@@ -31,10 +31,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
 
       val fileOS = cfg.getLocalRepoDir + file
 
-      /*
-      判断文件是否已经缓存在本地仓库
+      /**
+       * 判断文件是否已经缓存在本地仓库
        */
-      decodeFileExists(fileOS) match {
+      decodeFileLocalExists(fileOS) match {
         case true => {
           log.info("文件:{} 存在本地,准备返回给请求者...",file)
           retrunFile ! RuntrunFile(fileOS,socket)
@@ -45,13 +45,13 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
         }
       }
 
-    case ("DownSuccess",fileOS:String) =>{
-      retrunFile ! ("SenderRequert",fileOS)
+    case SendFile(fileOS:String) =>{
+//      retrunFile ! RuntrunFile(fileOS,socket)
     }
   }
 
   //查看文件是否存在本地仓库
-  def decodeFileExists(fileOs:String): Boolean = {
+  def decodeFileLocalExists(fileOs:String): Boolean = {
     val osFileHandle = new File(fileOs)
     osFileHandle.exists()
   }

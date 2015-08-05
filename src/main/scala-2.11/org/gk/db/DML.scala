@@ -25,7 +25,7 @@ object DML {
   }
 
   def insertDownWorker(file:String,fileUrl:String,startIndex:Int,enIndex:Int,success:Int): Unit ={
-    println(file+"被插入到数据库work")
+//    println(file+"被插入到数据库work")
     val insert = DBIO.seq(
       downFileWorkList += (file,fileUrl,startIndex,enIndex,success)
     )

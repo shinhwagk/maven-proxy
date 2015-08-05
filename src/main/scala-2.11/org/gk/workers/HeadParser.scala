@@ -15,50 +15,26 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
 import scala.concurrent.Await
+
 /**
  * Created by goku on 2015/7/27.
  */
-class HeadParser extends Actor with akka.actor.ActorLogging{
+class HeadParser extends Actor with akka.actor.ActorLogging {
 
-  val repoManager = context.actorOf(Props[RepoManager],name = "repoManager")
-
-  import org.gk.db.MetaData._
-
-
-
+  val repoManager = context.actorOf(Props[RepoManager], name = "RepoManager")
 
   override def receive: Receive = {
-    case socket:Socket =>{
+    case socket: Socket => {
       log.info("headParser收到请求....")
-//      val file  = getFile(socket)
-      val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
-      val headFirstLine = headBuffers.readLine()
-      val file = headFirstLine.split(" ")(1)
-
-      println("hhhhhhhhhhhhhhh")
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println(headBuffers.readLine())
-      println("hhhhhhhhhhhhhhh")
-
-      log.info("headParser解析出需要下载的文件:{}....",file)
+      val file = getFile(socket)
+      log.info("headParser解析出需要下载的文件:{}....", file)
       log.info("headParser发送请求给RepoManager")
-      repoManager ! RequertReturnFile(file,socket)
+      repoManager ! RequertReturnFile(file, socket)
     }
   }
 
   //从头信息获得下载文件
-  def getFile(socket:Socket): String ={
+  def getFile(socket: Socket): String = {
     val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
     val headFirstLine = headBuffers.readLine()
     headFirstLine.split(" ")(1)

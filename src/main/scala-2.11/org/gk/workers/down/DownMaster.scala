@@ -146,7 +146,11 @@ class DownMaster extends Actor with ActorLogging {
 
   def getWorkNum(fileLength: Int): Int = {
     val processForBytes = cfg.getPerProcessForBytes
-    fileLength / processForBytes
+    if(fileLength >= processForBytes){
+      fileLength / processForBytes
+    }else{
+      1
+    }
   }
 
   def createTmpfile(fileTmpOS: String, fileLength: Int): Unit = {

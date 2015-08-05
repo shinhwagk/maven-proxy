@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala" afterPath="$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -51,7 +53,27 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+              <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RepoManager.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/RepoManager.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DownManager.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -61,37 +83,27 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/Tables.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.conf" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HeadParser.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.3538462">
+              <caret line="46" column="17" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.conf" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.07560138">
+            <state vertical-scroll-proportion="0.0">
               <caret line="6" column="57" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MetaData.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/MetaData.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cfg.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/config/cfg.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -107,21 +119,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bbbb.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala">
+      <file leaf-file-name="MetaData.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/MetaData.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="26" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="26" />
+              <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RepoSearcher.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/RepoSearcher.scala">
+      <file leaf-file-name="bbbb.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -131,7 +143,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="80" column="48" selection-start-line="80" selection-start-column="48" selection-end-line="80" selection-end-column="48" />
+              <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -162,14 +174,14 @@
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/Proxy.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/DML.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala" />
         <option value="$PROJECT_DIR$/src/test/scala-2.11/test122.scala" />
         <option value="$PROJECT_DIR$/src/test/scala-2.11/aaa.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/MetaData.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala" />
       </list>
     </option>
   </component>
@@ -716,7 +728,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager" selected="Application.Proxy">
+  <component name="RunManager" selected="Application.bbbb">
     <configuration default="false" name="Proxy" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1006,8 +1018,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Proxy" />
-        <item index="1" class="java.lang.String" itemvalue="Application.bbbb" />
+        <item index="0" class="java.lang.String" itemvalue="Application.bbbb" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Proxy" />
         <item index="2" class="java.lang.String" itemvalue="Application.Main" />
         <item index="3" class="java.lang.String" itemvalue="Application.MyApp" />
         <item index="4" class="java.lang.String" itemvalue="Application.abc" />
@@ -1122,7 +1134,13 @@
       <option name="project" value="LOCAL" />
       <updated>1438752439291</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="0.6.1 流程完整">
+      <created>1438752560517</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1438752560517</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1146,6 +1164,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5243902" sideWeight="0.5042644" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39135256" sideWeight="0.49573562" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21321961" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1153,15 +1172,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5266075" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.575388" sideWeight="0.49573562" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5266075" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1428,20 +1446,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="11" selection-start-line="47" selection-start-column="11" selection-end-line="47" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/RepoManager.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/DML.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1453,13 +1457,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -1491,34 +1488,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test122.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="26" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/RepoSearcher.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/Tables.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1539,10 +1512,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="48" selection-start-line="80" selection-start-column="48" selection-end-line="80" selection-end-column="48" />
+          <caret line="6" column="57" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/RepoManager.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -1550,15 +1539,47 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownMaster.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+          <caret line="36" column="14" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/test122.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.07560138">
-          <caret line="6" column="57" selection-start-line="6" selection-start-column="57" selection-end-line="6" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala-2.11/bbbb.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/db/Tables.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/HeadParser.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3538462">
+          <caret line="46" column="17" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="17" />
           <folding />
         </state>
       </provider>

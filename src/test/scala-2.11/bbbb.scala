@@ -13,21 +13,23 @@ object bbbb {
     //preStart在actorOf的时候执行
     val a = system.actorOf(Props[A], name = "a")
 
-    Thread.sleep(2000)
+    a !"a"
     //在stop的时候执行postStop
-    system.stop(a)
+    val b = system.actorOf(Props[A], name = "ab")
 
-    Thread.sleep(2000)
-    val b = system.actorOf(Props[A], name = "a")
-    b ! "b"
+
+    b ! "a"
   }
 }
 
 
 class A extends Actor {
+  var a:Int = 0
+  println("aaaa")
   override def receive: Receive = {
     case "a" =>
-      println("a")
+      a += 1
+      println("xxxxxx" + a)
     case "b" =>
       throw new Exception("hwaaa ")
   }

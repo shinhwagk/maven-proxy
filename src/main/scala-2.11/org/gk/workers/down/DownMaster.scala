@@ -41,7 +41,7 @@ class DownMaster extends Actor with ActorLogging {
   var downManager: ActorRef = _
 
   //在启动时下载为下载完的部分
-  println("master")
+
   Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
     case (file, fileUrl, startIndex, enIndex, success) =>
       val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file)), name = "work" + getSequence))

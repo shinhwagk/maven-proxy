@@ -98,7 +98,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
 //    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
 //    sender() ! "aaaaa"
     //本work下载完毕,更新数据库
-
+println("下载完毕"+ self.path.name)
     sender() ! WorkDownSuccess(url,file,startIndex)
   }
 

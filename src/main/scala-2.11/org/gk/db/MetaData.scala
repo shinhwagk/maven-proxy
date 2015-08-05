@@ -9,7 +9,7 @@ import scala.concurrent.duration._
  * Created by goku on 2015/8/3.
  */
 object MetaData {
-  val db = Database.forConfig("DownFileWorkers")
+  val db = Database.forConfig("h2mem1")
 
   val tables = Await.result(db.run(MTable.getTables), Duration.Inf).toList
 

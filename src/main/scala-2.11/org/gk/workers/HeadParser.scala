@@ -7,7 +7,7 @@ import akka.actor.{Props, Actor}
 import org.gk.db.Tables._
 import org.gk.workers.RepoManager.RequertReturnFile
 import org.gk.workers.down.DownWorker
-import org.gk.workers.down.DownWorker.Down
+import org.gk.workers.down.DownWorker.Downming
 import slick.driver.H2Driver.api._
 import slick.dbio.DBIO
 import slick.jdbc.meta.MTable
@@ -30,7 +30,11 @@ class HeadParser extends Actor with akka.actor.ActorLogging{
   override def receive: Receive = {
     case socket:Socket =>{
       log.info("headParser收到请求....")
-      val file  = getFile(socket)
+//      val file  = getFile(socket)
+      val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
+      val headFirstLine = headBuffers.readLine()
+      val file = headFirstLine.split(" ")(1)
+
       log.info("headParser解析出需要下载的文件:{}....",file)
       log.info("headParser发送请求给RepoManager")
       repoManager ! RequertReturnFile(file,socket)

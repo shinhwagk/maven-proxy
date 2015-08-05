@@ -4,7 +4,7 @@ import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.down.DownWorker.Down
+import org.gk.workers.down.DownWorker.Downming
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -36,14 +36,16 @@ object DownMaster {
   }
 }
 class DownMaster extends Actor with ActorLogging{
+  var nuuu = 0
 import DownMaster._
   var downManager:ActorRef = _
 
   //在启动时下载为下载完的部分
+  println("master")
   Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
     case (file, fileUrl, startIndex, enIndex, success) =>
       val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl,1,startIndex,enIndex,file)),name ="work"+getSequence))
-      worker ! Down
+      worker ! Downming
   }),Duration.Inf)
 
 
@@ -62,25 +64,34 @@ import DownMaster._
       allocationWork (fileUrl,file)
 
     case WorkDownSuccess(url,file,startIndex) => {
-      println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+      nuuu +=1
+      db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1))
+      println(sender().path.name+"yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy" +nuuu)
+      Thread.sleep(10000)
+      println("开始统计完成数量")
+      val aaa = sender()
+      context.unwatch(aaa)
+      context.stop(aaa)
+      Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).map(p => (p.success)).result),1.seconds).toList.sum
+      println("wanbi")
 //      Thread.sleep(10000)
-//      import org.gk.db.DML._
-//      val wokerSuccessNumber = countDownSuccessNumber(url)
-//      val fileDownNumber = selectDownNumber(url)
-//      println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
-//      if(wokerSuccessNumber == fileDownNumber){
-//        deleteDownWorker(url)
-//        deleteDownfile(url)
-//        val fileOS = cfg.getLocalRepoDir + file
-//        val fileTempOS = fileOS + ".DownTmp"
-//
-//        println("下载完成啦")
-//        println(fileOS)
-//        println(fileTempOS)
-//        val fileOSHeadle = new File(fileOS);
-//        val fileTempOSHeadle = new File(fileTempOS);
-//        fileTempOSHeadle.renameTo(fileOSHeadle)
-//      }
+      import org.gk.db.DML._
+      val wokerSuccessNumber = countDownSuccessNumber(url)
+      val fileDownNumber = selectDownNumber(url)
+      println("查看已经完成数量++++++++" +wokerSuccessNumber+"/"+fileDownNumber )
+      if(wokerSuccessNumber == fileDownNumber){
+        deleteDownWorker(url)
+        deleteDownfile(url)
+        val fileOS = cfg.getLocalRepoDir + file
+        val fileTempOS = fileOS + ".DownTmp"
+
+        println("下载完成啦")
+        println(fileOS)
+        println(fileTempOS)
+        val fileOSHeadle = new File(fileOS);
+        val fileTempOSHeadle = new File(fileTempOS);
+        fileTempOSHeadle.renameTo(fileOSHeadle)
+      }
     }
     case Terminated(actorRef) =>{
       println(actorRef.path.name+"被中置")
@@ -117,14 +128,14 @@ import DownMaster._
           val startIndex = (thread - 1)*step
           val endIndex = thread*step+endLength
           insertDownWorker(file,fileUrl,startIndex,endIndex,0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Down
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Downming
 //          log.info("线程: {} 下载请求已经发送...",thread)
 
         case _ =>
           val startIndex = (thread - 1)*step
           val endIndex = thread*step+endLength-1
           insertDownWorker(file,fileUrl,startIndex,endIndex,0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Down
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl,thread,startIndex,endIndex,file)),name ="work"+getSequence)) ! Downming
 //          log.info("线程: {} 下载请求已经发送...",thread)
 
 

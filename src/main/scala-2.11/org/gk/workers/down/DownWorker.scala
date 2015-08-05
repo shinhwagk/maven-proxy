@@ -9,7 +9,7 @@ import org.gk.db.MetaData._
 import org.gk.db.Tables._
 
 import org.gk.workers.down.DownMaster.WorkDownSuccess
-import org.gk.workers.down.DownWorker.Down
+import org.gk.workers.down.DownWorker.Downming
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -17,7 +17,7 @@ import java.io.{RandomAccessFile, File}
 import java.net.HttpURLConnection
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.down.DownWorker.Down
+import org.gk.workers.down.DownWorker.Downming
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -39,7 +39,7 @@ import scala.concurrent.Await
  */
 
 object DownWorker{
-  case object Down
+  case object Downming
   def storeWorkFile(fileTempOS:String,startIndex:Int,buffer:Array[Byte]) = synchronized{
     val raf = new RandomAccessFile(fileTempOS, "rwd");
     raf.seek(startIndex);
@@ -50,16 +50,16 @@ object DownWorker{
 class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String) extends Actor with ActorLogging{
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
-    case Down => {
-      log.info("线程{},收到下载请求",self.path.name)
+    case Downming => {
 //      log.info("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
       down
 //      log.info("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
     }
   }
 
-  override def preStart: Unit ={
+  override def preRestart(reason: Throwable, message: Option[Any]) {
     down
+    println("actor:" + self.path + ",preRestart child, reason:" + reason + ", message:" + message)
   }
 
   def down = {
@@ -69,6 +69,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
     downConn.setConnectTimeout(5000)
     downConn.setReadTimeout(5000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
+    downConn.setRequestProperty("Accept-Encoding","gzip")
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
 
@@ -97,7 +98,6 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
 //    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
 //    sender() ! "aaaaa"
     //本work下载完毕,更新数据库
-    db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1))
 
     sender() ! WorkDownSuccess(url,file,startIndex)
   }

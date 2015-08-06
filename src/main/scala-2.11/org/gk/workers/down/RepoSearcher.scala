@@ -3,7 +3,8 @@ package org.gk.workers.down
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging}
 import org.gk.config.cfg
-import org.gk.workers.down.DownManager.{RequertGetFile}
+import org.gk.workers.DownFileInfoBeta2
+import org.gk.workers.down.DownManager.{DownLoadFile}
 import org.gk.workers.down.DownMaster.DownFile
 import org.gk.workers.down.RepoSearcher.SearchPepo
 
@@ -14,14 +15,16 @@ import scala.collection.mutable.ArrayBuffer
  */
 object RepoSearcher{
 
-  case class SearchPepo(file:String)
+  case class SearchPepo(downFileInfoBeta2:DownFileInfoBeta2)
 }
 class RepoSearcher extends Actor with ActorLogging{
   override def receive: Receive = {
-    case SearchPepo(file) =>
+    case SearchPepo(downFileInfoBeta2) =>
+      val file = downFileInfoBeta2.file
       log.info("仓库搜索{}",file)
-      val fileUrl = getFileUrl(file)
-      sender() ! RequertGetFile(fileUrl,file)
+      val fileURL = getFileUrl(file)
+      val downFileInfoBeta3 = downFileInfoBeta2.getDownFileInfoBeta3(fileURL)
+      sender() ! DownLoadFile(downFileInfoBeta3)
   }
   def getFileUrl(file:String): String ={
     val remoteRepMap = cfg.getRemoteRepoMap
@@ -41,7 +44,7 @@ class RepoSearcher extends Actor with ActorLogging{
     import java.net.{HttpURLConnection, URL};
     val downUrl = new URL(fileUrl)
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000)
+    downConn.setConnectTimeout(50000)
     downConn.getResponseCode
   }
 }

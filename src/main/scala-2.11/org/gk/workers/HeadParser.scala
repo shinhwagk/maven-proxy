@@ -24,12 +24,13 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
   val repoManager = context.actorOf(Props[RepoManager], name = "RepoManager")
 
   override def receive: Receive = {
-    case socket: Socket => {
+    case downFileInfoBeta1: DownFileInfoBeta1 => {
       log.info("headParser收到请求....")
-      val file = getFile(socket)
+      val file = getFile(downFileInfoBeta1.socket)
       log.info("headParser解析出需要下载的文件:{}....", file)
       log.info("headParser发送请求给RepoManager")
-      repoManager ! RequertReturnFile(file, socket)
+      val downFileInfoBeta2 = downFileInfoBeta1.getDownFileInfoBeta2(file)
+      repoManager ! RequertReturnFile(downFileInfoBeta2)
     }
   }
 

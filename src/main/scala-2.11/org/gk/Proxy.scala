@@ -15,7 +15,7 @@ import org.gk.workers.down.{DownWorker, DownMaster}
 object Proxy extends {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
-  val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
+  val doorman = system.actorOf(Props[Doorman], name = "Doorman")
 
   //创建数据库表,如果没有的话
   import org.gk.db.InitDatabase._
@@ -31,8 +31,9 @@ object Proxy extends {
 
     while (true) {
       val socket = ss.accept();
-      headParser ! socket
-      println("发送请求给headParser...")
+
+      doorman ! socket
+      println("发送请求给doorman...")
     }
   }
 }

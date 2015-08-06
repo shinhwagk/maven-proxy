@@ -47,7 +47,8 @@ object DownWorker{
     raf.close()
   }
 }
-class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String) extends Actor with ActorLogging{
+class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String,DownMasterActorRef:ActorRef) extends Actor with ActorLogging{
+
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
     case Downming => {
@@ -58,16 +59,24 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
   }
 
   override def preRestart(reason: Throwable, message: Option[Any]) {
-    down
-    println("actor:" + self.path + ",preRestart child, reason:" + reason + ", message:" + message)
+    println("actor:" + self.path + ", postRestart parent, reason:" + reason)
+    self ! Downming
+  }
+
+  override def postRestart(reason: Throwable) {
+    println("actor:" + self.path + ", postRestart parent, reason:" + reason)
   }
 
   def down = {
-//    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
+
+//      println("xxxxxxxxxxc哈看俺 " +Await.result(db.run(downFileWorkList.filter(_.success === 1).map(p => (p.success)).result), Duration.Inf).toList.sum)
+
+
+    //    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000)
-    downConn.setReadTimeout(5000)
+    downConn.setConnectTimeout(2000)
+    downConn.setReadTimeout(2000)
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
     downConn.setRequestProperty("Accept-Encoding","gzip")
     downConn.setRequestProperty("Cache-control","no-cache")
@@ -76,29 +85,41 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String)
     downConn.setRequestProperty("Expires","0")
     downConn.setRequestProperty("Connection","Keep-Alive")
 
+
     val is = downConn.getInputStream();
-    val workFileLength = downConn.getContentLength;
+
+    try{
+      val workFileLength = downConn.getContentLength;
 
 
-    var currentLength = 0
-    var start = 0
-    var len = 0
+      var currentLength = 0
+      var start = 0
+      var len = 0
 
-    val buffer = new Array[Byte](workFileLength)
+      val buffer = new Array[Byte](workFileLength)
+      while (len != -1 && workFileLength != currentLength) {
+        len = is.read(buffer, start, workFileLength - currentLength)
+        start += len
+        currentLength += len
+  //      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
+  //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
+      }
+      storeWorkFile(fileTmpOS,startIndex,buffer)
+    }finally is.close()
 
-    while (len != -1 && workFileLength != currentLength) {
-      len = is.read(buffer, start, workFileLength - currentLength)
-      start += len
-      currentLength += len
-//      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
-//      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
-    }
-    import DownWorker._
-    storeWorkFile(fileTmpOS,startIndex,buffer)
-    is.close()
-
-    log.debug("ActorRef:{}; 下载完毕",self.path.name)
+    log.info("ActorRef:{}; 下载完毕",self.path.name)
     downConn.disconnect()
-    sender() ! WorkDownSuccess(url,file,fileTmpOS,startIndex)
+    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
+    val ccc = Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).map(p => (p.success)).result), Duration.Inf).toList.sum
+
+    import org.gk.db.DML._
+    val fileDownNumber = selectDownNumber(url)
+    println("wancheng " + ccc + "/" + fileDownNumber)
+    if (ccc == fileDownNumber){
+      println("下载完成.....")
+      println(sender().path.name)
+      DownMasterActorRef ! WorkDownSuccess(url,file,startIndex)
+    }
+
   }
 }

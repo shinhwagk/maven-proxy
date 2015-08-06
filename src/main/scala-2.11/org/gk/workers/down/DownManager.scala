@@ -4,6 +4,7 @@ import java.io._
 import java.net.{Socket, HttpURLConnection, URL}
 import com.sun.org.apache.xml.internal.resolver.helpers.FileURL
 import org.gk.db.DML._
+import org.gk.workers.{DownFileInfoBeta3, DownFileInfoBeta2}
 import slick.dbio.DBIO
 
 import scala.concurrent.duration._
@@ -12,7 +13,7 @@ import akka.routing.RoundRobinPool
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.down.DownManager.{RequertGetFile, SendFile, RequertDownRepo}
+import org.gk.workers.down.DownManager.{DownLoadFile, SendFile, RequertDownFile}
 import org.gk.workers.down.DownMaster.DownFile
 import org.gk.workers.down.RepoSearcher.{SearchPepo}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -26,9 +27,9 @@ import org.gk.config.cfg._
  */
 object DownManager {
 
-  case class RequertDownRepo(file: String)
+  case class RequertDownFile(downFileInfoBeta2: DownFileInfoBeta2)
 
-  case class RequertGetFile(fileUrl: String, file: String)
+  case class DownLoadFile(downFileInfoBeta3: DownFileInfoBeta3)
 
   case class SendFile(fileOS: String)
 
@@ -57,29 +58,31 @@ case class DownFileInfo(file: String, fileURL: String) {
 
 }
 
-class DownManager extends Actor with akka.actor.ActorLogging {
+class DownManager(repoManagerActor: ActorRef) extends Actor with akka.actor.ActorLogging {
 
-  val repoSearcher = context.actorOf(Props[RepoSearcher], name = "repoSearcher")
-  val downMaster = context.actorOf(Props[DownMaster], name = "downMaster")
+  val repoSearcherActor = context.actorOf(Props[RepoSearcher], name = "RepoSearcher")
+  val downMasterActor = context.actorOf(Props[DownMaster], name = "DownMaster")
 
-  var downSuccessNumber: Int = _
-  var repoManagerActor: ActorRef = _
+
+  var repoManager: ActorRef = _
 
   override def receive: Actor.Receive = {
-    case RequertDownRepo(file) =>
-      repoSearcher ! SearchPepo(file)
+    case RequertDownFile(downFileInfoBeta2) =>
+      repoSearcherActor ! SearchPepo(downFileInfoBeta2)
 
-    case RequertGetFile(fileURL, file) =>
+    case DownLoadFile(downFileInfoBeta3) =>
+      val fileURL = downFileInfoBeta3.fileURL
+      val file = downFileInfoBeta3.file
       println(fileURL)
       if (checkFileDecodeDownning(file)) {
-        downMaster ! RequertDownFile(DownFileInfo(file, fileURL))
+        downMasterActor ! Download(downFileInfoBeta3)
       } else {
         println("文件在下载，。。。")
       }
 
     case SendFile(fileOS: String) =>
-    //      repoManager ! ("DownSuccess",fileOS)
-
+      println("fasong ")
+//      repoManagerActor ! ("DownSuccess", fileOS)
   }
 
   def checkFileDecodeDownning(file: String): Boolean = {

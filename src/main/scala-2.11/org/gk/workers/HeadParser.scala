@@ -19,18 +19,21 @@ import scala.concurrent.Await
 /**
  * Created by goku on 2015/7/27.
  */
+
+case class RequertParserHead(downFileInfo:DownFileInfo)
+
 class HeadParser extends Actor with akka.actor.ActorLogging {
 
   val repoManager = context.actorOf(Props[RepoManager], name = "RepoManager")
 
   override def receive: Receive = {
-    case downFileInfoBeta1: DownFileInfoBeta1 => {
+    case RequertParserHead(downFileInfo) => {
       log.info("headParser收到请求....")
-      val file = getFile(downFileInfoBeta1.socket)
+      val file = getFile(downFileInfo.socket)
       log.info("headParser解析出需要下载的文件:{}....", file)
       log.info("headParser发送请求给RepoManager")
-      val downFileInfoBeta2 = downFileInfoBeta1.getDownFileInfoBeta2(file)
-      repoManager ! RequertReturnFile(downFileInfoBeta2)
+      downFileInfo.file = file
+      repoManager ! RequertFile(downFileInfo)
     }
   }
 

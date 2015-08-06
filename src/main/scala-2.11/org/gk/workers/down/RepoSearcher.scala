@@ -3,10 +3,10 @@ package org.gk.workers.down
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging}
 import org.gk.config.cfg
-import org.gk.workers.DownFileInfoBeta2
+import org.gk.workers.{DownFileInfo, DownFileInfoBeta2}
 import org.gk.workers.down.DownManager.{DownLoadFile}
 import org.gk.workers.down.DownMaster.DownFile
-import org.gk.workers.down.RepoSearcher.SearchPepo
+import org.gk.workers.down.RepoSearcher.RequertFileUrl
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -15,17 +15,19 @@ import scala.collection.mutable.ArrayBuffer
  */
 object RepoSearcher{
 
-  case class SearchPepo(downFileInfoBeta2:DownFileInfoBeta2)
+  case class RequertFileUrl(downFileInfo:DownFileInfo)
 }
 class RepoSearcher extends Actor with ActorLogging{
   override def receive: Receive = {
-    case SearchPepo(downFileInfoBeta2) =>
-      val file = downFileInfoBeta2.file
+    case RequertFileUrl(downFileInfo) =>
+      val file = downFileInfo.file
       log.info("仓库搜索{}",file)
       val fileURL = getFileUrl(file)
-      val downFileInfoBeta3 = downFileInfoBeta2.getDownFileInfoBeta3(fileURL)
-      sender() ! DownLoadFile(downFileInfoBeta3)
+      downFileInfo.fileUrl = fileURL
+      sender() ! DownLoadFile(downFileInfo)
   }
+
+
   def getFileUrl(file:String): String ={
     val remoteRepMap = cfg.getRemoteRepoMap
     val getRemoteRepo_Central = cfg.getRemoteRepoCentral
@@ -40,6 +42,8 @@ class RepoSearcher extends Actor with ActorLogging{
     }
     fileUrl
   }
+
+
   def getTestFileUrlCode(fileUrl:String): Int ={
     import java.net.{HttpURLConnection, URL};
     val downUrl = new URL(fileUrl)

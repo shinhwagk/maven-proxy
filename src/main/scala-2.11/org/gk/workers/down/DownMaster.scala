@@ -8,7 +8,7 @@ import akka.actor._
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.DownFileInfoBeta3
+import org.gk.workers.{DownFileInfo, DownFileInfoBeta3}
 import org.gk.workers.down.DownManager.SendFile
 import org.gk.workers.down.DownWorker.Downming
 import slick.driver.H2Driver.api._
@@ -43,7 +43,7 @@ object DownMaster {
   }
 }
 
-case class Download(downFileInfoBeta3: DownFileInfoBeta3)
+case class Download(downFileInfo: DownFileInfo)
 
 case class RequertGetFile(downFileInfo: DownFileInfo)
 
@@ -69,9 +69,9 @@ class DownMaster extends Actor with ActorLogging {
   }
 
   override def receive: Receive = {
-    case Download(downFileInfoBeta3) =>
+    case Download(downFileInfo) =>
       downManager = sender()
-      allocationWork(downFileInfoBeta3)
+      allocationWork(downFileInfo)
 
     case WorkDownSuccess(fileurl, file, startIndex,downFileInfoBeta3) => {
       //      Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileurl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
@@ -103,35 +103,33 @@ class DownMaster extends Actor with ActorLogging {
     }
   }
 
-  def allocationWork(downFileInfoBeta3: DownFileInfoBeta3): Unit = {
+  def allocationWork(downFileInfo: DownFileInfo): Unit = {
 
-    val fileTmpOS = downFileInfoBeta3.fileTempOS
-    val fileUrl = downFileInfoBeta3.fileURL
-    val fileLength = getDownFileLength(fileUrl)
+    val fileTmpOS = downFileInfo.fileTempOS
+    val fileUrl = downFileInfo.fileUrl
+    val fileLength = downFileInfo.fileLength
+    val downWokerNumber = downFileInfo.workerNumber
+    val file = downFileInfo.file
 
-
-    val workNumber = getWorkNum(fileLength)
-    val file = downFileInfoBeta3.file
-
-    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, workNumber)
-    println("需要线程数量" + workNumber)
+    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerNumber)
+    println("需要线程数量" + downWokerNumber)
     log.info("定位在下文件{}...", fileTmpOS)
 
     //创建临时文件需要的目录和文件
-    createTmpfile(fileTmpOS, fileLength)
+    downFileInfo.createTmpfile
 
-    val endLength = fileLength % workNumber
+    val endLength = fileLength % downWokerNumber
 
     //步长
-    val step = (fileLength - endLength) / workNumber
+    val step = (fileLength - endLength) / downWokerNumber
 
-    val downaa = new DownCount(workNumber, 0)
+    val downaa = new DownCount(downWokerNumber, 0)
 
 
-    insertDownMaster(file, fileUrl, workNumber)
-    for (thread <- 1 to workNumber) {
+    insertDownMaster(file, fileUrl, downWokerNumber)
+    for (thread <- 1 to downWokerNumber) {
       thread match {
-        case _ if thread == workNumber =>
+        case _ if thread == downWokerNumber =>
           val startIndex = (thread - 1) * step
           val endIndex = thread * step + endLength
           insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
@@ -150,24 +148,6 @@ class DownMaster extends Actor with ActorLogging {
   }
 
 
-  def getWorkNum(fileLength: Int): Int = {
-    val processForBytes = cfg.getPerProcessForBytes
-    if (fileLength >= processForBytes) fileLength / processForBytes else 1
-  }
-
-  def createTmpfile(fileTmpOS: String, fileLength: Int): Unit = {
-    val file = new File(fileTmpOS)
-
-    if (!file.getParentFile.exists()) {
-      file.getParentFile.mkdirs()
-    }
-
-    val raf = new RandomAccessFile(fileTmpOS, "rwd");
-    raf.setLength(fileLength);
-    raf.close()
-
-    log.info("创建临时文件{}...", fileTmpOS)
-  }
 
   def renameFile(fileTemp: String): Unit = {
 
@@ -178,13 +158,5 @@ class DownMaster extends Actor with ActorLogging {
     context.stop(actor)
   }
 
-  private def getDownFileLength(fileURL: String): Int = {
-    import java.net.{HttpURLConnection, URL};
-    val conn = new URL(fileURL).openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(10000)
-    conn.setReadTimeout(5000)
-    val fileLength = conn.getContentLength
-    conn.disconnect()
-    fileLength
-  }
+
 }

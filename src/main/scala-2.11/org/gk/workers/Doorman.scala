@@ -1,18 +1,10 @@
 package org.gk.workers
 
-import java.net.{ServerSocket, Socket}
+import java.io.{RandomAccessFile, File}
+import java.net.Socket
 
-import akka.actor.{ActorRef, Props, Actor}
+import akka.actor.{Props, Actor}
 import org.gk.config.cfg
-import org.gk.config.cfg._
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
-import slick.dbio.DBIO
-
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-import scala.concurrent.ExecutionContext.Implicits.global
-import slick.driver.H2Driver.api._
 
 /**
  * Created by goku on 2015/7/24.
@@ -25,8 +17,8 @@ class Doorman extends Actor {
 
   override def receive: Receive = {
     case socket: Socket => {
-      val downFileInfoBeta1 = DownFileInfoBeta1(socket)
-      headParser ! downFileInfoBeta1
+      val downFileInfo = DownFileInfo(socket)
+      headParser ! RequertParserHead(downFileInfo)
       println("requert发送者接受到请求，准备处理...")
       println("requert发送者发出请求...")
 
@@ -50,7 +42,9 @@ case class DownFileInfoBeta2(socket: Socket, file: String) {
 case class DownFileInfoBeta3(file: String, socket: Socket, fileURL: String, fileOS: String, fileTempOS: String)
 
 
-case class DownFileInfo(socket:Socket){
+case class DownFileInfo(s:Socket){
+
+  val socket:Socket = s
 
   var file:String = _
 
@@ -60,5 +54,49 @@ case class DownFileInfo(socket:Socket){
 
   lazy val fileTempOS: String = fileOS + ".DownTmp"
 
+  lazy val fileLength :Int = getFileLength
+
+  lazy val workerNumber: Int = getDownWokerNumber
+  
+  lazy val workerDownInfo:Map[Int,(Int,Int)] = getwokerDownInfo
+
+  private def getDownWokerNumber: Int = {
+    val processForBytes = cfg.getPerProcessForBytes
+    if (fileLength >= processForBytes) fileLength / processForBytes else 1
+  }
+
+  private def getFileLength: Int = {
+    import java.net.{HttpURLConnection, URL};
+    val conn = new URL(fileUrl).openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(10000)
+    conn.setReadTimeout(5000)
+    val fileLength = conn.getContentLength
+    conn.disconnect()
+    fileLength
+  }
+
+  def createTmpfile: Unit = {
+    val file = new File(fileTempOS)
+
+    if (!file.getParentFile.exists) file.getParentFile.mkdirs()
+
+    if(!file.exists) {
+      val raf = new RandomAccessFile(fileTempOS, "rwd");
+      raf.setLength(fileLength);
+      raf.close()
+    }
+  }
+
+  def getwokerDownInfo:Map[Int,(Int,Int)] = {
+    val endLength = fileLength % workerNumber
+    val step = (fileLength - endLength) / workerNumber
+    var tempMap:Map[Int,(Int,Int)] = _
+    for (i <- 1 to workerNumber) {
+      val startIndex: Int = (i - 1) * step
+      val endIndex = if (i == workerNumber) i * step + endLength else i * step + endLength - 1
+      tempMap += (i -> (startIndex,endIndex))
+    }
+    tempMap
+  }
 }
 

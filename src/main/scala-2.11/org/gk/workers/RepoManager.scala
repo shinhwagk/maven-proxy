@@ -1,30 +1,19 @@
 package org.gk.workers
 
-import java.io.{RandomAccessFile, File}
+import java.io.File
 
 import akka.actor.{Props, Actor}
-import akka.actor.Actor.Receive
-import org.gk.config.cfg
-import java.net.Socket
-
-import org.gk.config.cfg._
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
-import org.gk.workers.RepoManager.{RuntrunFile, RequertReturnFile}
+import org.gk.workers.RepoManager.{RequertFile, RuntrunFile}
 import org.gk.workers.down.DownManager
-import org.gk.workers.down.DownManager.{SendFile, RequertDownFile}
-import slick.dbio.DBIO
+import org.gk.workers.down.DownManager.RequertDownFile
 
-import scala.collection.mutable.ArrayBuffer
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-import slick.driver.H2Driver.api._
 /**
  * Created by gk on 15/7/26.
  */
 object RepoManager {
   case class RequertReturnFile(downFileInfoBeta2:DownFileInfoBeta2)
   case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
+  case class RequertFile(downFileInfo:DownFileInfo)
 //  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
 }
 
@@ -34,10 +23,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
   val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
 
   override def receive: Receive = {
-    case RequertReturnFile(downFileInfoBeta2) =>
-      val file = downFileInfoBeta2.file
-      val socket = downFileInfoBeta2.socket
-      val fileOS = downFileInfoBeta2.fileOS
+    case RequertFile(downFileInfo) =>
+      val file = downFileInfo.file
+      val socket = downFileInfo.socket
+      val fileOS = downFileInfo.fileOS
 
       /**
        * 判断文件是否已经缓存在本地仓库
@@ -49,7 +38,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
         }
         case false => {
           log.info("文件:{} 不在本地...",file)
-          downManager ! RequertDownFile(downFileInfoBeta2)
+          downManager ! RequertDownFile(downFileInfo)
         }
       }
 

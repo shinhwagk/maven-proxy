@@ -12,7 +12,7 @@ import org.gk.workers.down.{DownWorker, DownMaster}
 /**
  * Created by gk on 15/7/21.
  */
-object Proxy extends {
+object Proxy extends App {
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
   val doorman = system.actorOf(Props[Doorman], name = "Doorman")
@@ -21,20 +21,14 @@ object Proxy extends {
   import org.gk.db.InitDatabase._
   initTable
 
-  //下载未完成的work
-
-
   println("系统已经启动...")
 
-  def main(args: Array[String]) {
+  while (true) {
     println("系统开始接受请求...")
+    val socket = ss.accept();
 
-    while (true) {
-      val socket = ss.accept();
-
-      doorman ! socket
-      println("发送请求给doorman...")
-    }
+    doorman ! socket
+    println("发送请求给doorman...")
   }
 }
 

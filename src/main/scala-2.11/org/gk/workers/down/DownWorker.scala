@@ -7,6 +7,7 @@ import akka.actor.{ActorLogging, Actor}
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
+import org.gk.workers.DownFileInfoBeta3
 
 import org.gk.workers.down.DownMaster.WorkDownSuccess
 import org.gk.workers.down.DownWorker.Downming
@@ -47,7 +48,7 @@ object DownWorker{
     raf.close()
   }
 }
-class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String,DownMasterActorRef:ActorRef) extends Actor with ActorLogging{
+class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String,DownMasterActorRef:ActorRef,downFileInfoBeta3: DownFileInfoBeta3 = null) extends Actor with ActorLogging{
 
   val fileTmpOS = cfg.getLocalRepoDir+file+".DownTmp"
   override def receive: Actor.Receive = {
@@ -107,7 +108,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String,
       storeWorkFile(fileTmpOS,startIndex,buffer)
     }finally is.close()
 
-    log.info("ActorRef:{}; 下载完毕",self.path.name)
+    log.debug("ActorRef:{}; 下载完毕",self.path.name)
     downConn.disconnect()
     Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
     val ccc = Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).map(p => (p.success)).result), Duration.Inf).toList.sum
@@ -118,7 +119,7 @@ class DownWorker(url:String,thread:Int,startIndex:Int, endIndex:Int,file:String,
     if (ccc == fileDownNumber){
       println("下载完成.....")
       println(sender().path.name)
-      DownMasterActorRef ! WorkDownSuccess(url,file,startIndex)
+      DownMasterActorRef ! WorkDownSuccess(url,file,startIndex,downFileInfoBeta3)
     }
 
   }

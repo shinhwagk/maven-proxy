@@ -31,7 +31,7 @@ object DownManager {
 
   case class DownLoadFile(downFileInfoBeta3: DownFileInfoBeta3)
 
-  case class SendFile(fileOS: String)
+  case class SendFile(downFileInfoBeta3: DownFileInfoBeta3)
 
 }
 
@@ -80,9 +80,8 @@ class DownManager(repoManagerActor: ActorRef) extends Actor with akka.actor.Acto
         println("文件在下载，。。。")
       }
 
-    case SendFile(fileOS: String) =>
-      println("fasong ")
-//      repoManagerActor ! ("DownSuccess", fileOS)
+    case SendFile(downFileInfoBeta3) =>
+      repoManagerActor ! ("DownSuccess", downFileInfoBeta3)
   }
 
   def checkFileDecodeDownning(file: String): Boolean = {

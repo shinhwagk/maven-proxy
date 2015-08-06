@@ -50,3 +50,15 @@ case class DownFileInfoBeta2(socket: Socket, file: String) {
 case class DownFileInfoBeta3(file: String, socket: Socket, fileURL: String, fileOS: String, fileTempOS: String)
 
 
+case class DownFileInfo(socket:Socket){
+
+  var file:String = _
+
+  var fileUrl:String = _
+
+  lazy val fileOS: String = cfg.getLocalRepoDir + file
+
+  lazy val fileTempOS: String = fileOS + ".DownTmp"
+
+}
+

@@ -24,7 +24,8 @@ import slick.driver.H2Driver.api._
  */
 object RepoManager {
   case class RequertReturnFile(downFileInfoBeta2:DownFileInfoBeta2)
-  case class RuntrunFile(fileOS:String,socket:Socket)
+  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
+//  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
@@ -44,7 +45,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
       decodeFileLocalExists(fileOS) match {
         case true => {
           log.info("文件:{} 存在本地,准备返回给请求者...",file)
-          retrunFile ! RuntrunFile(fileOS,socket)
+//          retrunFile ! RuntrunFile(fileOS,socket)
         }
         case false => {
           log.info("文件:{} 不在本地...",file)
@@ -52,8 +53,8 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
         }
       }
 
-    case SendFile(fileOS:String) =>{
-//      retrunFile ! RuntrunFile(fileOS,socket)
+    case ("DownSuccess", downFileInfoBeta3:DownFileInfoBeta3) =>{
+      retrunFile ! RuntrunFile(downFileInfoBeta3)
     }
   }
 

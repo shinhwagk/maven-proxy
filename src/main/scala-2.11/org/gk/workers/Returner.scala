@@ -16,7 +16,9 @@ class Returner extends Actor with akka.actor.ActorLogging{
   val terminator = context.actorOf(Props[Terminator])
 
   override def receive: Receive = {
-    case RuntrunFile(fileOS,socket) => {
+    case RuntrunFile(downFileInfoBeta3) => {
+      val fileOS = downFileInfoBeta3.fileOS
+      val socket = downFileInfoBeta3.socket
       log.info("准备发送文件{}。。。",fileOS)
       val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
       val downFileLength = bis.available();

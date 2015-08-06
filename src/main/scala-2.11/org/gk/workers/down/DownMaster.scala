@@ -28,7 +28,7 @@ object DownMaster {
 
   case class DownFile(fileUrl: String, file: String)
 
-  case class WorkDownSuccess(url: String, file: String, startIndex: Int)
+  case class WorkDownSuccess(url: String, file: String, startIndex: Int ,downFileInfoBeta3 :DownFileInfoBeta3)
 
   def getSequence: Int = synchronized {
     sequence_id += 1
@@ -48,9 +48,6 @@ case class Download(downFileInfoBeta3: DownFileInfoBeta3)
 case class RequertGetFile(downFileInfo: DownFileInfo)
 
 class DownMaster extends Actor with ActorLogging {
-
-  var a = 0
-  var b = 0
 
   import DownMaster._
 
@@ -75,11 +72,8 @@ class DownMaster extends Actor with ActorLogging {
     case Download(downFileInfoBeta3) =>
       downManager = sender()
       allocationWork(downFileInfoBeta3)
-    case "a" =>
-      println("wanbi ")
-      Thread.sleep(10000)
 
-    case WorkDownSuccess(fileurl, file, startIndex) => {
+    case WorkDownSuccess(fileurl, file, startIndex,downFileInfoBeta3) => {
       //      Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileurl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
 
       //      import org.gk.db.DML._
@@ -101,7 +95,7 @@ class DownMaster extends Actor with ActorLogging {
       val fileOSHeadle = new File(fileOS);
       val fileTempOSHeadle = new File(fileTempOS);
       fileTempOSHeadle.renameTo(fileOSHeadle)
-      downManager ! SendFile(fileOS)
+      downManager ! SendFile(downFileInfoBeta3)
       //      }
     }
     case Terminated(actorRef) => {
@@ -141,14 +135,14 @@ class DownMaster extends Actor with ActorLogging {
           val startIndex = (thread - 1) * step
           val endIndex = thread * step + endLength
           insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self)))) ! Downming
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self , downFileInfoBeta3)))) ! Downming
         //          log.info("线程: {} 下载请求已经发送...",thread)
 
         case _ =>
           val startIndex = (thread - 1) * step
           val endIndex = thread * step + endLength - 1
           insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self)))) ! Downming
+          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self ,downFileInfoBeta3)))) ! Downming
         //          log.info("线程: {} 下载请求已经发送...",thread)
 
       }

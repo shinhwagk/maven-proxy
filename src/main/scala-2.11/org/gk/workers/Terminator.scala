@@ -14,6 +14,5 @@ class Terminator extends Actor with akka.actor.ActorLogging{
     case socket:Socket =>
       socket.close()
       log.debug("连接关闭...")
-
   }
 }

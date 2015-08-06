@@ -93,7 +93,7 @@ case class DownFileInfo(s:Socket){
     var tempMap:Map[Int,(Int,Int)] = _
     for (i <- 1 to workerNumber) {
       val startIndex: Int = (i - 1) * step
-      val endIndex = if (i == workerNumber) i * step + endLength else i * step + endLength - 1
+      val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1
       tempMap += (i -> (startIndex,endIndex))
     }
     tempMap

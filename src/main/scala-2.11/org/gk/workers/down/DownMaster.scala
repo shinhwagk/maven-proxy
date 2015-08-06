@@ -127,22 +127,10 @@ class DownMaster extends Actor with ActorLogging {
 
 
     insertDownMaster(file, fileUrl, downWokerNumber)
-    for (thread <- 1 to downWokerNumber) {
-      thread match {
-        case _ if thread == downWokerNumber =>
-          val startIndex = (thread - 1) * step
-          val endIndex = thread * step + endLength
-          insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self , downFileInfoBeta3)))) ! Downming
+    for (i <- 1 to downWokerNumber) {
+//       insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
+       context.watch(context.actorOf(Props(new DownWorker(downFileList,i)))) ! Downming
         //          log.info("线程: {} 下载请求已经发送...",thread)
-
-        case _ =>
-          val startIndex = (thread - 1) * step
-          val endIndex = thread * step + endLength - 1
-          insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
-          context.watch(context.actorOf(Props(new DownWorker(fileUrl, thread, startIndex, endIndex, file, self ,downFileInfoBeta3)))) ! Downming
-        //          log.info("线程: {} 下载请求已经发送...",thread)
-
       }
     }
   }

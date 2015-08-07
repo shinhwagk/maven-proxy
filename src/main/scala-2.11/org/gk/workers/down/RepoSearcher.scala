@@ -3,7 +3,7 @@ package org.gk.workers.down
 import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging}
 import org.gk.config.cfg
-import org.gk.workers.{DownFileInfo, DownFileInfoBeta2}
+import org.gk.workers.DownFileInfo
 import org.gk.workers.down.DownManager.{DownLoadFile}
 import org.gk.workers.down.DownMaster.DownFile
 import org.gk.workers.down.RepoSearcher.RequertFileUrl

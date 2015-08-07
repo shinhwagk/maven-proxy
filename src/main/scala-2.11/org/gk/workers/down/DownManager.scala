@@ -5,7 +5,7 @@ import java.net.{Socket, HttpURLConnection, URL}
 import com.sun.org.apache.xml.internal.resolver.helpers.FileURL
 import org.gk.db.DML._
 import org.gk.workers.RepoManager.RequertFile
-import org.gk.workers.{DownFileInfo, DownFileInfoBeta3, DownFileInfoBeta2}
+import org.gk.workers.DownFileInfo
 import slick.dbio.DBIO
 
 import scala.concurrent.duration._

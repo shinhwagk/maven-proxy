@@ -11,8 +11,6 @@ import org.gk.workers.down.DownManager.RequertDownFile
  * Created by gk on 15/7/26.
  */
 object RepoManager {
-  case class RequertReturnFile(downFileInfoBeta2:DownFileInfoBeta2)
-
   case class RequertFile(downFileInfo:DownFileInfo)
 //  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
 }

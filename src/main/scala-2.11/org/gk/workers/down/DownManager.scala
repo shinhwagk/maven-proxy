@@ -45,9 +45,12 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
   override def receive: Actor.Receive = {
     case RequertDownFile(downFileInfo) =>
       log.info("请求仓库....")
-      repoSearcher ! RequertFileUrl(downFileInfo)
+      context.watch(context.actorOf(Props[RepoSearcher])) ! RequertFileUrl(downFileInfo)
+//      repoSearcher ! RequertFileUrl(downFileInfo)
 
     case DownLoadFile(downFileInfo) =>
+      context.unwatch(sender())
+      context.stop(sender())
       val fileURL = downFileInfo.fileUrl
       val file = downFileInfo.file
       println(fileURL)

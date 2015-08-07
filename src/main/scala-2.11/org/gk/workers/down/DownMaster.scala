@@ -63,6 +63,14 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     }
   }
 
+  override def preRestart(reason: Throwable, message: Option[Any]) {
+    println("actor:" + self.path + ", preRestart parent, reason:" + reason + ", message:" + message)
+  }
+
+  override def postRestart(reason: Throwable) {
+    log.debug("actor:{}, postRestart parent, reason:{}", self.path, reason)
+  }
+
   override def receive: Receive = {
     case Download(downFileInfo) =>
 
@@ -97,6 +105,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
     //创建临时文件需要的目录和文件
     downFileInfo.createTmpfile
+    log.info("临时文件创建完毕")
 
     insertDownMaster(file, fileUrl, downWokerAmount)
 
@@ -105,15 +114,15 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       val endIndex = downFileInfo.workerDownInfo(i)._2
       insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(downFileInfo, i)
-      log.debug("线程: {} 下载请求已经发送...",i)
+      log.debug("线程: {} 下载请求已经发送...", i)
     }
   }
 
-    def renameFile(downFileInfo: DownFileInfo): Unit = {
-      val fileOS = downFileInfo.fileOS
-      val fileTempOS = downFileInfo.fileTempOS
-      val fileOSHeadle = new File(fileOS);
-      val fileTempOSHeadle = new File(fileTempOS);
-      fileTempOSHeadle.renameTo(fileOSHeadle)
-    }
+  def renameFile(downFileInfo: DownFileInfo): Unit = {
+    val fileOS = downFileInfo.fileOS
+    val fileTempOS = downFileInfo.fileTempOS
+    val fileOSHeadle = new File(fileOS);
+    val fileTempOSHeadle = new File(fileTempOS);
+    fileTempOSHeadle.renameTo(fileOSHeadle)
+  }
 }

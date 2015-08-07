@@ -64,6 +64,7 @@ case class DownFileInfo(s:Socket){
 
     if(!file.exists) {
       val raf = new RandomAccessFile(fileTempOS, "rwd");
+      println("createTempfile" + fileTempOS + "长度:" + fileLength)
       raf.setLength(fileLength);
       raf.close()
     }

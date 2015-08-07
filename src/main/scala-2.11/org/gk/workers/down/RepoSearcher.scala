@@ -1,11 +1,9 @@
 package org.gk.workers.down
 
-import akka.actor.Actor.Receive
-import akka.actor.{ActorRef, Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, ActorRef}
 import org.gk.config.cfg
 import org.gk.workers.DownFileInfo
-import org.gk.workers.down.DownManager.{DownLoadFile}
-import org.gk.workers.down.DownMaster.DownFile
+import org.gk.workers.down.DownManager.DownLoadFile
 import org.gk.workers.down.RepoSearcher.RequertFileUrl
 
 import scala.collection.mutable.ArrayBuffer
@@ -33,7 +31,6 @@ class RepoSearcher(downManagerActorRef: ActorRef) extends Actor with ActorLoggin
     println("actor:" + self.path + ", preRestart parent, reason:" + reason + ", message:" + message)
     self ! message.get.asInstanceOf[RequertFileUrl]
   }
-
 
   def getFileUrl(file: String): String = {
     val remoteRepMap = cfg.getRemoteRepoMap

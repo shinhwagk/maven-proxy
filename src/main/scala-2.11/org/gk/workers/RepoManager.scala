@@ -2,8 +2,8 @@ package org.gk.workers
 
 import java.io.File
 
-import akka.actor.{Props, Actor}
-import org.gk.workers.RepoManager.{RequertFile}
+import akka.actor.{Actor, Props}
+import org.gk.workers.RepoManager.RequertFile
 import org.gk.workers.down.DownManager
 import org.gk.workers.down.DownManager.RequertDownFile
 
@@ -12,7 +12,6 @@ import org.gk.workers.down.DownManager.RequertDownFile
  */
 object RepoManager {
   case class RequertFile(downFileInfo:DownFileInfo)
-//  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
@@ -23,7 +22,6 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
   override def receive: Receive = {
     case RequertFile(downFileInfo) =>
       val file = downFileInfo.file
-      val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
 
       /**
@@ -39,10 +37,6 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
           downManager ! RequertDownFile(downFileInfo)
         }
       }
-
-//    case ("DownSuccess", downFileInfoBeta3:DownFileInfoBeta3) =>{
-//      retrunFile ! RuntrunFile(downFileInfoBeta3)
-//    }
   }
 
   //查看文件是否存在本地仓库

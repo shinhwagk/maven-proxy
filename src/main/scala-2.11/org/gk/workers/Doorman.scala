@@ -1,9 +1,9 @@
 package org.gk.workers
 
-import java.io.{RandomAccessFile, File}
+import java.io.{File, RandomAccessFile}
 import java.net.Socket
 
-import akka.actor.{Props, Actor}
+import akka.actor.{Actor, Props}
 import org.gk.config.cfg
 
 /**
@@ -14,6 +14,14 @@ import org.gk.config.cfg
 class Doorman extends Actor {
   val terminator = context.actorOf(Props[Terminator])
   val headParser = context.actorOf(Props[HeadParser], name = "HeadParser")
+
+  //在启动时下载为下载完的部分
+
+  //  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
+  //    case (file, fileUrl, startIndex, enIndex, success, restartCount) =>
+  //      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file, self)), name = "work" + getSequence))
+  //      worker ! Downming
+  //  }), Duration.Inf)
 
   override def receive: Receive = {
     case socket: Socket => {
@@ -38,7 +46,7 @@ case class DownFileInfo(s:Socket){
 
   lazy val fileTempOS: String = fileOS + ".DownTmp"
 
-  lazy val fileLength :Int = getFileLength
+  var fileLength :Int = _
 
   lazy val workerNumber: Int = getDownWokerNumber
   
@@ -47,16 +55,6 @@ case class DownFileInfo(s:Socket){
   private def getDownWokerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
     if (fileLength >= processForBytes) fileLength / processForBytes else 1
-  }
-
-  private def getFileLength: Int = {
-    import java.net.{HttpURLConnection, URL};
-    val conn = new URL(fileUrl).openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(10000)
-    conn.setReadTimeout(10000)
-    val fileLength = conn.getContentLength
-    conn.disconnect()
-    fileLength
   }
 
   def createTmpfile: Unit = {
@@ -81,6 +79,12 @@ case class DownFileInfo(s:Socket){
       tempMap += (i -> (startIndex,endIndex))
     }
     tempMap
+  }
+
+  def renameFile: Unit = {
+    val fileOSHeadle = new File(fileOS);
+    val fileTempOSHeadle = new File(fileTempOS);
+    fileTempOSHeadle.renameTo(fileOSHeadle)
   }
 }
 

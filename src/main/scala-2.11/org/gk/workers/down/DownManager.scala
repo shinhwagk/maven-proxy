@@ -1,28 +1,16 @@
 package org.gk.workers.down
 
-import java.io._
-import java.net.{Socket, HttpURLConnection, URL}
-import com.sun.org.apache.xml.internal.resolver.helpers.FileURL
-import org.gk.db.DML._
-import org.gk.workers.RepoManager.RequertFile
-import org.gk.workers.DownFileInfo
-import org.gk.workers.down.RepoSearcher
-import slick.dbio.DBIO
-
-import scala.concurrent.duration._
-import akka.actor.{ActorRef, Props, Actor}
-import akka.routing.RoundRobinPool
-import org.gk.config.cfg
+import akka.actor.{Actor, ActorRef, Props}
+import org.gk.config.cfg._
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.down.DownManager.{DownLoadFile, DownFileSuccess, RequertDownFile}
-import org.gk.workers.down.DownMaster.DownFile
-import org.gk.workers.down.RepoSearcher.{RequertFileUrl}
-import scala.concurrent.ExecutionContext.Implicits.global
+import org.gk.workers.DownFileInfo
+import org.gk.workers.RepoManager.RequertFile
+import org.gk.workers.down.DownManager.{DownFileSuccess, RequertDownFile}
 import slick.driver.H2Driver.api._
+
 import scala.concurrent.Await
-import org.gk.config._
-import org.gk.config.cfg._
+import scala.concurrent.duration._
 
 /**
  * Created by goku on 2015/7/22.
@@ -42,15 +30,15 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
   val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
 
   override def receive: Actor.Receive = {
-    case RequertDownFile(downFileInfo) =>
-      log.info("请求仓库....")
-      context.watch(context.actorOf(Props(new RepoSearcher(self)))) ! RequertFileUrl(downFileInfo)
-//      repoSearcher ! RequertFileUrl(downFileInfo)
+    //    case RequertDownFile(downFileInfo) =>
+    //      log.info("请求仓库....")
+    //      context.watch(context.actorOf(Props(new RepoSearcher(self)))) ! RequertFileUrl(downFileInfo)
+    ////      repoSearcher ! RequertFileUrl(downFileInfo)
 
-    case DownLoadFile(downFileInfo) =>
-      val repoSearcherActorRef = sender()
-      context.unwatch(repoSearcherActorRef)
-      context.stop(repoSearcherActorRef)
+    case RequertDownFile(downFileInfo) =>
+      //      val repoSearcherActorRef = sender()
+      //      context.unwatch(repoSearcherActorRef)
+      //      context.stop(repoSearcherActorRef)
       val fileURL = downFileInfo.fileUrl
       val file = downFileInfo.file
       println(fileURL)

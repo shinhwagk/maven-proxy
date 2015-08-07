@@ -1,23 +1,17 @@
 package org.gk.workers.down
 
-import java.io.{File, RandomAccessFile}
-import java.net.HttpURLConnection
-import slick.driver.H2Driver.api._
-import scala.concurrent.ExecutionContext.Implicits.global
+import java.io.RandomAccessFile
+
 import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.config.cfg
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
+import org.gk.db.DML._
 import org.gk.workers.DownFileInfo
 import org.gk.workers.down.DownManager.DownFileSuccess
-import org.gk.workers.down.DownWorker.{WorkerDownSelfSection, Downming}
-import slick.driver.H2Driver.api._
+import org.gk.workers.down.DownWorker.WorkerDownSelfSection
 
-import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.{Duration, _}
-import org.gk.db.DML._
+import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.duration._
 
 /**
  * Created by goku on 2015/7/28.
@@ -25,12 +19,10 @@ import org.gk.db.DML._
 class DownCount(val worksNum: Int, var successNum: Int)
 
 object DownMaster {
-  var sequence_id = 0
 
   case class DownFile(fileUrl: String, file: String)
 
   case class WorkerDownSectionSuccess(downFileInfo: DownFileInfo)
-
 
   def storeWorkFile(fileTempOS: String, startIndex: Int, buffer: Array[Byte]) = synchronized {
     val raf = new RandomAccessFile(fileTempOS, "rwd");
@@ -47,14 +39,6 @@ case class RequertGetFile(downFileInfo: DownFileInfo)
 class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging {
 
   import DownMaster._
-
-  //在启动时下载为下载完的部分
-
-  //  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
-  //    case (file, fileUrl, startIndex, enIndex, success, restartCount) =>
-  //      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file, self)), name = "work" + getSequence))
-  //      worker ! Downming
-  //  }), Duration.Inf)
 
 
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 50, withinTimeRange = 60 seconds) {
@@ -82,22 +66,23 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       deleteDownWorker(fileurl)
       deleteDownfile(fileurl)
 
-      renameFile(downFileInfo)
+      downFileInfo.renameFile
 
       downManagerActorRef ! DownFileSuccess(downFileInfo)
 
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
-
   }
 
   def allocationWorker(downFileInfo: DownFileInfo): Unit = {
 
-    val fileTmpOS = downFileInfo.fileTempOS
+    val file = downFileInfo.file
+    downFileInfo.fileUrl = getFileUrl(file)
     val fileUrl = downFileInfo.fileUrl
+    downFileInfo.fileLength = getFileLength(fileUrl)
     val fileLength = downFileInfo.fileLength
     val downWokerAmount = downFileInfo.workerNumber
-    val file = downFileInfo.file
+    val fileTmpOS = downFileInfo.fileTempOS
 
     log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
     log.info("定位在下文件{}...", fileTmpOS)
@@ -117,11 +102,37 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     }
   }
 
-  def renameFile(downFileInfo: DownFileInfo): Unit = {
-    val fileOS = downFileInfo.fileOS
-    val fileTempOS = downFileInfo.fileTempOS
-    val fileOSHeadle = new File(fileOS);
-    val fileTempOSHeadle = new File(fileTempOS);
-    fileTempOSHeadle.renameTo(fileOSHeadle)
+  private def getFileUrl(file: String): String = {
+    val remoteRepMap = cfg.getRemoteRepoMap
+    val getRemoteRepo_Central = cfg.getRemoteRepoCentral
+    val testCentralFileUrl = getRemoteRepo_Central + file
+    val fileUrl = if (getTestFileUrlCode(testCentralFileUrl) == 200) {
+      testCentralFileUrl
+    } else {
+      val a = remoteRepMap.filter(repo => (getTestFileUrlCode(repo._2 + file) == 200))
+      val b = a.map(x => x._2)
+      val c = b.asInstanceOf[ArrayBuffer[String]]
+      c(0) + file
+    }
+    fileUrl
+  }
+
+
+  private def getTestFileUrlCode(fileUrl: String): Int = {
+    import java.net.{HttpURLConnection, URL};
+    val downUrl = new URL(fileUrl)
+    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    downConn.setConnectTimeout(2000)
+    downConn.getResponseCode
+  }
+
+  private def getFileLength(fileUrl:String): Int = {
+    import java.net.{HttpURLConnection, URL};
+    val conn = new URL(fileUrl).openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(10000)
+    conn.setReadTimeout(10000)
+    val fileLength = conn.getContentLength
+    conn.disconnect()
+    fileLength
   }
 }

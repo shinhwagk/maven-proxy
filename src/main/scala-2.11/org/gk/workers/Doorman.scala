@@ -34,23 +34,25 @@ class Doorman extends Actor {
   }
 }
 
-case class DownFileInfo(s:Socket){
+case class DownFileInfo(s: Socket) {
 
-  val socket:Socket = s
+  val socket: Socket = s
 
-  var file:String = _
+  var headInfo: Map[String, String] = _
 
-  var fileUrl:String = _
+  lazy val file: String = headInfo("PATH")
+
+  var fileUrl: String = _
 
   lazy val fileOS: String = cfg.getLocalRepoDir + file
 
   lazy val fileTempOS: String = fileOS + ".DownTmp"
 
-  var fileLength :Int = _
+  var fileLength: Int = _
 
   lazy val workerNumber: Int = getDownWokerNumber
-  
-  lazy val workerDownInfo:Map[Int,(Int,Int)] = getwokerDownInfo
+
+  lazy val workerDownInfo: Map[Int, (Int, Int)] = getwokerDownInfo
 
   private def getDownWokerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
@@ -62,7 +64,7 @@ case class DownFileInfo(s:Socket){
 
     if (!file.getParentFile.exists) file.getParentFile.mkdirs()
 
-    if(!file.exists) {
+    if (!file.exists) {
       val raf = new RandomAccessFile(fileTempOS, "rwd");
       println("createTempfile" + fileTempOS + "长度:" + fileLength)
       raf.setLength(fileLength);
@@ -70,14 +72,14 @@ case class DownFileInfo(s:Socket){
     }
   }
 
-  def getwokerDownInfo:Map[Int,(Int,Int)] = {
+  def getwokerDownInfo: Map[Int, (Int, Int)] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
-    var tempMap:Map[Int,(Int,Int)] = Map.empty
+    var tempMap: Map[Int, (Int, Int)] = Map.empty
     for (i <- 1 to workerNumber) {
       val startIndex: Int = (i - 1) * step
       val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1
-      tempMap += (i -> (startIndex,endIndex))
+      tempMap += (i ->(startIndex, endIndex))
     }
     tempMap
   }

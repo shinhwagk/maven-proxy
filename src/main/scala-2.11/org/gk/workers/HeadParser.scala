@@ -20,7 +20,7 @@ import scala.concurrent.Await
  * Created by goku on 2015/7/27.
  */
 
-case class RequertParserHead(downFileInfo:DownFileInfo)
+case class RequertParserHead(downFileInfo: DownFileInfo)
 
 class HeadParser extends Actor with akka.actor.ActorLogging {
 
@@ -29,18 +29,36 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
   override def receive: Receive = {
     case RequertParserHead(downFileInfo) => {
       log.info("headParser收到请求....")
-      val file = getFile(downFileInfo.socket)
+      downFileInfo.headInfo = getHeadInfo(downFileInfo.socket)
+      val file = downFileInfo.file
       log.info("headParser解析出需要下载的文件:{}....", file)
       log.info("headParser发送请求给RepoManager")
-      downFileInfo.file = file
+
       repoManager ! RequertFile(downFileInfo)
     }
   }
 
-  //从头信息获得下载文件
-  def getFile(socket: Socket): String = {
-    val headBuffers = new BufferedReader(new InputStreamReader(socket.getInputStream))
-    val headFirstLine = headBuffers.readLine()
-    headFirstLine.split(" ")(1)
+
+  def getHeadInfo(socket: Socket): Map[String, String] = {
+    val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
+    var a: Map[String, String] = Map.empty
+    var templine = br.readLine()
+    val b = templine.split(" ")
+
+    a += ("PATH" -> b(1))
+
+    templine = br.readLine()
+
+    while (templine != null && templine != "") {
+      println(templine)
+      val b = templine.split(":")
+
+      b(0) match {
+        case "Connection" => a += (b(0) -> b(1))
+        case _ => None
+      }
+      templine = br.readLine()
+    }
+    a
   }
 }

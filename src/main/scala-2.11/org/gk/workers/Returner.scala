@@ -35,6 +35,8 @@ class Returner extends Actor with akka.actor.ActorLogging{
       bis.close()
       socket.close()
       log.info("文件:{},已经返回给请求者",fileOS)
+      context.unwatch(sender())
+      context.stop(sender())
 //      terminator ! socket
     }
   }

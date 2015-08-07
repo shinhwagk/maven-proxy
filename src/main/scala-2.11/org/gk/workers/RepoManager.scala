@@ -16,7 +16,6 @@ object RepoManager {
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
 
-  val returner = context.actorOf(Props[Returner],name ="Returner")
   val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
 
   override def receive: Receive = {
@@ -30,7 +29,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
       decodeFileLocalExists(fileOS) match {
         case true => {
           log.info("文件:{} 存在本地,准备返回给请求者...",file)
-          returner ! RuntrunFile(downFileInfo)
+          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(downFileInfo)
         }
         case false => {
           log.info("文件:{} 不在本地...",file)

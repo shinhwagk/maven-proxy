@@ -36,6 +36,11 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
           downManager ! RequertDownFile(downFileInfo)
         }
       }
+
+    case "ffs" =>
+      val a = sender()
+      context.unwatch(a)
+      context.stop(a)
   }
 
   //查看文件是否存在本地仓库

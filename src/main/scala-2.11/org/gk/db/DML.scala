@@ -18,7 +18,6 @@ object DML {
 
   def insertDownMaster(file: String, fileUrl: String, WorksNumber: Int): Unit = {
     println(file + "被插入到数据库")
-    println()
     val insert = DBIO.seq(
       downFileList +=(file, fileUrl, WorksNumber)
     )

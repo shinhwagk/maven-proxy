@@ -102,7 +102,7 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
     println("wancheng " + ccc + "/" + fileDownNumber)
     if (ccc == fileDownNumber) {
       println("下载完成.....")
-      println(sender().path.name)
+      println(sender().path.name+"xxx")
       downMasterActorRef ! WorkerDownSectionSuccess(downFileInfo)
     }
   }

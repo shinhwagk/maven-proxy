@@ -41,7 +41,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       //      context.stop(repoSearcherActorRef)
       val fileURL = downFileInfo.fileUrl
       val file = downFileInfo.file
-      println(fileURL)
+      println(fileURL+"xxx")
       if (checkFileDecodeDownning(file)) {
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {

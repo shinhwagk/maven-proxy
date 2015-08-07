@@ -44,17 +44,6 @@ object cfg {
   def getMavenProxyPost:Int = {
     config.getInt("MavenPorxyPort")
   }
-
-  def main(args: Array[String]) {
-//    println(getLocalRepositoryDir)
-  val a = getRemoteRepoMap
-
-    for((k,v)<-getRemoteRepoMap){
-      println(k)
-    }
-//    repositoryMap.filter(repo => repo._2)
-  }
-
 }
 
 

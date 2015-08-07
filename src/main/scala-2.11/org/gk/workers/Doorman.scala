@@ -52,8 +52,8 @@ case class DownFileInfo(s:Socket){
   private def getFileLength: Int = {
     import java.net.{HttpURLConnection, URL};
     val conn = new URL(fileUrl).openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(5000)
-    conn.setReadTimeout(5000)
+    conn.setConnectTimeout(10000)
+    conn.setReadTimeout(10000)
     val fileLength = conn.getContentLength
     conn.disconnect()
     fileLength

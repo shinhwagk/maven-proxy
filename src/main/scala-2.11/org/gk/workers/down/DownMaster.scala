@@ -74,7 +74,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
   override def receive: Receive = {
     case Download(downFileInfo) =>
 
-      allocationWork(downFileInfo)
+      allocationWorker(downFileInfo)
 
     case WorkerDownSectionSuccess(downFileInfo) =>
 
@@ -91,7 +91,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
   }
 
-  def allocationWork(downFileInfo: DownFileInfo): Unit = {
+  def allocationWorker(downFileInfo: DownFileInfo): Unit = {
 
     val fileTmpOS = downFileInfo.fileTempOS
     val fileUrl = downFileInfo.fileUrl
@@ -100,7 +100,6 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     val file = downFileInfo.file
 
     log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-    println("需要线程数量" + downWokerAmount)
     log.info("定位在下文件{}...", fileTmpOS)
 
     //创建临时文件需要的目录和文件

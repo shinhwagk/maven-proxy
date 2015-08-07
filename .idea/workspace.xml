@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="0.8.7 返回增加并发">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
+    <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -75,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.6838488">
-              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="38" selection-end-column="28" />
+              <caret line="37" column="0" selection-start-line="37" selection-start-column="2" selection-end-line="38" selection-end-column="30" />
               <folding>
                 <element signature="e#24#105#0" expanded="true" />
               </folding>
@@ -178,9 +178,9 @@
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownWorker.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/down/DownManager.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Doorman.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/RepoManager.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala" />
       </list>
     </option>
   </component>
@@ -1259,7 +1259,13 @@
       <option name="project" value="LOCAL" />
       <updated>1438937511992</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="0.8.7 返回增加并发">
+      <created>1438938084021</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1438938084021</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1743,7 +1749,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/workers/Returner.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6838488">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="38" selection-end-column="28" />
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="2" selection-end-line="38" selection-end-column="30" />
           <folding>
             <element signature="e#24#105#0" expanded="true" />
           </folding>

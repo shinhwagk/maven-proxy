@@ -49,6 +49,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
   override def preRestart(reason: Throwable, message: Option[Any]) {
     println("actor:" + self.path + ", preRestart parent, reason:" + reason + ", message:" + message)
+    self ! message.get.asInstanceOf[Download]
   }
 
   override def postRestart(reason: Throwable) {

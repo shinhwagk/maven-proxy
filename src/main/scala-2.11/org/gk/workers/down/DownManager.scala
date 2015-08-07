@@ -1,5 +1,7 @@
 package org.gk.workers.down
 
+import java.net.Socket
+
 import akka.actor.{Actor, ActorRef, Props}
 import org.gk.config.cfg._
 import org.gk.db.MetaData._
@@ -23,22 +25,17 @@ object DownManager {
 
   case class DownFileSuccess(downFileInfo: DownFileInfo)
 
+  var requertSameDowingFileMap:Map[Socket,DownLoadFile] = Map.empty
+
 }
 
 class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 
   val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
-
+//  context.system.scheduler.schedule(Duration.Zero, 3 second, repoManagerActorRef, RequertFile(downFileInfo))
   override def receive: Actor.Receive = {
-    //    case RequertDownFile(downFileInfo) =>
-    //      log.info("请求仓库....")
-    //      context.watch(context.actorOf(Props(new RepoSearcher(self)))) ! RequertFileUrl(downFileInfo)
-    ////      repoSearcher ! RequertFileUrl(downFileInfo)
 
     case RequertDownFile(downFileInfo) =>
-      //      val repoSearcherActorRef = sender()
-      //      context.unwatch(repoSearcherActorRef)
-      //      context.stop(repoSearcherActorRef)
       val fileURL = downFileInfo.fileUrl
       val file = downFileInfo.file
       println(fileURL+"xxx")
@@ -46,6 +43,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
         println("文件在下载，。。。")
+        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
       }
 
     case DownFileSuccess(downFileInfo) =>
@@ -58,15 +56,6 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
   def checkFileDecodeDownning(file: String): Boolean = {
     val count = Await.result(db.run(downFileList.filter(_.file === file).length.result), Duration.Inf)
     if (count == 0) true else false
-  }
-
-  def fileTempOS(file: String): String = {
-    getLocalRepoDir + file + ".DownTmp"
-  }
-
-
-  def getFileOSName(file: String): String = {
-    getLocalRepoDir + file
   }
 }
 

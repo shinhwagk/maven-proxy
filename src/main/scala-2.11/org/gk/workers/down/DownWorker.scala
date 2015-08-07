@@ -7,7 +7,7 @@ import akka.actor.{ActorLogging, Actor}
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.{DownFileInfo, DownFileInfoBeta3}
+import org.gk.workers.DownFileInfo
 
 import org.gk.workers.down.DownMaster.WorkerDownSectionSuccess
 import org.gk.workers.down.DownWorker.{WorkerDownSelfSection, Downming}

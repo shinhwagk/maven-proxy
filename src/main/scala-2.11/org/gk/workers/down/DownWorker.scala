@@ -1,38 +1,18 @@
 package org.gk.workers.down
 
-import java.io.RandomAccessFile
-import java.net.{URL, HttpURLConnection}
-
+import java.net.URL
 import akka.actor.{ActorLogging, Actor}
-import org.gk.config.cfg
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
 import org.gk.workers.DownFileInfo
-
 import org.gk.workers.down.DownMaster.WorkerDownSectionSuccess
-import org.gk.workers.down.DownWorker.{WorkerDownSelfSection, Downming}
-
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
-import java.io.{RandomAccessFile, File}
+import org.gk.workers.down.DownWorker.WorkerDownSelfSection
+import java.io.RandomAccessFile
 import java.net.HttpURLConnection
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-
-import scala.concurrent.Await
-import scala.concurrent.duration._
-import akka.actor.Actor.Receive
-import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor._
-import akka.routing.RoundRobinPool
-import org.gk.config.cfg
 import org.gk.workers.down.DownMaster._
 import slick.driver.H2Driver.api._
-import slick.dbio.DBIO
-import slick.jdbc.meta.MTable
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
-
 import scala.concurrent.Await
 
 /**

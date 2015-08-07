@@ -6,6 +6,7 @@ import com.sun.org.apache.xml.internal.resolver.helpers.FileURL
 import org.gk.db.DML._
 import org.gk.workers.RepoManager.RequertFile
 import org.gk.workers.DownFileInfo
+import org.gk.workers.down.RepoSearcher
 import slick.dbio.DBIO
 
 import scala.concurrent.duration._
@@ -38,29 +39,31 @@ object DownManager {
 
 class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 
-  val repoSearcher = context.actorOf(Props[RepoSearcher], name = "RepoSearcher")
   val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
-
 
   override def receive: Actor.Receive = {
     case RequertDownFile(downFileInfo) =>
       log.info("请求仓库....")
-      context.watch(context.actorOf(Props[RepoSearcher])) ! RequertFileUrl(downFileInfo)
+      context.watch(context.actorOf(Props(new RepoSearcher(self)))) ! RequertFileUrl(downFileInfo)
 //      repoSearcher ! RequertFileUrl(downFileInfo)
 
     case DownLoadFile(downFileInfo) =>
-      context.unwatch(sender())
-      context.stop(sender())
+      val repoSearcherActorRef = sender()
+      context.unwatch(repoSearcherActorRef)
+      context.stop(repoSearcherActorRef)
       val fileURL = downFileInfo.fileUrl
       val file = downFileInfo.file
       println(fileURL)
       if (checkFileDecodeDownning(file)) {
-        downMasterActor ! Download(downFileInfo)
+        context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
         println("文件在下载，。。。")
       }
 
     case DownFileSuccess(downFileInfo) =>
+      val downMasterActorRef = sender()
+      context.unwatch(downMasterActorRef)
+      context.unwatch(downMasterActorRef)
       repoManagerActorRef ! RequertFile(downFileInfo)
   }
 

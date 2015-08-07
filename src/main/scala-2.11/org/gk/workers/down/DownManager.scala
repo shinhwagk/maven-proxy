@@ -43,7 +43,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
         println("文件在下载，。。。")
-        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
+//        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
       }
 
     case DownFileSuccess(downFileInfo) =>

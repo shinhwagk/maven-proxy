@@ -4,6 +4,7 @@ import java.io._
 import java.net.{Socket, HttpURLConnection, URL}
 import com.sun.org.apache.xml.internal.resolver.helpers.FileURL
 import org.gk.db.DML._
+import org.gk.workers.RepoManager.RequertFile
 import org.gk.workers.{DownFileInfo, DownFileInfoBeta3, DownFileInfoBeta2}
 import slick.dbio.DBIO
 
@@ -13,7 +14,7 @@ import akka.routing.RoundRobinPool
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.down.DownManager.{DownLoadFile, SendFile, RequertDownFile}
+import org.gk.workers.down.DownManager.{DownLoadFile, DownFileSuccess, RequertDownFile}
 import org.gk.workers.down.DownMaster.DownFile
 import org.gk.workers.down.RepoSearcher.{RequertFileUrl}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -31,40 +32,15 @@ object DownManager {
 
   case class DownLoadFile(downFileInfo: DownFileInfo)
 
-  case class SendFile(downFileInfoBeta3: DownFileInfoBeta3)
+  case class DownFileSuccess(downFileInfo: DownFileInfo)
 
 }
 
-//case class DownFileInfo(file: String, fileURL: String) {
-//  val fileOS: String = getLocalRepoDir + file
-//
-//  val fileTempOS: String = getLocalRepoDir + file + ".DownTmp"
-//
-//  val fileLength: Int = getDownFileLength(fileURL)
-//
-//  val downWorkerNumber: Int = if (fileLength >= cfg.getPerProcessForBytes) fileLength / cfg.getPerProcessForBytes else 1
-//
-//  Await.result(db.run(DBIO.seq(downFileList +=(file, fileURL, downWorkerNumber))), Duration.Inf)
-//
-//  private def getDownFileLength(fileURL: String): Int = {
-//    import java.net.{HttpURLConnection, URL};
-//    val conn = new URL(fileURL).openConnection().asInstanceOf[HttpURLConnection];
-//    conn.setConnectTimeout(5000)
-//    conn.setReadTimeout(5000)
-//    val fileLength = conn.getContentLength
-//    conn.disconnect()
-//    fileLength
-//  }
-//
-//}
-
-class DownManager(repoManagerActor: ActorRef) extends Actor with akka.actor.ActorLogging {
+class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 
   val repoSearcher = context.actorOf(Props[RepoSearcher], name = "RepoSearcher")
-  val downMasterActor = context.actorOf(Props[DownMaster], name = "DownMaster")
+  val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
 
-
-  var repoManager: ActorRef = _
 
   override def receive: Actor.Receive = {
     case RequertDownFile(downFileInfo) =>
@@ -80,8 +56,8 @@ class DownManager(repoManagerActor: ActorRef) extends Actor with akka.actor.Acto
         println("文件在下载，。。。")
       }
 
-    case SendFile(downFileInfoBeta3) =>
-      repoManagerActor ! ("DownSuccess", downFileInfoBeta3)
+    case DownFileSuccess(downFileInfo) =>
+      repoManagerActorRef ! RequertFile(downFileInfo)
   }
 
   def checkFileDecodeDownning(file: String): Boolean = {

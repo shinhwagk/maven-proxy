@@ -17,19 +17,9 @@ object bbbb {
     //在stop的时候执行postStop
     val b = system.actorOf(Props[A], name = "ab")
 
-    a ! "a"
-    a ! "b"
+    val ccc =abc(1)
+    a ! ccc
 
-    b ! "a"
-    b ! "b"
-
-    for( i <- 1 to 100){
-      val a = system.actorOf(Props[A])
-      a ! "a"
-
-
-      a ! "b"
-    }
 
   }
 }
@@ -37,11 +27,11 @@ object bbbb {
 class A extends Actor {
   var a:Int = _
   override def receive: Receive = {
-    case "a" =>
-      a = 1
-      println(self.path.name + " " + a)
-    case "b" =>
-      println(a)
+    case abc(a)=>
+    println(a)
+    case ccc:abc =>
+      println(ccc.a)
   }
-
 }
+
+case class abc(a:Int)

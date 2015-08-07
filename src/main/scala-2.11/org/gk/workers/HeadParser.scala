@@ -5,7 +5,7 @@ import java.net.Socket
 
 import akka.actor.{Props, Actor}
 import org.gk.db.Tables._
-import org.gk.workers.RepoManager.RequertReturnFile
+import org.gk.workers.RepoManager.{RequertFile, RequertReturnFile}
 import org.gk.workers.down.DownWorker
 import org.gk.workers.down.DownWorker.Downming
 import slick.driver.H2Driver.api._

@@ -3,7 +3,7 @@ package org.gk.workers
 import java.io.File
 
 import akka.actor.{Props, Actor}
-import org.gk.workers.RepoManager.{RequertFile, RuntrunFile}
+import org.gk.workers.RepoManager.{RequertFile}
 import org.gk.workers.down.DownManager
 import org.gk.workers.down.DownManager.RequertDownFile
 
@@ -12,14 +12,14 @@ import org.gk.workers.down.DownManager.RequertDownFile
  */
 object RepoManager {
   case class RequertReturnFile(downFileInfoBeta2:DownFileInfoBeta2)
-  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
+
   case class RequertFile(downFileInfo:DownFileInfo)
 //  case class RuntrunFile(downFileInfoBeta3:DownFileInfoBeta3)
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
 
-  val retrunFile = context.actorOf(Props[Returner],name ="RetrunFile")
+  val returner = context.actorOf(Props[Returner],name ="Returner")
   val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
 
   override def receive: Receive = {
@@ -34,7 +34,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
       decodeFileLocalExists(fileOS) match {
         case true => {
           log.info("文件:{} 存在本地,准备返回给请求者...",file)
-//          retrunFile ! RuntrunFile(fileOS,socket)
+          returner ! RuntrunFile(downFileInfo)
         }
         case false => {
           log.info("文件:{} 不在本地...",file)
@@ -42,9 +42,9 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
         }
       }
 
-    case ("DownSuccess", downFileInfoBeta3:DownFileInfoBeta3) =>{
-      retrunFile ! RuntrunFile(downFileInfoBeta3)
-    }
+//    case ("DownSuccess", downFileInfoBeta3:DownFileInfoBeta3) =>{
+//      retrunFile ! RuntrunFile(downFileInfoBeta3)
+//    }
   }
 
   //查看文件是否存在本地仓库

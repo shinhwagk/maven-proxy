@@ -90,7 +90,7 @@ case class DownFileInfo(s:Socket){
   def getwokerDownInfo:Map[Int,(Int,Int)] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
-    var tempMap:Map[Int,(Int,Int)] = _
+    var tempMap:Map[Int,(Int,Int)] = Map.empty
     for (i <- 1 to workerNumber) {
       val startIndex: Int = (i - 1) * step
       val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1

@@ -2,15 +2,16 @@ package org.gk.workers.down
 
 import java.io.{File, RandomAccessFile}
 import java.net.HttpURLConnection
-
+import slick.driver.H2Driver.api._
+import scala.concurrent.ExecutionContext.Implicits.global
 import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
 import org.gk.workers.{DownFileInfo, DownFileInfoBeta3}
-import org.gk.workers.down.DownManager.SendFile
-import org.gk.workers.down.DownWorker.Downming
+import org.gk.workers.down.DownManager.DownFileSuccess
+import org.gk.workers.down.DownWorker.{WorkerDownSelfSection, Downming}
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Await
@@ -28,12 +29,8 @@ object DownMaster {
 
   case class DownFile(fileUrl: String, file: String)
 
-  case class WorkDownSuccess(url: String, file: String, startIndex: Int ,downFileInfoBeta3 :DownFileInfoBeta3)
+  case class WorkerDownSectionSuccess(downFileInfo: DownFileInfo)
 
-  def getSequence: Int = synchronized {
-    sequence_id += 1
-    sequence_id
-  }
 
   def storeWorkFile(fileTempOS: String, startIndex: Int, buffer: Array[Byte]) = synchronized {
     val raf = new RandomAccessFile(fileTempOS, "rwd");
@@ -47,19 +44,17 @@ case class Download(downFileInfo: DownFileInfo)
 
 case class RequertGetFile(downFileInfo: DownFileInfo)
 
-class DownMaster extends Actor with ActorLogging {
+class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging {
 
   import DownMaster._
 
-  var downManager: ActorRef = _
-
   //在启动时下载为下载完的部分
 
-  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
-    case (file, fileUrl, startIndex, enIndex, success, restartCount) =>
-      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file, self)), name = "work" + getSequence))
-      worker ! Downming
-  }), Duration.Inf)
+  //  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
+  //    case (file, fileUrl, startIndex, enIndex, success, restartCount) =>
+  //      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file, self)), name = "work" + getSequence))
+  //      worker ! Downming
+  //  }), Duration.Inf)
 
 
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 50, withinTimeRange = 60 seconds) {
@@ -70,37 +65,22 @@ class DownMaster extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Download(downFileInfo) =>
-      downManager = sender()
+
       allocationWork(downFileInfo)
 
-    case WorkDownSuccess(fileurl, file, startIndex,downFileInfoBeta3) => {
-      //      Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileurl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
+    case WorkerDownSectionSuccess(downFileInfo) =>
 
-      //      import org.gk.db.DML._
-      //      val wokerSuccessNumber = countDownSuccessNumber(fileurl)
-      //      val fileDownNumber = selectDownNumber(fileurl)
-      //
-      //
-      //      println("查看已经完成数量++++++++" + wokerSuccessNumber + "/" + fileDownNumber)
-      println("下载完成啦")
-      val fileOS = cfg.getLocalRepoDir + file
-      val fileTempOS = fileOS + ".DownTmp"
-
-      //      if (wokerSuccessNumber == fileDownNumber) {
+      val fileurl = downFileInfo.fileUrl
       deleteDownWorker(fileurl)
       deleteDownfile(fileurl)
 
-      println(fileOS)
-      println(fileTempOS)
-      val fileOSHeadle = new File(fileOS);
-      val fileTempOSHeadle = new File(fileTempOS);
-      fileTempOSHeadle.renameTo(fileOSHeadle)
-      downManager ! SendFile(downFileInfoBeta3)
-      //      }
-    }
-    case Terminated(actorRef) => {
+      renameFile(downFileInfo)
+
+      downManagerActorRef ! DownFileSuccess(downFileInfo)
+
+    case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
-    }
+
   }
 
   def allocationWork(downFileInfo: DownFileInfo): Unit = {
@@ -108,43 +88,32 @@ class DownMaster extends Actor with ActorLogging {
     val fileTmpOS = downFileInfo.fileTempOS
     val fileUrl = downFileInfo.fileUrl
     val fileLength = downFileInfo.fileLength
-    val downWokerNumber = downFileInfo.workerNumber
+    val downWokerAmount = downFileInfo.workerNumber
     val file = downFileInfo.file
 
-    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerNumber)
-    println("需要线程数量" + downWokerNumber)
+    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
+    println("需要线程数量" + downWokerAmount)
     log.info("定位在下文件{}...", fileTmpOS)
 
     //创建临时文件需要的目录和文件
     downFileInfo.createTmpfile
 
-    val endLength = fileLength % downWokerNumber
+    insertDownMaster(file, fileUrl, downWokerAmount)
 
-    //步长
-    val step = (fileLength - endLength) / downWokerNumber
-
-    val downaa = new DownCount(downWokerNumber, 0)
-
-
-    insertDownMaster(file, fileUrl, downWokerNumber)
-    for (i <- 1 to downWokerNumber) {
-//       insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
-       context.watch(context.actorOf(Props(new DownWorker(downFileList,i)))) ! Downming
-        //          log.info("线程: {} 下载请求已经发送...",thread)
-      }
+    for (i <- 1 to downWokerAmount) {
+      val startIndex = downFileInfo.workerDownInfo(i)._1
+      val endIndex = downFileInfo.workerDownInfo(i)._2
+      insertDownWorker(file, fileUrl, startIndex, endIndex, 0)
+      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(downFileInfo, i)
+      log.debug("线程: {} 下载请求已经发送...",i)
     }
   }
 
-
-
-  def renameFile(fileTemp: String): Unit = {
-
-  }
-
-  def closeActorRef(actor: ActorRef): Unit = {
-    context.unwatch(actor)
-    context.stop(actor)
-  }
-
-
+    def renameFile(downFileInfo: DownFileInfo): Unit = {
+      val fileOS = downFileInfo.fileOS
+      val fileTempOS = downFileInfo.fileTempOS
+      val fileOSHeadle = new File(fileOS);
+      val fileTempOSHeadle = new File(fileTempOS);
+      fileTempOSHeadle.renameTo(fileOSHeadle)
+    }
 }

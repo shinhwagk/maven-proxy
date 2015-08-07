@@ -9,7 +9,7 @@ import akka.actor._
 import org.gk.config.cfg
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
-import org.gk.workers.{DownFileInfo, DownFileInfoBeta3}
+import org.gk.workers.DownFileInfo
 import org.gk.workers.down.DownManager.DownFileSuccess
 import org.gk.workers.down.DownWorker.{WorkerDownSelfSection, Downming}
 import slick.driver.H2Driver.api._

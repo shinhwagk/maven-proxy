@@ -26,22 +26,6 @@ class Doorman extends Actor {
   }
 }
 
-case class DownFileInfoBeta1(socket: Socket) {
-  def getDownFileInfoBeta2(file: String) = DownFileInfoBeta2(socket, file)
-}
-
-case class DownFileInfoBeta2(socket: Socket, file: String) {
-
-  val fileOS: String = cfg.getLocalRepoDir + file
-
-  val fileTempOS: String = fileOS + ".DownTmp"
-
-  def getDownFileInfoBeta3(fileURL: String) = DownFileInfoBeta3(file, socket, fileURL, fileOS, fileTempOS)
-}
-
-case class DownFileInfoBeta3(file: String, socket: Socket, fileURL: String, fileOS: String, fileTempOS: String)
-
-
 case class DownFileInfo(s:Socket){
 
   val socket:Socket = s

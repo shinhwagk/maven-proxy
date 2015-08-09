@@ -4,7 +4,7 @@
 		module="maven-proxy_2.11"
 		revision="1.0"
 		status="integration"
-		publication="20150806224358"
+		publication="20150809092709"
 	>
 		<description>
 		maven-proxy

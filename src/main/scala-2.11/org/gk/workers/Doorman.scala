@@ -1,7 +1,7 @@
 package org.gk.workers
 
 import java.io.{File, RandomAccessFile}
-import java.net.Socket
+import java.net.{HttpURLConnection, Socket}
 
 import akka.actor.{Actor, Props}
 import org.gk.config.cfg
@@ -42,13 +42,13 @@ case class DownFileInfo(s: Socket) {
 
   lazy val file: String = headInfo("PATH")
 
-  var fileUrl: String = _
+  lazy val fileUrl: String = getFileUrl(file).get
 
   lazy val fileOS: String = cfg.getLocalRepoDir + file
 
   lazy val fileTempOS: String = fileOS + ".DownTmp"
 
-  var fileLength: Int = _
+  var fileLength: Int = getHttpConn.getContentLength
 
   lazy val workerNumber: Int = getDownWokerNumber
 
@@ -72,7 +72,7 @@ case class DownFileInfo(s: Socket) {
     }
   }
 
-  def getwokerDownInfo: Map[Int, (Int, Int)] = {
+  private def getwokerDownInfo: Map[Int, (Int, Int)] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
     var tempMap: Map[Int, (Int, Int)] = Map.empty
@@ -88,6 +88,29 @@ case class DownFileInfo(s: Socket) {
     val fileOSHeadle = new File(fileOS);
     val fileTempOSHeadle = new File(fileTempOS);
     fileTempOSHeadle.renameTo(fileOSHeadle)
+  }
+
+  private def getFileUrl(file: String): Option[String] = {
+    val remoteRepMap = cfg.getRemoteRepoMap
+    val a = Some(remoteRepMap.toList.sorted.find(l => getTestFileUrlCode(l._2._2 + file) == 200).get._2._2 + file)
+  }
+
+  private def getTestFileUrlCode(fileUrl:String): Int = {
+    import java.net.{HttpURLConnection, URL};
+    val downUrl = new URL(fileUrl)
+    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(20000)
+    conn.setReadTimeout(10000)
+    conn.getResponseCode
+  }
+
+  private def getHttpConn:HttpURLConnection = {
+    import java.net.{HttpURLConnection, URL};
+    val downUrl = new URL(fileUrl)
+    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(20000)
+    conn.setReadTimeout(10000)
+    conn
   }
 }
 

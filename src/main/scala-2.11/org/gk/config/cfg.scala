@@ -13,12 +13,14 @@ object cfg {
 
   def getRemoteRepoMap ={
 
-    val RepositoryMap:Map[String,String] = Map.empty
+    var RepositoryMap:Map[Int,(String,String)] = Map.empty
     val a = config.getList("RemoteRepositoryList").unwrapped()
     import scala.collection.JavaConversions._
+    var RepoId = 0
     for (c <- a){
       val Repository = mapAsScalaMap(c.asInstanceOf[java.util.Map[String,String]])
-      RepositoryMap += (Repository("name") -> Repository("url") )
+      RepoId += 1
+      RepositoryMap += (RepoId -> (Repository("name"), Repository("url")) )
     }
     RepositoryMap
   }

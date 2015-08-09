@@ -40,7 +40,6 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
   import DownMaster._
 
-
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 50, withinTimeRange = 60 seconds) {
     case _: Exception => {
       Restart
@@ -78,9 +77,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
   def allocationWorker(downFileInfo: DownFileInfo): Unit = {
 
     val file = downFileInfo.file
-    downFileInfo.fileUrl = getFileUrl(file)
     val fileUrl = downFileInfo.fileUrl
-    downFileInfo.fileLength = getFileLength(fileUrl)
     val fileLength = downFileInfo.fileLength
     val downWokerAmount = downFileInfo.workerNumber
     val fileTmpOS = downFileInfo.fileTempOS
@@ -101,39 +98,5 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(downFileInfo, i)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
-  }
-
-  private def getFileUrl(file: String): String = {
-    val remoteRepMap = cfg.getRemoteRepoMap
-    val getRemoteRepo_Central = cfg.getRemoteRepoCentral
-    val testCentralFileUrl = getRemoteRepo_Central + file
-    val fileUrl = if (getTestFileUrlCode(testCentralFileUrl) == 200) {
-      testCentralFileUrl
-    } else {
-      val a = remoteRepMap.filter(repo => (getTestFileUrlCode(repo._2 + file) == 200))
-      val b = a.map(x => x._2)
-      val c = b.asInstanceOf[ArrayBuffer[String]]
-      c(0) + file
-    }
-    fileUrl
-  }
-
-
-  private def getTestFileUrlCode(fileUrl: String): Int = {
-    import java.net.{HttpURLConnection, URL};
-    val downUrl = new URL(fileUrl)
-    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(2000)
-    downConn.getResponseCode
-  }
-
-  private def getFileLength(fileUrl:String): Int = {
-    import java.net.{HttpURLConnection, URL};
-    val conn = new URL(fileUrl).openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(10000)
-    conn.setReadTimeout(10000)
-    val fileLength = conn.getContentLength
-    conn.disconnect()
-    fileLength
   }
 }

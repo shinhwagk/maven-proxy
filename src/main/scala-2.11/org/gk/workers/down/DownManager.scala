@@ -25,10 +25,11 @@ object DownManager {
 
   case class DownFileSuccess(downFileInfo: DownFileInfo)
 
-  var requertSameDowingFileMap:Map[Socket,DownLoadFile] = Map.empty
+  var requertDowingFileMap:Map[Socket,String] = Map.empty
 
 }
 
+import DownManager._
 class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 
   val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
@@ -37,10 +38,12 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
 
     case RequertDownFile(downFileInfo) =>
       val file = downFileInfo.file
+      val socket = downFileInfo.socket
+      val fileOS = downFileInfo.fileOS
       if (checkFileDecodeDownning(file)) {
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
-        println("文件在下载，。。。")
+        requertDowingFileMap += (socket -> fileOS)
 //        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
       }
 
@@ -48,6 +51,9 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       val downMasterActorRef = sender()
       context.unwatch(downMasterActorRef)
       context.unwatch(downMasterActorRef)
+      for((k,v) <- requertDowingFileMap) {
+        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
+      }
       repoManagerActorRef ! RequertFile(downFileInfo)
   }
 

@@ -3,6 +3,7 @@ package org.gk.workers
 import java.io.File
 
 import akka.actor.{Actor, Props}
+import org.gk.config.cfg
 import org.gk.workers.RepoManager.RequertFile
 import org.gk.workers.down.DownManager
 import org.gk.workers.down.DownManager.RequertDownFile
@@ -46,8 +47,18 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
   }
 
   //查看文件是否存在本地仓库
-  def decodeFileLocalRepoExists(fileOs:String): Boolean = {
-    val osFileHandle = new File(fileOs)
+  def decodeFileLocalRepoExists(file:String): String = {
+    val osFileHandle = new File(file)
     osFileHandle.exists()
+
+    val b = cfg.getRemoteRepoMap.toList.sorted.find(l =>  {
+      val a = new File(cfg.getLocalMainDir+l._2._1 + file)
+      a.exists() == true}
+    )
+    if (b.get != None) {
+      cfg.getLocalMainDir + b.get._2._1 + file
+    }else{
+      "None"
+    }
   }
 }

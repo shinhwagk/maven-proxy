@@ -3,7 +3,9 @@ package org.gk.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, ActorRef, Props}
+import org.gk.config.cfg
 import org.gk.config.cfg._
+import org.gk.db.DML._
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
 import org.gk.workers.DownFileInfo
@@ -37,10 +39,15 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
   override def receive: Actor.Receive = {
 
     case RequertDownFile(downFileInfo) =>
+
       val file = downFileInfo.file
       val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
+      val fileUrl = downFileInfo.fileUrl
+      val downWokerAmount = downFileInfo.workerNumber
+
       if (checkFileDecodeDownning(file)) {
+        insertDownMaster(file, fileUrl, downWokerAmount)
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
         requertDowingFileMap += (socket -> fileOS)
@@ -52,7 +59,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       context.unwatch(downMasterActorRef)
       context.unwatch(downMasterActorRef)
       for((k,v) <- requertDowingFileMap) {
-        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
+//        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
       }
       repoManagerActorRef ! RequertFile(downFileInfo)
   }

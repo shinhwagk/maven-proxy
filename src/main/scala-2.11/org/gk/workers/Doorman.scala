@@ -1,58 +1,63 @@
 package org.gk.workers
 
 import java.io.{File, RandomAccessFile}
-import java.net.{HttpURLConnection, Socket}
+import java.net.{ServerSocket, HttpURLConnection, Socket}
 
-import akka.actor.{Actor, Props}
+import akka.actor.{ActorRef, Actor, Props}
 import org.gk.config.cfg
+import org.gk.workers.Doorman.StartRepoService
 
 /**
  * Created by goku on 2015/7/24.
  */
 
+object Doorman {
+
+  case class StartRepoService(repoName: String, repoUrl: String, repoPort: Int, doormanActorRef: ActorRef)
+
+}
 
 class Doorman extends Actor {
-  val terminator = context.actorOf(Props[Terminator])
   val headParser = context.actorOf(Props[HeadParser], name = "HeadParser")
 
-  //在启动时下载为下载完的部分
-
-  //  Await.result(db.run(downFileWorkList.filter(_.success === 0).result).map(_.foreach {
-  //    case (file, fileUrl, startIndex, enIndex, success, restartCount) =>
-  //      val worker = context.watch(context.actorOf(Props(new DownWorker(fileUrl, 1, startIndex, enIndex, file, self)), name = "work" + getSequence))
-  //      worker ! Downming
-  //  }), Duration.Inf)
-
   override def receive: Receive = {
-    case socket: Socket => {
-      val downFileInfo = DownFileInfo(socket)
-      headParser ! RequertParserHead(downFileInfo)
-      println("requert发送者接受到请求，准备处理...")
-      println("requert发送者发出请求...")
-
+    case StartRepoService(repoName, repoUrl, repoPort, doormanActorRef) => {
+      println("仓库:" + repoName + "已经启动. 端口:" + repoPort + ". 地址 " + repoUrl)
+      val ss = new ServerSocket(repoPort);
+      while (true) {
+        val socket = ss.accept();
+        headParser ! RequertParserHead(DownFileInfo(socket, repoName, repoUrl, repoPort))
+        println("仓库:" + repoName + ",收到请求")
+      }
     }
   }
 }
 
-case class DownFileInfo(s: Socket) {
+case class DownFileInfo(s: Socket,n:String,u:String,p:Int) {
 
   val socket: Socket = s
+
+  val  repoName: String = n
+
+  val repoUrl: String = u
+
+  val port:Int = p
 
   var headInfo: Map[String, String] = _
 
   lazy val file: String = headInfo("PATH")
 
-  lazy val fileUrl: String = getFileUrl(file).get
+  lazy val fileUrl: String = repoUrl + file
 
-  lazy val fileOS: String = cfg.getLocalRepoDir + file
+  lazy val fileOS: String = cfg.getLocalMainDir + "/" +  repoName + file
 
-  lazy val fileTempOS: String = fileOS + ".DownTmp"
+  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" +  repoName + file + ".DownTmp"
 
-  var fileLength: Int = getHttpConn.getContentLength
+  lazy val fileLength: Int = getfileUrlLength
 
   lazy val workerNumber: Int = getDownWokerNumber
 
-  lazy val workerDownInfo: Map[Int, (Int, Int)] = getwokerDownInfo
+  lazy val workerDownInfo: Map[Int, (Int, Int)] = getWokerDownRangeInfo
 
   private def getDownWokerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
@@ -72,7 +77,7 @@ case class DownFileInfo(s: Socket) {
     }
   }
 
-  private def getwokerDownInfo: Map[Int, (Int, Int)] = {
+  private def getWokerDownRangeInfo: Map[Int, (Int, Int)] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
     var tempMap: Map[Int, (Int, Int)] = Map.empty
@@ -90,27 +95,13 @@ case class DownFileInfo(s: Socket) {
     fileTempOSHeadle.renameTo(fileOSHeadle)
   }
 
-  private def getFileUrl(file: String): Option[String] = {
-    val remoteRepMap = cfg.getRemoteRepoMap
-    val a = Some(remoteRepMap.toList.sorted.find(l => getTestFileUrlCode(l._2._2 + file) == 200).get._2._2 + file)
-  }
-
-  private def getTestFileUrlCode(fileUrl:String): Int = {
+  private def getfileUrlLength: Int = {
     import java.net.{HttpURLConnection, URL};
     val downUrl = new URL(fileUrl)
     val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     conn.setConnectTimeout(20000)
-    conn.setReadTimeout(10000)
-    conn.getResponseCode
-  }
-
-  private def getHttpConn:HttpURLConnection = {
-    import java.net.{HttpURLConnection, URL};
-    val downUrl = new URL(fileUrl)
-    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(20000)
-    conn.setReadTimeout(10000)
-    conn
+    conn.setReadTimeout(30000)
+    conn.getContentLength
   }
 }
 

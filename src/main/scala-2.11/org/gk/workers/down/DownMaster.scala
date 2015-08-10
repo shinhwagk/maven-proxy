@@ -89,7 +89,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     downFileInfo.createTmpfile
     log.info("临时文件创建完毕")
 
-    insertDownMaster(file, fileUrl, downWokerAmount)
+
 
     for (i <- 1 to downWokerAmount) {
       val startIndex = downFileInfo.workerDownInfo(i)._1

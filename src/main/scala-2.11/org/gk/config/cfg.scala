@@ -9,24 +9,23 @@ import scala.collection.mutable.Map
  */
 object cfg {
 
+  case class RepoInfo(url:String,port:Int)
   val config = ConfigFactory.load()
 
   def getRemoteRepoMap ={
 
-    var RepositoryMap:Map[Int,(String,String)] = Map.empty
+    var RepositoryMap:Map[String,RepoInfo] = Map.empty
     val a = config.getList("RemoteRepositoryList").unwrapped()
     import scala.collection.JavaConversions._
-    var RepoId = 0
     for (c <- a){
-      val Repository = mapAsScalaMap(c.asInstanceOf[java.util.Map[String,String]])
-      RepoId += 1
-      RepositoryMap += (RepoId -> (Repository("name"), Repository("url")) )
+      val RepositoryInfo1 = mapAsScalaMap(c.asInstanceOf[java.util.Map[String,String]])
+      val repoName = RepositoryInfo1("name")
+      val repoUrl = RepositoryInfo1("url")
+      val RepositoryInfo2 = mapAsScalaMap(c.asInstanceOf[java.util.Map[String,Int]])
+      val repoPort = RepositoryInfo2("port")
+      RepositoryMap += (repoName -> RepoInfo(repoUrl, repoPort) )
     }
     RepositoryMap
-  }
-
-  def getRemoteRepoCentral: String = {
-    config.getString("RemoteRepsCentral")
   }
 
   def getPerProcessForBytes: Int = {

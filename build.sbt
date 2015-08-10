@@ -1,6 +1,6 @@
 name := "maven-proxy"
 
-version := "1.0"
+version := "0.8.8"
 
 scalaVersion := "2.11.7"
 

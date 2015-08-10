@@ -11,15 +11,15 @@ import java.net.Socket
  * Created by gk on 15/7/26.
  */
 
-case class RuntrunFile(socket:Socket,fileOS:String)
+case class RuntrunFile(downFileInfo:DownFileInfo)
 class Returner extends Actor with akka.actor.ActorLogging{
 
   val terminator = context.actorOf(Props[Terminator])
 
   override def receive: Receive = {
-    case RuntrunFile(socket,fileOS) => {
-//      val fileOS = downFileInfo.fileOS
-//      val socket = downFileInfo.socket
+    case RuntrunFile(downFileInfo) => {
+      val fileOS = downFileInfo.fileOS
+      val socket = downFileInfo.socket
       log.info("准备发送文件{}。。。",fileOS)
       val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
       val downFileLength = bis.available();

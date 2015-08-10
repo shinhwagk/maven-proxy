@@ -2,9 +2,12 @@ package org.gk
 
 import java.net.{ServerSocket, Socket}
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{ActorRef, Actor, ActorSystem, Props}
+import akka.routing.RoundRobinPool
 import org.gk.config.cfg
+import org.gk.config.cfg.RepoInfo
 import org.gk.db.Tables._
+import org.gk.workers.Doorman.StartRepoService
 import org.gk.workers._
 import org.gk.workers.down.{DownWorker, DownMaster}
 
@@ -13,6 +16,7 @@ import org.gk.workers.down.{DownWorker, DownMaster}
  * Created by gk on 15/7/21.
  */
 object Proxy extends App {
+
   val ss = new ServerSocket(cfg.getMavenProxyPost);
   val system = ActorSystem("MavenProxy")
   val doorman = system.actorOf(Props[Doorman], name = "Doorman")
@@ -23,16 +27,18 @@ object Proxy extends App {
 
   println("系统已经启动...")
 
-  while (true) {
-    println("系统开始接受请求...")
-    val socket = ss.accept();
+  val repoList = cfg.getRemoteRepoMap
+  repoList.map(startRepoPorxy)
 
-    doorman ! socket
-    println("发送请求给doorman...")
+  def startRepoPorxy(repoInfo:Tuple2[String,RepoInfo]): Unit ={
+    val repoName = repoInfo._1
+    val repoUrl = repoInfo._2.url
+    val repoPort = repoInfo._2.port
+    val doormanActorRef = doorman
+
+    system.actorOf(Props[Doorman]) ! StartRepoService(repoName,repoUrl,repoPort,doormanActorRef)
+
   }
 }
 
-
-case class requertSocket(socket:Socket)
-case class CaseResponse(path:String,socket:Socket)
 

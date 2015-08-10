@@ -8,13 +8,13 @@ import slick.driver.H2Driver.api._
 object Tables {
 
   class DownFileList(tag: Tag) extends Table[(String, String, Int)](tag, "DOWN_FILE_LIST") {
-    def file = column[String]("FILE", O.PrimaryKey)
+    def fileOS = column[String]("FILEOS", O.PrimaryKey)
 
     def fileUrl = column[String]("FILE_URL")
 
     def WorksNumber = column[Int]("WORK_NUMBER")
 
-    def * = (file, fileUrl, WorksNumber)
+    def * = (fileOS, fileUrl, WorksNumber)
   }
 
   val downFileList = TableQuery[DownFileList]
@@ -38,4 +38,14 @@ object Tables {
   }
 
   val downFileWorkList = TableQuery[DownFileWorkList]
+
+  class Repository(tag: Tag) extends Table[(String,String,Int,Boolean)](tag, "REPOSITORY") {
+    def name = column[String]("Name")
+    def url = column[String]("URL")
+    def port = column[Int]("PORT")
+    def start = column[Boolean]("START")
+    def * = (name, url, port, start)
+  }
+
+  val repositoryTable = TableQuery[Repository]
 }

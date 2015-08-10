@@ -21,7 +21,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
 
   override def receive: Receive = {
     case RequertFile(downFileInfo) =>
-      val file = downFileInfo.file
+      val fileOS = downFileInfo.fileOS
       val socket = downFileInfo.socket
 
       /**
@@ -29,12 +29,12 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
        */
       decodeFileLocalRepoExists(downFileInfo) match {
         case true => {
-          log.info("文件:{} 存在本地,准备返回给请求者...",file)
+          log.info("文件:{} 存在本地,准备返回给请求者...",fileOS)
 
           context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(downFileInfo)
         }
         case false => {
-          log.info("文件:{} 不在本地...",file)
+          log.info("文件:{} 不在本地...",fileOS)
           downManager ! RequertDownFile(downFileInfo)
         }
       }

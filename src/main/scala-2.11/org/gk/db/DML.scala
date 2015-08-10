@@ -25,6 +25,14 @@ object DML {
     Await.result(db.run(insert), Duration.Inf)
   }
 
+  def insertRepository(repoName: String, repoUrl: String, repoPort: Int,start:Boolean): Unit = {
+    val insert = DBIO.seq(
+      repositoryTable += (repoName,repoUrl,repoPort,start)
+    )
+
+    Await.result(db.run(insert), Duration.Inf)
+  }
+
   def insertDownWorker(file: String, fileUrl: String, startIndex: Int, enIndex: Int, success: Int): Unit = {
     //    println(file+"被插入到数据库work")
     val insert = DBIO.seq(

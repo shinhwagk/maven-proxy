@@ -32,6 +32,10 @@ object cfg {
     config.getInt("PerProcessForBytes")
   }
 
+  def getMavenPorxyManagePort: Int = {
+    config.getInt("MavenPorxyManagePort")
+  }
+
 
   def getLocalMainDir: String = {
     config.getString("LocalMainDir")

@@ -40,14 +40,13 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
 
     case RequertDownFile(downFileInfo) =>
 
-      val file = downFileInfo.file
       val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
       val fileUrl = downFileInfo.fileUrl
       val downWokerAmount = downFileInfo.workerNumber
 
-      if (checkFileDecodeDownning(file)) {
-        insertDownMaster(file, fileUrl, downWokerAmount)
+      if (checkFileDecodeDownning(fileOS)) {
+        insertDownMaster(fileOS, fileUrl, downWokerAmount)
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
         requertDowingFileMap += (socket -> fileOS)
@@ -64,8 +63,8 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       repoManagerActorRef ! RequertFile(downFileInfo)
   }
 
-  def checkFileDecodeDownning(file: String): Boolean = {
-    val count = Await.result(db.run(downFileList.filter(_.file === file).length.result), Duration.Inf)
+  def checkFileDecodeDownning(fileOS: String): Boolean = {
+    val count = Await.result(db.run(downFileList.filter(_.fileOS === fileOS).length.result), Duration.Inf)
     if (count == 0) true else false
   }
 }

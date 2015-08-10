@@ -1,4 +1,4 @@
-package org.gk.db
+package org.gk.server.db
 
 import slick.driver.H2Driver.api._
 

@@ -1,4 +1,4 @@
-package org.gk.workers.down
+package org.gk.server.workers.down
 
 import java.net.Socket
 
@@ -8,6 +8,7 @@ import org.gk.config.cfg._
 import org.gk.db.DML._
 import org.gk.db.MetaData._
 import org.gk.db.Tables._
+import org.gk.server.workers.DownFileInfo
 import org.gk.workers.DownFileInfo
 import org.gk.workers.RepoManager.RequertFile
 import org.gk.workers.down.DownManager.{DownFileSuccess, RequertDownFile}

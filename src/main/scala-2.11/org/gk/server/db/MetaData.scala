@@ -1,4 +1,4 @@
-package org.gk.db
+package org.gk.server.db
 
 import slick.dbio.{DBIO, NoStream, DBIOAction}
 import slick.jdbc.meta.MTable

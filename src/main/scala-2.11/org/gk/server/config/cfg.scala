@@ -1,4 +1,4 @@
-package org.gk.config
+package org.gk.server.config
 
 import com.typesafe.config.ConfigFactory
 

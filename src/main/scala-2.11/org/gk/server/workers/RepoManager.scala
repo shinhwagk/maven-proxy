@@ -1,12 +1,12 @@
-package org.gk.workers
+package org.gk.server.workers
 
 import java.io.File
 
 import akka.actor.{Actor, Props}
-import org.gk.config.cfg
-import org.gk.workers.RepoManager.RequertFile
-import org.gk.workers.down.DownManager
-import org.gk.workers.down.DownManager.RequertDownFile
+import org.gk.server.config.cfg
+import org.gk.server.workers.down.DownManager
+import RepoManager.RequertFile
+import DownManager.RequertDownFile
 
 /**
  * Created by gk on 15/7/26.

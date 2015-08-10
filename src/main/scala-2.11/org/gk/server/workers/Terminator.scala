@@ -1,4 +1,4 @@
-package org.gk.workers
+package org.gk.server.workers
 
 import java.io.BufferedOutputStream
 

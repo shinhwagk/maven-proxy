@@ -1,7 +1,9 @@
-package org.gk.workers.down
+package org.gk.server.workers.down
 
 import java.net.URL
 import akka.actor.{ActorLogging, Actor}
+import org.gk.server.db.DML
+import org.gk.server.workers.DownFileInfo
 import org.gk.workers.DownFileInfo
 import org.gk.workers.down.DownMaster.WorkerDownSectionSuccess
 import org.gk.workers.down.DownWorker.WorkerDownSelfSection
@@ -97,7 +99,7 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
     Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
     val ccc = Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).map(p => (p.success)).result), Duration.Inf).toList.sum
 
-    import org.gk.db.DML._
+    import DML._
     val fileDownNumber = selectDownNumber(url)
     println("wancheng " + ccc + "/" + fileDownNumber)
     if (ccc == fileDownNumber) {

@@ -1,10 +1,11 @@
-package org.gk.workers
+package org.gk.server.workers
 
 import java.io.{File, RandomAccessFile}
 import java.net.{ServerSocket, HttpURLConnection, Socket}
 
 import akka.actor.{ActorRef, Actor, Props}
 import org.gk.config.cfg
+import org.gk.server.config.cfg
 import org.gk.workers.Doorman.StartRepoService
 
 /**

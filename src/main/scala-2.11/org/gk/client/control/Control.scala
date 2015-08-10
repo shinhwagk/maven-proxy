@@ -1,4 +1,4 @@
-package org.gk.control
+package org.gk.client.control
 
 /**
  * Created by goku on 2015/8/10.

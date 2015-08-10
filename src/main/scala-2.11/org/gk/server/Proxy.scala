@@ -1,7 +1,10 @@
-package org.gk
+package org.gk.server
 
 import java.io._
 import java.net.{ServerSocket, Socket}
+import org.gk.server.config.cfg
+import org.gk.server.db.{MetaData, InitDatabase}
+import org.gk.server.workers.Doorman
 import slick.driver.H2Driver.api._
 import akka.actor.{ActorRef, Actor, ActorSystem, Props}
 import akka.routing.RoundRobinPool
@@ -30,8 +33,8 @@ object Proxy extends App {
 
   //创建数据库表,如果没有的话
   val managerPort = cfg.getMavenPorxyManagePort
-  import org.gk.db.InitDatabase._
-  import org.gk.db.MetaData._
+  import InitDatabase._
+  import MetaData._
 
   initTable
 

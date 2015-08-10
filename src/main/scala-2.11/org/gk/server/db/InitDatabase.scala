@@ -1,6 +1,6 @@
-package org.gk.db
+package org.gk.server.db
 
-import org.gk.config.cfg
+import org.gk.server.config.cfg
 import slick.driver.H2Driver.api._
 import slick.jdbc.meta.MTable
 import scala.concurrent.Await
@@ -21,7 +21,7 @@ object InitDatabase {
   }
 
   def createTable: Unit = {
-    import org.gk.db.Tables._
+    import Tables._
     val setup = DBIO.seq(
       downFileList.schema.create,
       downFileWorkList.schema.create,
@@ -32,7 +32,7 @@ object InitDatabase {
 
   def loadRepository ={
     val repoList = cfg.getRemoteRepoMap
-    import org.gk.db.DML._
+    import DML._
     repoList.map(l => {
       val repoName = l._1
       val repoUrl = l._2.url

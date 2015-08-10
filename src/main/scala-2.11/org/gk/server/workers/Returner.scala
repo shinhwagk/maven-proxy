@@ -1,6 +1,7 @@
-package org.gk.workers
+package org.gk.server.workers
 
 import java.io.{BufferedOutputStream, BufferedInputStream, FileInputStream, File}
+import java.lang.Terminator
 import java.util.Date
 
 import akka.actor.{Props, Actor}

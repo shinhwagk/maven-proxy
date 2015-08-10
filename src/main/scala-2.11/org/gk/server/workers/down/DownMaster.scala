@@ -1,4 +1,4 @@
-package org.gk.workers.down
+package org.gk.server.workers.down
 
 import java.io.RandomAccessFile
 
@@ -6,6 +6,7 @@ import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.config.cfg
 import org.gk.db.DML._
+import org.gk.server.workers.DownFileInfo
 import org.gk.workers.DownFileInfo
 import org.gk.workers.down.DownManager.DownFileSuccess
 import org.gk.workers.down.DownWorker.WorkerDownSelfSection

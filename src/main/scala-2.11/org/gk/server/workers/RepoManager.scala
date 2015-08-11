@@ -21,6 +21,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
 
   override def receive: Receive = {
     case RequertFile(downFileInfo) =>
+      println(downFileInfo.fileUrl)
       val fileOS = downFileInfo.fileOS
       val socket = downFileInfo.socket
 

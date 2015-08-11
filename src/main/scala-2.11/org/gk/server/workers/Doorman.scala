@@ -5,7 +5,13 @@ import java.net.{ServerSocket, Socket}
 
 import akka.actor.{Actor, ActorRef, Props}
 import org.gk.server.config.cfg
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables
 import org.gk.server.workers.Doorman.StartRepoService
+import slick.driver.H2Driver.api._
+
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
  * Created by goku on 2015/7/24.
@@ -30,7 +36,7 @@ class Doorman extends Actor {
         println("仓库:" + repoName + ",收到请求")
       }
     }
-    case socket:Socket =>
+    case socket: Socket =>
       headParser ! RequertParserHead(DownFileInfo(socket))
   }
 }
@@ -39,21 +45,19 @@ case class DownFileInfo(s: Socket) {
 
   val socket: Socket = s
 
-  var  repoName: String = _
+  lazy val repoName: String = file.split("/")(1)
 
   var repoUrl: String = _
-
-  var port:Int = _
 
   var headInfo: Map[String, String] = _
 
   lazy val file: String = headInfo("PATH")
 
-  lazy val fileUrl: String = repoUrl + file
+  lazy val fileUrl: String = getFileUrl
 
-  lazy val fileOS: String = cfg.getLocalMainDir + "/" +  repoName + file
+  lazy val fileOS: String = cfg.getLocalMainDir + "/" + repoName + file
 
-  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" +  repoName + file + ".DownTmp"
+  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" + repoName + file + ".DownTmp"
 
   lazy val fileLength: Int = getfileUrlLength
 
@@ -64,6 +68,11 @@ case class DownFileInfo(s: Socket) {
   private def getDownWokerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
     if (fileLength >= processForBytes) fileLength / processForBytes else 1
+  }
+
+  private def getFileUrl: String = {
+    val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
+    file.replace("/"+ repoName+"/",repoUrl)
   }
 
   def createTmpfile: Unit = {

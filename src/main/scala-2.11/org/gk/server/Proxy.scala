@@ -35,11 +35,11 @@ object Proxy extends App {
   //启动中央仓库
   //  startRepoPorxy(centralRepoInfo._1, centralRepoInfo._2, centralRepoInfo._3)
 
-//  def startRepoPorxy(repoName: String, repoUrl: String, repoPort: Int): Unit = {
-//
-//    val repoActorName = "RepoActorRef-" + repoName
-//
-//    //    system.actorOf(Props[Doorman], name = repoActorName) ! StartRepoService(repoName, repoUrl, repoPort, doorman)
-//
-//  }
+  //  def startRepoPorxy(repoName: String, repoUrl: String, repoPort: Int): Unit = {
+  //
+  //    val repoActorName = "RepoActorRef-" + repoName
+  //
+  //    //    system.actorOf(Props[Doorman], name = repoActorName) ! StartRepoService(repoName, repoUrl, repoPort, doorman)
+  //
+  //  }
 }

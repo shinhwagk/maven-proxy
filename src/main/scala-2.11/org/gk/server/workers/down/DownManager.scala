@@ -26,11 +26,9 @@ object DownManager {
 
   var requertDowingFileMap: Map[Socket, String] = Map.empty
 
-  var repoActorRefMap: Map[String, ActorRef] = Map.empty
-
 }
 
-import DownManager._
+import org.gk.server.workers.down.DownManager._
 
 class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 

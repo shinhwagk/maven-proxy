@@ -1,4 +1,4 @@
-[info] Updating {file:/Z:/JSKP/typesafe/maven-proxy/project/}maven-proxy-build...
+[info] Updating {file:/Z:/typesafe/maven-proxy/project/}maven-proxy-build...
 [debug] :: resolving dependencies :: default#maven-proxy-build;0.1-SNAPSHOT
 [debug] 	confs: [compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool]
 [debug] 	validate = true
@@ -8,45 +8,13 @@
 [debug] == resolving dependencies default#maven-proxy-build;0.1-SNAPSHOT->com.eed3si9n#sbt-assembly;0.13.0 [compile->default(compile)]
 [info] Resolving com.eed3si9n#sbt-assembly;0.13.0 ...
 [debug] sbt-chain: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.13.0 {compile=[default(compile)]}
-[info] Resolving com.eed3si9n#sbt-assembly;0.13.0 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: com.eed3si9n#sbt-assembly;0.13.0 {compile=[default(compile)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for com.eed3si9n#sbt-assembly;0.13.0
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: found md file for com.eed3si9n#sbt-assembly;0.13.0
-[debug] 		=> https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml (0.13.0)
-[debug] downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml ...
-[debug] 	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml.sha1
-[debug] sha1 OK for https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/ivys/ivy.xml
-[debug] 	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.13.0!ivy.xml(ivy.original) (11748ms)
-[debug] 	found com.eed3si9n#sbt-assembly;0.13.0 in sbt-plugin-releases
+[debug] sbt-chain: module revision found in cache: com.eed3si9n#sbt-assembly;0.13.0
+[debug] 	found com.eed3si9n#sbt-assembly;0.13.0 in sbt-chain
 [debug] == resolving dependencies com.eed3si9n#sbt-assembly;0.13.0->org.scalactic#scalactic_2.10;2.2.1 [compile->default(compile)]
 [info] Resolving org.scalactic#scalactic_2.10;2.2.1 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scalactic#scalactic_2.10;2.2.1 {compile=[default(compile)]}
-[info] Resolving org.scalactic#scalactic_2.10;2.2.1 ...
-[debug] sbt-chain-delegate: Checking cache for: dependency: org.scalactic#scalactic_2.10;2.2.1 {compile=[default(compile)]}
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.scalactic/scalactic_2.10/2.2.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.scalactic/scalactic_2.10/2.2.1/ivys/ivy.xml
-[debug] 	typesafe-ivy-releases: no ivy file found for org.scalactic#scalactic_2.10;2.2.1
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scalactic/scalactic_2.10/2.2.1/ivys/ivy.xml
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scalactic/scalactic_2.10/2.2.1/ivys/ivy.xml
-[debug] 	sbt-plugin-releases: no ivy file found for org.scalactic#scalactic_2.10;2.2.1
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom
-[debug] 	my-proxy: found md file for org.scalactic#scalactic_2.10;2.2.1
-[debug] 		=> http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom (2.2.1)
-[debug] downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom ...
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom.sha1
-[debug] sha1 OK for http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.pom
-[debug] 	[SUCCESSFUL ] org.scalactic#scalactic_2.10;2.2.1!scalactic_2.10.pom(pom.original) (13140ms)
-[debug] 		tried https://repo.typesafe.com/typesafe/ivy-releases/org.scalactic/scalactic_2.10/2.2.1/bundles/scalactic_2.10.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.typesafe.com/typesafe/ivy-releases/org.scalactic/scalactic_2.10/2.2.1/bundles/scalactic_2.10.jar
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scalactic/scalactic_2.10/2.2.1/bundles/scalactic_2.10.jar
-[debug] CLIENT ERROR: Not Found url=https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/org.scalactic/scalactic_2.10/2.2.1/bundles/scalactic_2.10.jar
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar
-[debug] 	found org.scalactic#scalactic_2.10;2.2.1 in my-proxy
+[debug] sbt-chain: module revision found in cache: org.scalactic#scalactic_2.10;2.2.1
+[debug] 	found org.scalactic#scalactic_2.10;2.2.1 in sbt-chain
 [debug] == resolving dependencies com.eed3si9n#sbt-assembly;0.13.0->org.scalactic#scalactic_2.10;2.2.1 [compile->runtime]
 [debug] == resolving dependencies com.eed3si9n#sbt-assembly;0.13.0->org.scalactic#scalactic_2.10;2.2.1 [compile->compile]
 [debug] == resolving dependencies org.scalactic#scalactic_2.10;2.2.1->org.scala-lang#scala-library;2.10.4 [compile->master(compile)]
@@ -2526,20 +2494,10 @@
 [debug] == resolving dependencies default#maven-proxy-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [scala-tool->optional(default)]
 [debug] 	resolved ivy file produced in cache
 [debug] :: downloading artifacts ::
-[debug] 		tried https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/jars/sbt-assembly.jar
-[info] downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/jars/sbt-assembly.jar ...
-[debug] 	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/jars/sbt-assembly.jar
-[debug] 	sbt-plugin-releases: downloading https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/jars/sbt-assembly.jar.sha1
-[debug] sha1 OK for https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.eed3si9n/sbt-assembly/scala_2.10/sbt_0.13/0.13.0/jars/sbt-assembly.jar
-[info] 	[SUCCESSFUL ] com.eed3si9n#sbt-assembly;0.13.0!sbt-assembly.jar (59320ms)
+[debug] 	[NOT REQUIRED] com.eed3si9n#sbt-assembly;0.13.0!sbt-assembly.jar
 [debug] 	[NOT REQUIRED] com.github.mpeltonen#sbt-idea;1.6.0!sbt-idea.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#sbt-core-next;0.1.1!sbt-core-next.jar
-[debug] 		tried http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar
-[info] downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar ...
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar
-[debug] 	my-proxy: downloading http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar.sha1
-[debug] sha1 OK for http://dev.rtmsoft.me/nexus/content/groups/public/org/scalactic/scalactic_2.10/2.2.1/scalactic_2.10-2.2.1.jar
-[info] 	[SUCCESSFUL ] org.scalactic#scalactic_2.10;2.2.1!scalactic_2.10.jar(bundle) (29681ms)
+[debug] 	[NOT REQUIRED] org.scalactic#scalactic_2.10;2.2.1!scalactic_2.10.jar(bundle)
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.10.4!scala-library.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.10.4!scala-reflect.jar
 [debug] 	[NOT REQUIRED] commons-io#commons-io;2.0.1!commons-io.jar
@@ -2599,19 +2557,19 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
-[debug] :: resolution report :: resolve 121198ms :: artifacts dl 89692ms
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT provided produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-provided.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT optional produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-optional.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test-internal produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test-internal.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT plugin produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-plugin.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT sources produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-sources.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT docs produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-docs.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT pom produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-pom.xml
-[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT scala-tool produced in Z:\JSKP\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-scala-tool.xml
-[debug] 	resolve done (121198ms resolve - 89692ms download)
+[debug] :: resolution report :: resolve 4070ms :: artifacts dl 177ms
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT provided produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-provided.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT optional produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-optional.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT compile-internal produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-compile-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT runtime-internal produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-runtime-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT test-internal produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-test-internal.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT plugin produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-plugin.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT sources produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-sources.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT docs produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-docs.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT pom produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-pom.xml
+[debug] 	report for default#maven-proxy-build;0.1-SNAPSHOT scala-tool produced in Z:\typesafe\maven-proxy\project\target\resolution-cache\reports\default-maven-proxy-build-scala-tool.xml
+[debug] 	resolve done (4070ms resolve - 177ms download)
 [info] Done updating.

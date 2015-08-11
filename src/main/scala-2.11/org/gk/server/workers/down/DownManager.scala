@@ -3,15 +3,8 @@ package org.gk.server.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, ActorRef, Props}
-import org.gk.config.cfg
-import org.gk.config.cfg._
-import org.gk.db.DML._
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
 import org.gk.server.workers.DownFileInfo
-import org.gk.workers.DownFileInfo
-import org.gk.workers.RepoManager.RequertFile
-import org.gk.workers.down.DownManager.{DownFileSuccess, RequertDownFile}
+import org.gk.server.workers.RepoManager.RequertFile
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Await
@@ -47,6 +40,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       val downWokerAmount = downFileInfo.workerNumber
 
       if (checkFileDecodeDownning(fileOS)) {
+        import org.gk.server.db.DML._
         insertDownMaster(fileOS, fileUrl, downWokerAmount)
         context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
       } else {
@@ -65,6 +59,8 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
   }
 
   def checkFileDecodeDownning(fileOS: String): Boolean = {
+    import org.gk.server.db.MetaData._
+    import org.gk.server.db.Tables._
     val count = Await.result(db.run(downFileList.filter(_.fileOS === fileOS).length.result), Duration.Inf)
     if (count == 0) true else false
   }

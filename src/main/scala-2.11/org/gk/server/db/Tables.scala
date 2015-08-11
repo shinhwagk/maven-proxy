@@ -39,12 +39,13 @@ object Tables {
 
   val downFileWorkList = TableQuery[DownFileWorkList]
 
+
   class Repository(tag: Tag) extends Table[(String,String,Int,Boolean)](tag, "REPOSITORY") {
     def name = column[String]("Name")
     def url = column[String]("URL")
-    def port = column[Int]("PORT")
+    def priority = column[Int]("PRIORITY") //优先级
     def start = column[Boolean]("START")
-    def * = (name, url, port, start)
+    def * = (name, url, priority, start)
   }
 
   val repositoryTable = TableQuery[Repository]

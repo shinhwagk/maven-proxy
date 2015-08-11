@@ -16,7 +16,6 @@ object InitDatabase {
   def initTable: Unit ={
     if(tables.isEmpty) {
       createTable
-      loadRepository
     }
   }
 

@@ -4,9 +4,8 @@ import java.io.{File, RandomAccessFile}
 import java.net.{ServerSocket, HttpURLConnection, Socket}
 
 import akka.actor.{ActorRef, Actor, Props}
-import org.gk.config.cfg
 import org.gk.server.config.cfg
-import org.gk.workers.Doorman.StartRepoService
+import org.gk.server.workers.Doorman.StartRepoService
 
 /**
  * Created by goku on 2015/7/24.

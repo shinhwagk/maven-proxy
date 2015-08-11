@@ -4,10 +4,7 @@ import java.io.{BufferedReader, InputStreamReader}
 import java.net.Socket
 
 import akka.actor.{Props, Actor}
-import org.gk.db.Tables._
-import org.gk.workers.RepoManager.RequertFile
-import org.gk.workers.down.DownWorker
-import org.gk.workers.down.DownWorker.Downming
+import org.gk.server.workers.RepoManager.RequertFile
 import slick.driver.H2Driver.api._
 import slick.dbio.DBIO
 import slick.jdbc.meta.MTable

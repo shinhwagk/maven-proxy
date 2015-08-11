@@ -4,16 +4,16 @@
 	<info
 		organisation="default"
 		module="maven-proxy_2.11"
-		revision="1.0"
+		revision="0.9.3"
 		conf="scala-tool"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20150810102453"/>
+		date="20150811093856"/>
 	<dependencies>
 		<module organisation="org.scala-lang" name="scala-compiler">
 			<revision name="2.11.7" status="release" pubdate="20150623041819" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, optional, optional(default), master" position="0">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
 				<metadata-artifact status="no" details="" size="3169" time="0" location="C:\Users\goku\.ivy2\cache\org.scala-lang\scala-compiler\ivy-2.11.7.xml" searched="false" origin-is-local="false" origin-location="http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-compiler/2.11.7/scala-compiler-2.11.7.pom"/>
-				<caller organisation="default" name="maven-proxy_2.11" conf="scala-tool" rev="2.11.7" rev-constraint-default="2.11.7" rev-constraint-dynamic="2.11.7" callerrev="1.0"/>
+				<caller organisation="default" name="maven-proxy_2.11" conf="scala-tool" rev="2.11.7" rev-constraint-default="2.11.7" rev-constraint-dynamic="2.11.7" callerrev="0.9.3"/>
 				<artifacts>
 					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="15244851" time="0" location="C:\Users\goku\.ivy2\cache\org.scala-lang\scala-compiler\jars\scala-compiler-2.11.7.jar">
 						<origin-location is-local="false" location="http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-compiler/2.11.7/scala-compiler-2.11.7.jar"/>
@@ -77,7 +77,7 @@
 				<caller organisation="org.scala-lang.modules" name="scala-parser-combinators_2.11" conf="compile, runtime" rev="2.11.6" rev-constraint-default="2.11.6" rev-constraint-dynamic="2.11.6" callerrev="1.0.4"/>
 				<caller organisation="org.scala-lang" name="scala-compiler" conf="default, compile, runtime, optional, master" rev="2.11.7" rev-constraint-default="2.11.7" rev-constraint-dynamic="2.11.7" callerrev="2.11.7"/>
 				<caller organisation="org.scala-lang.modules" name="scala-xml_2.11" conf="compile, runtime" rev="2.11.4" rev-constraint-default="2.11.4" rev-constraint-dynamic="2.11.4" callerrev="1.0.4"/>
-				<caller organisation="default" name="maven-proxy_2.11" conf="scala-tool" rev="2.11.7" rev-constraint-default="2.11.7" rev-constraint-dynamic="2.11.7" callerrev="1.0"/>
+				<caller organisation="default" name="maven-proxy_2.11" conf="scala-tool" rev="2.11.7" rev-constraint-default="2.11.7" rev-constraint-dynamic="2.11.7" callerrev="0.9.3"/>
 				<artifacts>
 					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5745606" time="0" location="C:\Users\goku\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.11.7.jar">
 						<origin-location is-local="false" location="http://dev.rtmsoft.me/nexus/content/groups/public/org/scala-lang/scala-library/2.11.7/scala-library-2.11.7.jar"/>

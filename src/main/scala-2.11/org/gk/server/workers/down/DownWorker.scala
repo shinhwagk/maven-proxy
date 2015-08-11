@@ -4,15 +4,15 @@ import java.net.URL
 import akka.actor.{ActorLogging, Actor}
 import org.gk.server.db.DML
 import org.gk.server.workers.DownFileInfo
-import org.gk.workers.DownFileInfo
-import org.gk.workers.down.DownMaster.WorkerDownSectionSuccess
-import org.gk.workers.down.DownWorker.WorkerDownSelfSection
+import org.gk.server.workers.DownFileInfo
+import org.gk.server.workers.down.DownMaster.WorkerDownSectionSuccess
+import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 import java.io.RandomAccessFile
 import java.net.HttpURLConnection
-import org.gk.db.MetaData._
-import org.gk.db.Tables._
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables._
 import akka.actor._
-import org.gk.workers.down.DownMaster._
+import org.gk.server.workers.down.DownMaster._
 import slick.driver.H2Driver.api._
 import scala.concurrent.duration.Duration
 import scala.concurrent.Await

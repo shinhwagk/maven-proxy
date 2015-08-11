@@ -4,10 +4,10 @@
 	<info
 		organisation="default"
 		module="maven-proxy_2.11"
-		revision="1.0"
+		revision="0.9.3"
 		conf="provided"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20150810102453"/>
+		date="20150811093856"/>
 	<dependencies>
 	</dependencies>
 </ivy-report>

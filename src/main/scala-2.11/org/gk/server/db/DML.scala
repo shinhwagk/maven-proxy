@@ -25,9 +25,9 @@ object DML {
     Await.result(db.run(insert), Duration.Inf)
   }
 
-  def insertRepository(repoName: String, repoUrl: String, repoPort: Int,start:Boolean): Unit = {
+  def insertRepository(repoName: String, repoUrl: String, repoPort: Int, start: Boolean): Unit = {
     val insert = DBIO.seq(
-      repositoryTable += (repoName,repoUrl,repoPort,start)
+      repositoryTable +=(repoName, repoUrl, repoPort, start)
     )
 
     Await.result(db.run(insert), Duration.Inf)
@@ -40,14 +40,11 @@ object DML {
     )
 
     Await.result(db.run(insert), Duration.Inf)
-
   }
 
   def updateDownWorker(fileUrl: String, startIndex: Int): Unit = {
 
     Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileUrl).filter(_.startIndex === startIndex).map(p => (p.success)).update(1)), Duration.Inf)
-
-
   }
 
   def deleteDownWorker(fileUrl: String): Unit = {
@@ -72,4 +69,19 @@ object DML {
     Await.result(db.run(downFileList.filter(_.fileUrl === fileUrl).map(p => (p.WorksNumber)).result), Duration.Inf).head
   }
 
+
+  def addRepository(name:String,url:String,priority:Int,start:Boolean): Unit ={
+    Await.result(db.run(DBIO.seq(repositoryTable += (name,url,priority,start))), Duration.Inf)
+  }
+
+  def deleteRepository(name:String): Unit ={
+    Await.result(db.run(DBIO.seq(repositoryTable.filter(_.name === name).delete)), Duration.Inf)
+  }
+  def listRepoitory:Unit={
+    addRepository("a","a",1,true)
+    db.run(repositoryTable.result).map(_.foreach {
+      case (name, url, priority, start) =>
+        println("  " + name + "\t" + url + "\t" + priority + "\t" + start)
+    })
+  }
 }

@@ -3,6 +3,9 @@ package org.gk.server.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, ActorRef, Props}
+import org.gk.server.db.DML
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables._
 import org.gk.server.workers.DownFileInfo
 import org.gk.server.workers.RepoManager.RequertFile
 import slick.driver.H2Driver.api._
@@ -21,40 +24,49 @@ object DownManager {
 
   case class DownFileSuccess(downFileInfo: DownFileInfo)
 
-  var requertDowingFileMap:Map[Socket,String] = Map.empty
+  var requertDowingFileMap: Map[Socket, String] = Map.empty
+
+  var repoActorRefMap: Map[String, ActorRef] = Map.empty
 
 }
 
 import DownManager._
+
 class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
 
-  val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
-//  context.system.scheduler.schedule(Duration.Zero, 3 second, repoManagerActorRef, RequertFile(downFileInfo))
+  //  val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
+  //  context.system.scheduler.schedule(Duration.Zero, 3 second, repoManagerActorRef, RequertFile(downFileInfo))
   override def receive: Actor.Receive = {
 
     case RequertDownFile(downFileInfo) =>
+      //      tuneRepoActorRef
 
       val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
-      val fileUrl = downFileInfo.fileUrl
-      val downWokerAmount = downFileInfo.workerNumber
+      println(fileOS)
+//      val downWokerAmount = downFileInfo.workerNumber
+//      val fileURL = downFileInfo.fileUrl
+      val repoName = downFileInfo.repoName
 
       if (checkFileDecodeDownning(fileOS)) {
-        import org.gk.server.db.DML._
-        insertDownMaster(fileOS, fileUrl, downWokerAmount)
-        context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
+        val repoCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
+        println("ccc" + Some(repoCount))
+        if (repoCount > 0) {
+//          DML.insertDownMaster(fileOS, fileURL, downWokerAmount)
+          context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
+        }
       } else {
         requertDowingFileMap += (socket -> fileOS)
-//        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
+        //        DownManager.requertSameDowingFileMap += (downFileInfo.socket -> downFileInfo)
       }
 
     case DownFileSuccess(downFileInfo) =>
-      val downMasterActorRef = sender()
-      context.unwatch(downMasterActorRef)
-      context.unwatch(downMasterActorRef)
-      for((k,v) <- requertDowingFileMap) {
-//        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
-      }
+      //      val downMasterActorRef = sender()
+      //      context.unwatch(downMasterActorRef)
+      //      context.unwatch(downMasterActorRef)
+      //      for((k,v) <- requertDowingFileMap) {
+      ////        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
+      //      }
       repoManagerActorRef ! RequertFile(downFileInfo)
   }
 

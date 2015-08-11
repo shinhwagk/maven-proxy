@@ -41,7 +41,7 @@ object Tables {
 
 
   class Repository(tag: Tag) extends Table[(String,String,Int,Boolean)](tag, "REPOSITORY") {
-    def name = column[String]("Name")
+    def name = column[String]("Name" ,O.PrimaryKey)
     def url = column[String]("URL")
     def priority = column[Int]("PRIORITY") //优先级
     def start = column[Boolean]("START")

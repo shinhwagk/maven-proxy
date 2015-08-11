@@ -19,7 +19,7 @@ import scala.concurrent.duration.Duration
  */
 object RepoManager {
   case class RequertFile(downFileInfo:DownFileInfo)
-  var repoActorRefMap:Map[String,ActorRef] = Map.empty
+
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
@@ -29,9 +29,8 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
   override def receive: Receive = {
 
     case RequertFile(downFileInfo) =>
-      tuneRepoActorRef
+
       val fileOS = downFileInfo.fileOS
-      val socket = downFileInfo.socket
 
       /**
        * 判断文件是否已经缓存在本地仓库
@@ -62,17 +61,5 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
     fileHeadle.exists()
   }
 
-  def tuneRepoActorRef: Unit = {
-    import RepoManager._
-    val startRepoCount = Await.result(db.run(repositoryTable.filter(_.start === true).map(_.name).result), Duration.Inf).toList.sum
-    if( startRepoCount != repoActorRefMap.size) {
-      repoActorRefMap.map(p => context.stop(p._2))
-      repoActorRefMap = Map.empty
-      val repoNameList = Await.result(db.run(repositoryTable.map(_.name).result), Duration.Inf).toList
-      repoNameList.map(p => {
-        val repoActorRef = context.actorOf(Props(new DownMaster(p)))
-        repoActorRefMap += (p -> repoActorRef)
-      })
-    }
-  }
+
 }

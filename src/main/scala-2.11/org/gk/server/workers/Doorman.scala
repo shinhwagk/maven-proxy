@@ -26,7 +26,7 @@ class Doorman extends Actor {
       val ss = new ServerSocket(repoPort);
       while (true) {
         val socket = ss.accept();
-        headParser ! RequertParserHead(DownFileInfo(socket, repoName, repoUrl, repoPort))
+        headParser ! RequertParserHead(DownFileInfo(socket))
         println("仓库:" + repoName + ",收到请求")
       }
     }

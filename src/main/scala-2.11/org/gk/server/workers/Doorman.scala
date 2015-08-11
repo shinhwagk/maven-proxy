@@ -55,9 +55,9 @@ case class DownFileInfo(s: Socket) {
 
   lazy val fileUrl: String = getFileUrl
 
-  lazy val fileOS: String = cfg.getLocalMainDir + "/" + repoName + file
+  lazy val fileOS: String = cfg.getLocalMainDir + file
 
-  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" + repoName + file + ".DownTmp"
+  lazy val fileTempOS: String = fileOS + ".DownTmp"
 
   lazy val fileLength: Int = getfileUrlLength
 
@@ -72,7 +72,7 @@ case class DownFileInfo(s: Socket) {
 
   private def getFileUrl: String = {
     val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
-    file.replace("/"+ repoName+"/",repoUrl)
+    file.replace("/" + repoName + "/", repoUrl + "/")
   }
 
   def createTmpfile: Unit = {

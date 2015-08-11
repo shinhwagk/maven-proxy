@@ -46,8 +46,8 @@ object cfg {
   }
 
 
-  def getMavenProxyPost:Int = {
-    config.getInt("MavenPorxyPort")
+  def getMavenProxyServicePost:Int = {
+    config.getInt("MavenPorxyServicePort")
   }
 }
 

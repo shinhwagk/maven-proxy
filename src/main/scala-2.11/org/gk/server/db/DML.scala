@@ -25,13 +25,7 @@ object DML {
     Await.result(db.run(insert), Duration.Inf)
   }
 
-  def insertRepository(repoName: String, repoUrl: String, repoPort: Int, start: Boolean): Unit = {
-    val insert = DBIO.seq(
-      repositoryTable +=(repoName, repoUrl, repoPort, start)
-    )
 
-    Await.result(db.run(insert), Duration.Inf)
-  }
 
   def insertDownWorker(file: String, fileUrl: String, startIndex: Int, enIndex: Int, success: Int): Unit = {
     //    println(file+"被插入到数据库work")
@@ -70,13 +64,14 @@ object DML {
   }
 
 
-  def addRepository(name:String,url:String,priority:Int,start:Boolean): Unit ={
-    Await.result(db.run(DBIO.seq(repositoryTable += (name,url,priority,start))), Duration.Inf)
+  def addRepository(repoName:String,repoUrl:String,priority:Int,start:Boolean): Unit ={
+    Await.result(db.run(DBIO.seq(repositoryTable += (repoName,repoUrl,priority,start))), Duration.Inf)
   }
 
   def deleteRepository(name:String): Unit ={
     Await.result(db.run(DBIO.seq(repositoryTable.filter(_.name === name).delete)), Duration.Inf)
   }
+
   def listRepoitory:Unit={
     addRepository("a","a",1,true)
     db.run(repositoryTable.result).map(_.foreach {

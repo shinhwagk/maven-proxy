@@ -30,7 +30,7 @@ class CommandServer extends Actor {
     }
     case listRepository => {
       import org.gk.server.db._
-      DML.listRepoitory
+      sender() ! DML.listRepoitory
     }
   }
 }

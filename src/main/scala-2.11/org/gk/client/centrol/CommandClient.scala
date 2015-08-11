@@ -42,5 +42,10 @@ class CommandClient extends Actor {
       println("aaaaa")
       context.system.shutdown()
       System.exit(0)
+    case a:List[(String,String,Int,Boolean)]=>
+      a.map(println(_))
+      context.system.shutdown()
+      System.exit(0)
+
   }
 }

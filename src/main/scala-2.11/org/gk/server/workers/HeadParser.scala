@@ -41,8 +41,6 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
     var a: Map[String, String] = Map.empty
     var templine = br.readLine()
     val b = templine.split(" ")
-println(templine+"xxxxxxxxx")
-println(b+"xxxxxxxxx")
     a += ("PATH" -> b(1))
 
     templine = br.readLine()

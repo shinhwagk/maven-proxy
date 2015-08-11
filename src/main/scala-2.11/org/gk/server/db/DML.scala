@@ -72,11 +72,7 @@ object DML {
     Await.result(db.run(DBIO.seq(repositoryTable.filter(_.name === name).delete)), Duration.Inf)
   }
 
-  def listRepoitory:Unit={
-    addRepository("a","a",1,true)
-    db.run(repositoryTable.result).map(_.foreach {
-      case (name, url, priority, start) =>
-        println("  " + name + "\t" + url + "\t" + priority + "\t" + start)
-    })
+  def listRepoitory:List[(String,String,Int,Boolean)] = {
+    Await.result(db.run(repositoryTable.result), Duration.Inf).toList
   }
 }

@@ -37,7 +37,7 @@ case class Download(downFileInfo: DownFileInfo)
 
 case class RequertGetFile(downFileInfo: DownFileInfo)
 
-class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging {
+class DownMaster(downManagerActorRef: String) extends Actor with ActorLogging {
 
   import DownMaster._
 

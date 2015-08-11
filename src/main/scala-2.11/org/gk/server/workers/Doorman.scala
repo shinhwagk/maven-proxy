@@ -39,71 +39,71 @@ case class DownFileInfo(s: Socket) {
 
   val socket: Socket = s
 
-//  val  repoName: String = n
-//
-//  val repoUrl: String = u
-//
-//  val port:Int = p
+  var  repoName: String = _
+
+  var repoUrl: String = _
+
+  var port:Int = _
 
   var headInfo: Map[String, String] = _
 
   lazy val file: String = headInfo("PATH")
 
-//  lazy val fileUrl: String = repoUrl + file
+  lazy val fileUrl: String = repoUrl + file
 
-//  lazy val fileOS: String = cfg.getLocalMainDir + "/" +  repoName + file
+  lazy val fileOS: String = cfg.getLocalMainDir + "/" +  repoName + file
 
-//  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" +  repoName + file + ".DownTmp"
+  lazy val fileTempOS: String = cfg.getLocalMainDir + "/" +  repoName + file + ".DownTmp"
 
-//  lazy val fileLength: Int = getfileUrlLength
-//
-//  lazy val workerNumber: Int = getDownWokerNumber
-//
-//  lazy val workerDownInfo: Map[Int, (Int, Int)] = getWokerDownRangeInfo
-//
-//  private def getDownWokerNumber: Int = {
-//    val processForBytes = cfg.getPerProcessForBytes
-//    if (fileLength >= processForBytes) fileLength / processForBytes else 1
-//  }
-//
-//  def createTmpfile: Unit = {
-//    val file = new File(fileTempOS)
-//
-//    if (!file.getParentFile.exists) file.getParentFile.mkdirs()
-//
-//    if (!file.exists) {
-//      val raf = new RandomAccessFile(fileTempOS, "rwd");
-//      println("createTempfile" + fileTempOS + "长度:" + fileLength)
-//      raf.setLength(fileLength);
-//      raf.close()
-//    }
-//  }
-//
-//  private def getWokerDownRangeInfo: Map[Int, (Int, Int)] = {
-//    val endLength = fileLength % workerNumber
-//    val step = (fileLength - endLength) / workerNumber
-//    var tempMap: Map[Int, (Int, Int)] = Map.empty
-//    for (i <- 1 to workerNumber) {
-//      val startIndex: Int = (i - 1) * step
-//      val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1
-//      tempMap += (i ->(startIndex, endIndex))
-//    }
-//    tempMap
-//  }
-//
-//  def renameFile: Unit = {
-//    val fileOSHeadle = new File(fileOS);
-//    val fileTempOSHeadle = new File(fileTempOS);
-//    fileTempOSHeadle.renameTo(fileOSHeadle)
-//  }
-//
-//  private def getfileUrlLength: Int = {
-//    import java.net.{HttpURLConnection, URL};
-//    val downUrl = new URL(fileUrl)
-//    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-//    conn.setConnectTimeout(20000)
-//    conn.setReadTimeout(30000)
-//    conn.getContentLength
-//  }
+  lazy val fileLength: Int = getfileUrlLength
+
+  lazy val workerNumber: Int = getDownWokerNumber
+
+  lazy val workerDownInfo: Map[Int, (Int, Int)] = getWokerDownRangeInfo
+
+  private def getDownWokerNumber: Int = {
+    val processForBytes = cfg.getPerProcessForBytes
+    if (fileLength >= processForBytes) fileLength / processForBytes else 1
+  }
+
+  def createTmpfile: Unit = {
+    val file = new File(fileTempOS)
+
+    if (!file.getParentFile.exists) file.getParentFile.mkdirs()
+
+    if (!file.exists) {
+      val raf = new RandomAccessFile(fileTempOS, "rwd");
+      println("createTempfile" + fileTempOS + "长度:" + fileLength)
+      raf.setLength(fileLength);
+      raf.close()
+    }
+  }
+
+  private def getWokerDownRangeInfo: Map[Int, (Int, Int)] = {
+    val endLength = fileLength % workerNumber
+    val step = (fileLength - endLength) / workerNumber
+    var tempMap: Map[Int, (Int, Int)] = Map.empty
+    for (i <- 1 to workerNumber) {
+      val startIndex: Int = (i - 1) * step
+      val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1
+      tempMap += (i ->(startIndex, endIndex))
+    }
+    tempMap
+  }
+
+  def renameFile: Unit = {
+    val fileOSHeadle = new File(fileOS);
+    val fileTempOSHeadle = new File(fileTempOS);
+    fileTempOSHeadle.renameTo(fileOSHeadle)
+  }
+
+  private def getfileUrlLength: Int = {
+    import java.net.{HttpURLConnection, URL};
+    val downUrl = new URL(fileUrl)
+    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    conn.setConnectTimeout(20000)
+    conn.setReadTimeout(30000)
+    conn.getContentLength
+  }
 }
 

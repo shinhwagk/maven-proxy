@@ -43,17 +43,18 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
 
       val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
-      println(fileOS)
-//      val downWokerAmount = downFileInfo.workerNumber
-//      val fileURL = downFileInfo.fileUrl
       val repoName = downFileInfo.repoName
 
       if (checkFileDecodeDownning(fileOS)) {
-        val repoCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
-        println("ccc" + Some(repoCount))
-        if (repoCount > 0) {
-//          DML.insertDownMaster(fileOS, fileURL, downWokerAmount)
+        val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
+        if (repoEnabledCount > 0) {
+          val fileURL = downFileInfo.fileUrl
+          val downWokerAmount = downFileInfo.workerNumber
+          DML.insertDownMaster(fileOS, fileURL, downWokerAmount)
           context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
+        } else {
+          val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
+          if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
         }
       } else {
         requertDowingFileMap += (socket -> fileOS)

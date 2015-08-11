@@ -22,6 +22,7 @@ class CommandServer extends Actor {
     case addRepository(repoName, repoUrl, priority, start) => {
       import org.gk.server.db._
       DML.addRepository(repoName, repoUrl, priority, start)
+      sender() ! "ok"
     }
     case deleteRepository(repoName) => {
       import org.gk.server.db._

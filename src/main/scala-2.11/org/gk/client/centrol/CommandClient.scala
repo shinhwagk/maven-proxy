@@ -38,5 +38,9 @@ class CommandClient extends Actor {
 //println("xxxxxx")
       commandServer ! listRepository
     }
+    case "ok" =>
+      println("aaaaa")
+      context.system.shutdown()
+      System.exit(0)
   }
 }

@@ -1,75 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="0.8.8 更改逻辑，每个仓库一个端口提供服务,测似通过">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/SBT__com_google_protobuf_protobuf_java_2_5_0_jar.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/SBT__com_typesafe_akka_akka_remote_2_11_2_3_12_jar.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/SBT__io_netty_netty_3_8_0_Final_jar.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/SBT__org_uncommons_maths_uncommons_maths_1_2_2a_jar.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/client.conf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/maven-proxy.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/server.conf" />
-      <change type="DELETED" beforePath="Z:\typesafe\maven-proxy\src\main\scala-2.11\org\gk\client\control\Control.scala" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/input_dsp" afterPath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/input_dsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.10/inputs" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.10/inputs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/inputs" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/inputs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.10/output" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.10/output" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/output" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.11/output" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/output_dsp" afterPath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.11/output_dsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/DML.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/DML.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownManager.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownManager.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownMaster.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownMaster.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownWorker.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownWorker.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/InitDatabase.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/InitDatabase.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/Proxy.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/Proxy.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Returner.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Returner.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/Tables.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/Tables.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-compile-internal.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-compile-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-compile.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-compile.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-docs.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-docs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-optional.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-optional.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-plugin.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-pom.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-provided.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-provided.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-runtime-internal.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-runtime-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-runtime.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-runtime.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-scala-tool.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-scala-tool.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-sources.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-sources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-test-internal.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-test-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-test.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/reports/default-maven-proxy-build-test.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-compile-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-compile-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-compile.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-compile.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-docs.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-docs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-optional.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-optional.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-plugin.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-pom.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-provided.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-provided.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-runtime-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-runtime-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-runtime.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-runtime.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-scala-tool.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-scala-tool.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-sources.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-sources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-test-internal.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-test-internal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-test.xml" afterPath="$PROJECT_DIR$/target/resolution-cache/reports/default-maven-proxy_2.11-test.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/compile/exportedProducts/$global/streams/export" afterPath="$PROJECT_DIR$/project/target/streams/compile/exportedProducts/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/runtime/exportedProducts/$global/streams/export" afterPath="$PROJECT_DIR$/project/target/streams/runtime/exportedProducts/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/runtime/internalDependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/project/target/streams/runtime/internalDependencyClasspath/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" afterPath="$PROJECT_DIR$/target/streams/test/managedClasspath/$global/streams/export" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/maven-proxy.iml" afterPath="$PROJECT_DIR$/.idea/modules/maven-proxy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/default/maven-proxy-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.properties" afterPath="$PROJECT_DIR$/project/target/resolution-cache/default/maven-proxy-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/target/resolution-cache/default/maven-proxy-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.xml" afterPath="$PROJECT_DIR$/project/target/resolution-cache/default/maven-proxy-build/scala_2.10/sbt_0.13/0.1-SNAPSHOT/resolved.xml.xml" />
+    <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -117,8 +52,8 @@
       <file leaf-file-name="CommandServer.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.933333">
-              <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="6" />
+            <state vertical-scroll-proportion="-11.0">
+              <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
               <folding>
                 <element signature="e#31#54#0" expanded="true" />
               </folding>
@@ -126,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="client.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding>
                 <element signature="e#31#69#0" expanded="true" />
               </folding>
@@ -138,11 +73,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="maven-proxy.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="maven-proxy.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/maven-proxy.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.036789298">
+            <state vertical-scroll-proportion="-0.78571427">
               <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="client.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/client.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="server.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/server.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -152,10 +107,20 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="28" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="28" />
+              <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
               <folding>
                 <element signature="e#31#62#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="application.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -236,11 +201,11 @@
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/client.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/Proxy.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/Tables.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/db/DML.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala" />
         <option value="$PROJECT_DIR$/maven-proxy.sh" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala" />
       </list>
     </option>
   </component>
@@ -248,9 +213,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1920" />
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1034" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -307,6 +273,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="target" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -727,12 +733,6 @@
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
     </task>
-    <task id="LOCAL-00001" summary="111">
-      <created>1438567395705</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1438567395705</updated>
-    </task>
     <task id="LOCAL-00002" summary="0.5 嵌入H2">
       <created>1438662788200</created>
       <option name="number" value="00002" />
@@ -1021,7 +1021,13 @@
       <option name="project" value="LOCAL" />
       <updated>1439186928389</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="0.9.3 添加sh脚本">
+      <created>1439268166357</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1439268166359</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1034,7 +1040,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1034" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1045,7 +1051,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52353615" sideWeight="0.5042644" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7235577" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35148516" sideWeight="0.49573562" order="11" side_tool="false" content_ui="tabs" x="3" y="19" width="1917" height="833" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35587582" sideWeight="0.49573562" order="11" side_tool="false" content_ui="tabs" x="3" y="19" width="1917" height="833" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18230277" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1127,7 +1133,8 @@
     <MESSAGE value="0.8.8 整理代码，经过测试" />
     <MESSAGE value="0.8.9 增加仓库列表,修改中。。。" />
     <MESSAGE value="0.8.8 更改逻辑，每个仓库一个端口提供服务,测似通过" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.8.8 更改逻辑，每个仓库一个端口提供服务,测似通过" />
+    <MESSAGE value="0.9.3 添加sh脚本" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.9.3 添加sh脚本" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1144,6 +1151,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1361,6 +1369,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="61" selection-start-line="10" selection-start-column="61" selection-end-line="10" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1368,6 +1377,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1403,34 +1413,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/client.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.7.jar!/scala/Function5.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.357143">
           <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/server.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -1483,41 +1469,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="28" selection-start-line="38" selection-start-column="28" selection-end-line="38" selection-end-column="28" />
-          <folding>
-            <element signature="e#31#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/centrol/CommandServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.933333">
-          <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="6" />
+        <state vertical-scroll-proportion="-11.0">
+          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
           <folding>
             <element signature="e#31#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala">
+    <entry file="file://$PROJECT_DIR$/maven-proxy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.78571427">
+          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/client.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/server.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/CommandClient.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="19" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="19" />
           <folding>
-            <element signature="e#31#69#0" expanded="true" />
+            <element signature="e#31#62#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/maven-proxy.sh">
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/client/centrol/client.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.036789298">
-          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
-          <folding />
+        <state vertical-scroll-proportion="0.5">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#31#69#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

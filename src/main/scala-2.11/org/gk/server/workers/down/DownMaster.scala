@@ -1,9 +1,12 @@
 package org.gk.server.workers.down
 
+import java.net.{HttpURLConnection, URL}
+
 import akka.actor.SupervisorStrategy._
 import akka.actor._
+import org.gk.server.db.DML
 import org.gk.server.db.DML._
-import org.gk.server.workers.DownFileInfo
+import org.gk.server.workers.{ActorRefWokerGroups, DownFileInfo}
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 
@@ -13,14 +16,11 @@ import scala.concurrent.duration._
 /**
  * Created by goku on 2015/7/28.
  */
-class DownCount(val worksNum: Int, var successNum: Int)
-
 object DownMaster {
 
   case class DownFile(fileUrl: String, file: String)
 
   case class WorkerDownSectionSuccess(downFileInfo: DownFileInfo)
-
 
 }
 
@@ -49,8 +49,23 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
   override def receive: Receive = {
     case Download(downFileInfo) =>
-
-      allocationWorker(downFileInfo)
+      val url = downFileInfo.fileUrl
+      val downUrl = new URL(url);
+      val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+      val responseCode = downConn.getResponseCode
+      responseCode match {
+        case 404 =>
+          ActorRefWokerGroups.terminator ! (404,downFileInfo.socket)
+        case 200 =>
+          val fileOS = downFileInfo.fileOS
+          val fileURL = downFileInfo.fileUrl
+          val downWokerAmount = downFileInfo.workerNumber
+          DML.insertDownMaster(fileOS, fileURL, downWokerAmount)
+          allocationWorker(downFileInfo)
+      }
+      downConn.disconnect()
+//System.exit(111)
+//      allocationWorker(downFileInfo)
 
     case WorkerDownSectionSuccess(downFileInfo) =>
       storeWorkFile(downFileInfo)

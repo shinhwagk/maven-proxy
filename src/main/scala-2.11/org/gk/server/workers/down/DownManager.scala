@@ -32,12 +32,9 @@ import org.gk.server.workers.down.DownManager._
 
 class DownManager extends Actor with akka.actor.ActorLogging {
 
-  //  val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
-  //  context.system.scheduler.schedule(Duration.Zero, 3 second, repoManagerActorRef, RequertFile(downFileInfo))
   override def receive: Actor.Receive = {
 
     case RequertDownFile(downFileInfo) =>
-      //      tuneRepoActorRef
 
       val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
@@ -76,9 +73,3 @@ class DownManager extends Actor with akka.actor.ActorLogging {
     if (count == 0) true else false
   }
 }
-
-//case class Work(url:String,thread:Int,startIndex:Int, endIndex:Int,fileOs:String)
-
-
-
-

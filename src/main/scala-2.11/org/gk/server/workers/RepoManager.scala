@@ -22,27 +22,27 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
     case RequertFile(downFileInfo) =>
 
       val fileOS = downFileInfo.fileOS
+      val repoName = downFileInfo.repoName
 
       /**
        * 判断文件是否已经缓存在本地仓库
        */
-      decodeFileLocalRepoExists(downFileInfo) match {
-        case true => {
+      decodeFileLocalRepoExists(fileOS) match {
+        case true =>
           log.info("文件:{} 存在本地,准备返回给请求者...", fileOS)
 
           context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(downFileInfo)
-        }
-        case false => {
+
+        case false =>
           log.info("文件:{} 不在本地...", fileOS)
+
           ActorRefWokerGroups.downManager ! RequertDownFile(downFileInfo)
-        }
       }
   }
 
   //查看文件是否存在本地仓库
-  def decodeFileLocalRepoExists(downFileInfo: DownFileInfo): Boolean = {
+  def decodeFileLocalRepoExists(fileOS: String): Boolean = {
     println("检测文件是否存在")
-    val fileOS = downFileInfo.fileOS
     val fileHeadle = new File(fileOS)
     fileHeadle.exists()
   }

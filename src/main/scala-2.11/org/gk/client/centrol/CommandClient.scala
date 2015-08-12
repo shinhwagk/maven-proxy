@@ -9,7 +9,7 @@ import org.gk.server.centrol.CommandServer._
  * Created by goku on 2015/8/10.
  */
 class CommandClient extends Actor {
-  val commandServer = context.actorSelection("akka.tcp://MavenProxy@127.0.0.1:2552/user/CommandServer")
+  val commandServer = context.actorSelection("akka.tcp://MavenProxyServer@127.0.0.1:2552/user/CommandServer")
 
 
   override def receive: Receive = {

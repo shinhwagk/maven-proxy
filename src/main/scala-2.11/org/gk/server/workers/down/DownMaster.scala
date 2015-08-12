@@ -89,7 +89,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
   def storeWorkFile(downFileInfo: DownFileInfo) = {
     import java.io._
     val fileHeadle = new File(downFileInfo.fileOS)
-    if(fileHeadle.getParentFile.exists()){
+    if(!fileHeadle.getParentFile.exists()){
       fileHeadle.getParentFile.mkdirs()
     }
     val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd");

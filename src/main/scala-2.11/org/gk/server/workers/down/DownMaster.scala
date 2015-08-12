@@ -49,6 +49,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
 
   override def receive: Receive = {
     case Download(downFileInfo) =>
+      println("进入下载")
       val url = downFileInfo.fileUrl
       val downUrl = new URL(url);
       val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
@@ -57,10 +58,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
         case 404 =>
           ActorRefWokerGroups.terminator ! (404,downFileInfo.socket)
         case 200 =>
-          val fileOS = downFileInfo.fileOS
-          val fileURL = downFileInfo.fileUrl
-          val downWokerAmount = downFileInfo.workerNumber
-          DML.insertDownMaster(fileOS, fileURL, downWokerAmount)
+          downFileInfo.fileLength = downConn.getContentLength
           allocationWorker(downFileInfo)
       }
       downConn.disconnect()
@@ -70,10 +68,11 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     case WorkerDownSectionSuccess(downFileInfo) =>
       storeWorkFile(downFileInfo)
       val fileurl = downFileInfo.fileUrl
+      val fileOS = downFileInfo.fileOS
       deleteDownWorker(fileurl)
       deleteDownfile(fileurl)
 
-      downManagerActorRef ! DownFileSuccess(downFileInfo)
+      downManagerActorRef ! DownFileSuccess(fileOS)
 
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")

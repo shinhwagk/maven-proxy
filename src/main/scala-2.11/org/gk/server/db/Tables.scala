@@ -7,14 +7,12 @@ import slick.driver.H2Driver.api._
  */
 object Tables {
 
-  class DownFileList(tag: Tag) extends Table[(String, String, Int)](tag, "DOWN_FILE_LIST") {
+  class DownFileList(tag: Tag) extends Table[(String, String)](tag, "DOWN_FILE_LIST") {
     def fileOS = column[String]("FILEOS", O.PrimaryKey)
 
     def fileUrl = column[String]("FILE_URL")
 
-    def WorksNumber = column[Int]("WORK_NUMBER")
-
-    def * = (fileOS, fileUrl, WorksNumber)
+    def * = (fileOS, fileUrl)
   }
 
   val downFileList = TableQuery[DownFileList]

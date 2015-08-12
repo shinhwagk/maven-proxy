@@ -16,10 +16,10 @@ object DML {
   import MetaData._
   import Tables._
 
-  def insertDownMaster(file: String, fileUrl: String, WorksNumber: Int): Unit = {
+  def insertDownMaster(file: String, fileUrl: String): Unit = {
     println(file + "被插入到数据库")
     val insert = DBIO.seq(
-      downFileList +=(file, fileUrl, WorksNumber)
+      downFileList +=(file, fileUrl)
     )
 
     Await.result(db.run(insert), Duration.Inf)
@@ -58,11 +58,6 @@ object DML {
   def countDownSuccessNumber(fileUrl: String): Int = {
     Await.result(db.run(downFileWorkList.filter(_.fileUrl === fileUrl).map(p => (p.success)).result), Duration.Inf).toList.sum
   }
-
-  def selectDownNumber(fileUrl: String): Int = {
-    Await.result(db.run(downFileList.filter(_.fileUrl === fileUrl).map(p => (p.WorksNumber)).result), Duration.Inf).head
-  }
-
 
   def addRepository(repoName:String,repoUrl:String,priority:Int,start:Boolean): Unit ={
     Await.result(db.run(DBIO.seq(repositoryTable += (repoName,repoUrl,priority,start))), Duration.Inf)

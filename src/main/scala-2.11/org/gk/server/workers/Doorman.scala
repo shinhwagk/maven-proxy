@@ -39,7 +39,7 @@ case class DownFileInfo(s: Socket) {
 
   lazy val fileOS: String = cfg.getLocalMainDir + file
 
-  lazy val fileLength: Int = getfileUrlLength
+  var fileLength: Int = _
 
   lazy val workerNumber: Int = getDownWorkerNumber
 
@@ -65,15 +65,6 @@ case class DownFileInfo(s: Socket) {
       tempMap += (i ->(startIndex, endIndex, new Array[Byte](endIndex - startIndex + 1)))
     }
     tempMap
-  }
-
-  private def getfileUrlLength: Int = {
-    import java.net.{HttpURLConnection, URL};
-    val downUrl = new URL(fileUrl)
-    val conn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    conn.setConnectTimeout(20000)
-    conn.setReadTimeout(30000)
-    conn.getContentLength
   }
 }
 

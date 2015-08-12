@@ -87,6 +87,11 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
   }
 
   def storeWorkFile(downFileInfo: DownFileInfo) = {
+    import java.io._
+    val fileHeadle = new File(downFileInfo.fileOS)
+    if(fileHeadle.getParentFile.exists()){
+      fileHeadle.getParentFile.createNewFile()
+    }
     val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd");
     println("创建文件+" +downFileInfo.fileOS)
     raf.setLength(downFileInfo.fileLength)

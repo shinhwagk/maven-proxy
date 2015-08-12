@@ -8,7 +8,7 @@ import org.gk.server.workers.down.DownManager
 /**
  * Created by goku on 2015/8/12.
  */
-object ActorRefWokerGroups {
+object ActorRefWorkerGroups {
   val system = ActorSystem("MavenProxyServer", ConfigFactory.load("server"))
   val doorman = system.actorOf(Props[Doorman], name = "Doorman")
   val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")

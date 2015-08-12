@@ -1,12 +1,8 @@
 package org.gk.server
 
 import java.net.ServerSocket
-import akka.actor.{Props, ActorSystem}
-import com.typesafe.config.ConfigFactory
-import org.gk.server.centrol.CommandServer
-import org.gk.server.workers._
 import org.gk.server.config.cfg
-import org.gk.server.workers.down.DownManager
+import org.gk.server.workers._
 
 
 /**
@@ -19,11 +15,11 @@ object ProxyServer extends App {
   import org.gk.server.db._
 
   InitDatabase.initMavenProxy
-  ActorRefWokerGroups.startCommandServerActorRef
+  ActorRefWorkerGroups.startCommandServerActorRef
   println("系统已经启动...")
 
   while (true) {
     val socket = ss.accept()
-    ActorRefWokerGroups.doorman ! socket
+    ActorRefWorkerGroups.doorman ! socket
   }
 }

@@ -19,7 +19,7 @@ class Doorman extends Actor {
 
   override def receive: Receive = {
     case socket: Socket =>
-      ActorRefWokerGroups.headParser ! RequertParserHead(DownFileInfo(socket))
+      ActorRefWorkerGroups.headParser ! RequertParserHead(DownFileInfo(socket))
   }
 }
 
@@ -27,17 +27,17 @@ case class DownFileInfo(s: Socket) {
 
   val socket: Socket = s
 
-  lazy val repoName: String = file.split("/")(1)
+  lazy val repoName: String = filePath.split("/")(1)
 
   var repoUrl: String = _
 
   var headInfo: Map[String, String] = _
 
-  lazy val file: String = headInfo("PATH")
+  lazy val filePath: String = headInfo("PATH")
 
   lazy val fileUrl: String = getFileUrl
 
-  lazy val fileOS: String = cfg.getLocalMainDir + file
+  lazy val fileOS: String = cfg.getLocalMainDir + filePath
 
   var fileLength: Int = _
 
@@ -52,7 +52,7 @@ case class DownFileInfo(s: Socket) {
 
   private def getFileUrl: String = {
     val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
-    file.replace("/" + repoName + "/", repoUrl + "/")
+    filePath.replace("/" + repoName + "/", repoUrl + "/")
   }
 
   private def getWokerDownRangeInfo: Map[Int, (Int, Int, Array[Byte])] = {

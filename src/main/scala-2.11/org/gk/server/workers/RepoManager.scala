@@ -36,7 +36,7 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
         case false =>
           log.info("文件:{} 不在本地...", fileOS)
 
-          ActorRefWokerGroups.downManager ! RequertDownFile(downFileInfo)
+          ActorRefWorkerGroups.downManager ! RequertDownFile(downFileInfo)
       }
   }
 

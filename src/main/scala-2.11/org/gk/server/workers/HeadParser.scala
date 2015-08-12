@@ -25,11 +25,11 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
     case RequertParserHead(downFileInfo) => {
       log.info("headParser收到请求....")
       downFileInfo.headInfo = getHeadInfo(downFileInfo.socket)
-      val file = downFileInfo.file
+      val file = downFileInfo.filePath
       log.info("headParser解析出需要下载的文件:{}....", file)
       log.info("headParser发送请求给RepoManager")
 
-      ActorRefWokerGroups.repoManager ! RequertFile(downFileInfo)
+      ActorRefWorkerGroups.repoManager ! RequertFile(downFileInfo)
     }
   }
 

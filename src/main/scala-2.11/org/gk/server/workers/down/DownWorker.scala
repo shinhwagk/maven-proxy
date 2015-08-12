@@ -92,14 +92,8 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
 
     log.debug("ActorRef:{}; 下载完毕", self.path.name)
     downConn.disconnect()
-    Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).filter(_.startIndex === startIndex).delete), Duration.Inf)
-    val ccc = Await.result(db.run(downFileWorkList.filter(_.fileUrl === url).length.result), Duration.Inf)
 
-    println(ccc+"剩余文件数量")
-    import DML._
-    if (ccc == 0) {
-      println("下载完成.....")
-      downMasterActorRef ! WorkerDownSectionSuccess(downFileInfo)
-    }
+    downMasterActorRef ! WorkerDownSectionSuccess(downFileInfo,workerNumber)
+
   }
 }

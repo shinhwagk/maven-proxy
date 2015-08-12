@@ -25,8 +25,6 @@ object InitDatabase {
   private def createTable: Unit = {
     import Tables._
     val setup = DBIO.seq(
-      downFileList.schema.create,
-      downFileWorkList.schema.create,
       repositoryTable.schema.create
     )
     Await.result(db.run(setup), Duration.Inf)

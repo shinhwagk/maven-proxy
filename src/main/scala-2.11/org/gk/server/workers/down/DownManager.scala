@@ -7,7 +7,7 @@ import org.gk.server.db.DML
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables._
 import org.gk.server.workers.RepoManager.RequertFile
-import org.gk.server.workers.{DownFileInfo, ActorRefWokerGroups}
+import org.gk.server.workers.{DownFileInfo, ActorRefWorkerGroups}
 import slick.driver.H2Driver.api._
 
 import scala.collection.mutable.ArrayBuffer
@@ -23,15 +23,15 @@ object DownManager {
 
   case class DownLoadFile(downFileInfo: DownFileInfo)
 
-  case class DownFileSuccess(fileOS:String)
+  case class DownFileSuccess(filePath:String)
 
   var requertDowingFileMap: Map[String, ArrayBuffer[DownFileInfo]] = Map.empty
 
   object DB {
-    def add(key: String, value: DownFileInfo) = {
+    def add(filePath: String, value: DownFileInfo) = {
       val downfileInfoArrayBuffer = new ArrayBuffer[DownFileInfo]()
       downfileInfoArrayBuffer += value
-      requertDowingFileMap += (key -> downfileInfoArrayBuffer)
+      requertDowingFileMap += (filePath -> downfileInfoArrayBuffer)
     }
   }
 
@@ -45,42 +45,35 @@ class DownManager extends Actor with akka.actor.ActorLogging {
   override def receive: Actor.Receive = {
 
     case RequertDownFile(downFileInfo) =>
-      val socket = downFileInfo.socket
       val fileOS = downFileInfo.fileOS
-      val fileURL = downFileInfo.fileUrl
+      val filePath = downFileInfo.filePath
       val repoName = downFileInfo.repoName
 
-      if (!requertDowingFileMap.contains(fileOS)) {
-        DB.add(fileOS, downFileInfo)
+      if (!requertDowingFileMap.contains(filePath)) {
+        DB.add(filePath, downFileInfo)
         val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
         if (repoEnabledCount > 0) {
 
-          DML.insertDownMaster(fileOS, fileURL)
-          context.watch(context.actorOf(Props(new DownMaster(self)))) ! Download(downFileInfo)
+          context.watch(context.actorOf(Props[DownMaster])) ! Download(downFileInfo)
         } else {
           val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
           if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
         }
       } else {
-        println("文件正在下载")
-        val socketArrayBuffer = requertDowingFileMap(fileOS)
+        println("文件正在下载...,等待下载完成返回")
+        val socketArrayBuffer = requertDowingFileMap(filePath)
         socketArrayBuffer += downFileInfo
       }
 
-    case DownFileSuccess(downFileInfo) =>
-      requertDowingFileMap.filter(_._1 == downFileInfo.fileOS).map(p => {
+    case DownFileSuccess(filePath) =>
+      val downMasterActorRef = sender()
+      context.unwatch(downMasterActorRef)
+      context.stop(downMasterActorRef)
+      requertDowingFileMap.filter(_._1 == filePath).map(p => {
         p._2.foreach(l => {
-          ActorRefWokerGroups.repoManager ! RequertFile(l)
+          ActorRefWorkerGroups.repoManager ! RequertFile(l)
         })
       })
+      requertDowingFileMap -=(filePath)
   }
-
-  def checkFileDecodeDownning(fileOS: String): Boolean = {
-    import org.gk.server.db.MetaData._
-    import org.gk.server.db.Tables._
-    val count = Await.result(db.run(downFileList.filter(_.fileOS === fileOS).length.result), Duration.Inf)
-    if (count == 0) true else false
-  }
-
-
 }

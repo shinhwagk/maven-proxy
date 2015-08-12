@@ -90,7 +90,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     import java.io._
     val fileHeadle = new File(downFileInfo.fileOS)
     if(fileHeadle.getParentFile.exists()){
-      fileHeadle.getParentFile.createNewFile()
+      fileHeadle.getParentFile.mkdirs()
     }
     val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd");
     println("创建文件+" +downFileInfo.fileOS)

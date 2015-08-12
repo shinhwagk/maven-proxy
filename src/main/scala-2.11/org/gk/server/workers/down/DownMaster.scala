@@ -97,7 +97,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     raf.setLength(downFileInfo.fileLength)
     println("xxxxx" + downFileInfo.fileLength)
     val fileBuffer = new ArrayBuffer[Byte]()
-    downFileInfo.workerDownInfo.toList.sortWith(_._1 < _._1).map(l => {
+    downFileInfo.workerDownInfo.toList.sortBy(_._1).map(l => {
       val buffer = l._2._3
       fileBuffer ++= buffer
     })

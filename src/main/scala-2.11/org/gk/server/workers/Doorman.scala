@@ -43,7 +43,7 @@ case class DownFileInfo(s: Socket) {
 
   lazy val workerNumber: Int = getDownWorkerNumber
 
-  lazy val workerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWokerDownRangeInfo
+  lazy val workerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWorkerDownRangeInfo
 
   private def getDownWorkerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
@@ -55,7 +55,7 @@ case class DownFileInfo(s: Socket) {
     filePath.replace("/" + repoName + "/", repoUrl + "/")
   }
 
-  private def getWokerDownRangeInfo: Map[Int, (Int, Int, Array[Byte])] = {
+  private def getWorkerDownRangeInfo: Map[Int, (Int, Int, Array[Byte])] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
     var tempMap: Map[Int, (Int, Int, Array[Byte])] = Map.empty

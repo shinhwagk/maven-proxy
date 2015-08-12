@@ -22,8 +22,6 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
     case RequertFile(downFileInfo) =>
 
       val fileOS = downFileInfo.fileOS
-      val repoName = downFileInfo.repoName
-
       /**
        * 判断文件是否已经缓存在本地仓库
        */

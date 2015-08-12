@@ -19,12 +19,9 @@ import scala.concurrent.duration.Duration
  */
 object RepoManager {
   case class RequertFile(downFileInfo:DownFileInfo)
-
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging{
-
-  val downManager = context.actorOf(Props(new DownManager(self)), name = "DownManager")
 
   override def receive: Receive = {
 
@@ -43,14 +40,9 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
         }
         case false => {
           log.info("文件:{} 不在本地...",fileOS)
-          downManager ! RequertDownFile(downFileInfo)
+          ActorRefWokerGroups.downManager ! RequertDownFile(downFileInfo)
         }
       }
-
-    case "ffs" =>
-      val a = sender()
-      context.unwatch(a)
-      context.stop(a)
   }
 
   //查看文件是否存在本地仓库
@@ -60,6 +52,4 @@ class RepoManager extends Actor with akka.actor.ActorLogging{
     val fileHeadle = new File(fileOS)
     fileHeadle.exists()
   }
-
-
 }

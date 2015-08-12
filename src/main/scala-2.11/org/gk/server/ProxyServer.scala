@@ -1,25 +1,20 @@
 package org.gk.server
 
 import java.net.ServerSocket
-
-import akka.actor.{ActorSystem, Props}
-import com.typesafe.config.ConfigFactory
-import org.gk.server.centrol.CommandServer
+import org.gk.server.db._
+import org.gk.server.workers._
 import org.gk.server.config.cfg
-import org.gk.server.workers.Doorman
 
 
 /**
  * Created by gk on 15/7/21.
  */
-object Proxy extends App {
+object ProxyServer extends App {
 
   val ss = new ServerSocket(cfg.getMavenProxyServicePost);
-  val system = ActorSystem("MavenProxy", ConfigFactory.load("server"))
-  val doorman = system.actorOf(Props[Doorman], name = "Doorman")
-  system.actorOf(Props[CommandServer], name = "CommandServer")
 
   import org.gk.server.db._
+  import org.gk.server.workers.ActorRefWokerGroups._
 
   InitDatabase.initMavenProxy
 
@@ -27,7 +22,7 @@ object Proxy extends App {
 
   while (true) {
     val socket = ss.accept()
-    doorman ! socket
+    ActorRefWokerGroups.doorman ! socket
   }
 
   //  val centralRepoInfo = Await.result(db.run(repositoryTable.filter(_.name === "central").result), Duration.Inf).toList.head

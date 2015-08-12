@@ -24,7 +24,6 @@ object Doorman {
 }
 
 class Doorman extends Actor {
-  val headParser = context.actorOf(Props[HeadParser], name = "HeadParser")
 
   override def receive: Receive = {
     case StartRepoService(repoName, repoUrl, repoPort, doormanActorRef) => {
@@ -32,12 +31,12 @@ class Doorman extends Actor {
       val ss = new ServerSocket(repoPort);
       while (true) {
         val socket = ss.accept();
-        headParser ! RequertParserHead(DownFileInfo(socket))
+        ActorRefWokerGroups.headParser ! RequertParserHead(DownFileInfo(socket))
         println("仓库:" + repoName + ",收到请求")
       }
     }
     case socket: Socket =>
-      headParser ! RequertParserHead(DownFileInfo(socket))
+      ActorRefWokerGroups.headParser ! RequertParserHead(DownFileInfo(socket))
   }
 }
 
@@ -57,13 +56,11 @@ case class DownFileInfo(s: Socket) {
 
   lazy val fileOS: String = cfg.getLocalMainDir + file
 
-  lazy val fileTempOS: String = fileOS + ".DownTmp"
-
   lazy val fileLength: Int = getfileUrlLength
 
   lazy val workerNumber: Int = getDownWokerNumber
 
-  lazy val workerDownInfo: Map[Int, (Int, Int)] = getWokerDownRangeInfo
+  lazy val workerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWokerDownRangeInfo
 
   private def getDownWokerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
@@ -75,35 +72,16 @@ case class DownFileInfo(s: Socket) {
     file.replace("/" + repoName + "/", repoUrl + "/")
   }
 
-  def createTmpfile: Unit = {
-    val file = new File(fileTempOS)
-
-    if (!file.getParentFile.exists) file.getParentFile.mkdirs()
-
-    if (!file.exists) {
-      val raf = new RandomAccessFile(fileTempOS, "rwd");
-      println("createTempfile" + fileTempOS + "长度:" + fileLength)
-      raf.setLength(fileLength);
-      raf.close()
-    }
-  }
-
-  private def getWokerDownRangeInfo: Map[Int, (Int, Int)] = {
+  private def getWokerDownRangeInfo: Map[Int, (Int, Int, Array[Byte])] = {
     val endLength = fileLength % workerNumber
     val step = (fileLength - endLength) / workerNumber
-    var tempMap: Map[Int, (Int, Int)] = Map.empty
+    var tempMap: Map[Int, (Int, Int, Array[Byte])] = Map.empty
     for (i <- 1 to workerNumber) {
       val startIndex: Int = (i - 1) * step
       val endIndex = if (i == workerNumber) i * step + endLength else i * step - 1
-      tempMap += (i ->(startIndex, endIndex))
+      tempMap += (i ->(startIndex, endIndex, new Array[Byte](endIndex - startIndex + 1)))
     }
     tempMap
-  }
-
-  def renameFile: Unit = {
-    val fileOSHeadle = new File(fileOS);
-    val fileTempOSHeadle = new File(fileTempOS);
-    fileTempOSHeadle.renameTo(fileOSHeadle)
   }
 
   private def getfileUrlLength: Int = {

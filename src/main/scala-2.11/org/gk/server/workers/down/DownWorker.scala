@@ -14,6 +14,7 @@ import org.gk.server.db.Tables._
 import akka.actor._
 import org.gk.server.workers.down.DownMaster._
 import slick.driver.H2Driver.api._
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration.Duration
 import scala.concurrent.Await
 
@@ -57,8 +58,8 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
   def down(downFileInfo: DownFileInfo, workerNumber: Int) = {
     val startIndex = downFileInfo.workerDownInfo(workerNumber)._1
     val endIndex = downFileInfo.workerDownInfo(workerNumber)._2
+    val buffer = downFileInfo.workerDownInfo(workerNumber)._3
     val url = downFileInfo.fileUrl
-    val fileTmpOS = downFileInfo.fileTempOS
 
     //    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
     val downUrl = new URL(url);
@@ -83,7 +84,6 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
       var start = 0
       var len = 0
 
-      val buffer = new Array[Byte](workFileLength)
       while (len != -1 && workFileLength != currentLength) {
         len = is.read(buffer, start, workFileLength - currentLength)
         start += len
@@ -91,7 +91,6 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
         //      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
         //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
       }
-      storeWorkFile(fileTmpOS, startIndex, buffer)
     } finally is.close()
 
     log.debug("ActorRef:{}; 下载完毕", self.path.name)

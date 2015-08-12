@@ -25,12 +25,7 @@ object DownMaster {
 
   case class WorkerDownSectionSuccess(downFileInfo: DownFileInfo)
 
-  def storeWorkFile(fileTempOS: String, startIndex: Int, buffer: Array[Byte]) = synchronized {
-    val raf = new RandomAccessFile(fileTempOS, "rwd");
-    raf.seek(startIndex);
-    raf.write(buffer)
-    raf.close()
-  }
+
 }
 
 case class Download(downFileInfo: DownFileInfo)
@@ -62,12 +57,10 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       allocationWorker(downFileInfo)
 
     case WorkerDownSectionSuccess(downFileInfo) =>
-
+      storeWorkFile(downFileInfo)
       val fileurl = downFileInfo.fileUrl
       deleteDownWorker(fileurl)
       deleteDownfile(fileurl)
-
-      downFileInfo.renameFile
 
       downManagerActorRef ! DownFileSuccess(downFileInfo)
 
@@ -81,16 +74,8 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     val fileUrl = downFileInfo.fileUrl
     val fileLength = downFileInfo.fileLength
     val downWokerAmount = downFileInfo.workerNumber
-    val fileTmpOS = downFileInfo.fileTempOS
 
     log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-    log.info("定位在下文件{}...", fileTmpOS)
-
-    //创建临时文件需要的目录和文件
-    downFileInfo.createTmpfile
-    log.info("临时文件创建完毕")
-
-
 
     for (i <- 1 to downWokerAmount) {
       val startIndex = downFileInfo.workerDownInfo(i)._1
@@ -99,5 +84,18 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(downFileInfo, i)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
+  }
+
+  def storeWorkFile(downFileInfo: DownFileInfo) = {
+    val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd");
+    raf.setLength(downFileInfo.fileLength)
+    println("xxxxx" + downFileInfo.fileLength)
+    for ((k, v) <- downFileInfo.workerDownInfo) {
+      val startIndex = v._1
+      val buffer = v._3
+      raf.seek(startIndex)
+      raf.write(buffer)
+    }
+    raf.close()
   }
 }

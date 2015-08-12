@@ -6,7 +6,7 @@ import akka.actor.{Actor, ActorRef, Props}
 import org.gk.server.db.DML
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables._
-import org.gk.server.workers.DownFileInfo
+import org.gk.server.workers.{ActorRefWokerGroups, DownFileInfo}
 import org.gk.server.workers.RepoManager.RequertFile
 import slick.driver.H2Driver.api._
 
@@ -30,7 +30,7 @@ object DownManager {
 
 import org.gk.server.workers.down.DownManager._
 
-class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.ActorLogging {
+class DownManager extends Actor with akka.actor.ActorLogging {
 
   //  val downMasterActor = context.actorOf(Props(new DownMaster(self)), name = "DownMaster")
   //  context.system.scheduler.schedule(Duration.Zero, 3 second, repoManagerActorRef, RequertFile(downFileInfo))
@@ -66,7 +66,7 @@ class DownManager(repoManagerActorRef: ActorRef) extends Actor with akka.actor.A
       //      for((k,v) <- requertDowingFileMap) {
       ////        repoManagerActorRef ! RequertFile(k,v) //需要修改错误
       //      }
-      repoManagerActorRef ! RequertFile(downFileInfo)
+      ActorRefWokerGroups.repoManager ! RequertFile(downFileInfo)
   }
 
   def checkFileDecodeDownning(fileOS: String): Boolean = {

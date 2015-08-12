@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 /**
  * Created by goku on 2015/8/11.
  */
-object client {
+object ProxyClient {
   val system = ActorSystem("MavenProxyClient", ConfigFactory.load("client"))
   val commandClient = system.actorOf(Props[CommandClient])
 

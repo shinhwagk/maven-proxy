@@ -80,6 +80,9 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
     try {
       val workFileLength = downConn.getContentLength;
 
+
+
+      println(startIndex+"yyy"+endIndex+"yyy"+workFileLength + "xxxxxxxxx" + buffer.length)
       var currentLength = 0
       var start = 0
       var len = 0

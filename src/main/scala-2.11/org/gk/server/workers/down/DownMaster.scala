@@ -96,12 +96,13 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
     println("创建文件+" +downFileInfo.fileOS)
     raf.setLength(downFileInfo.fileLength)
     println("xxxxx" + downFileInfo.fileLength)
-    for ((k, v) <- downFileInfo.workerDownInfo) {
-      val startIndex = v._1
-      val buffer = v._3
-      raf.seek(startIndex)
-      raf.write(buffer)
-    }
+    val fileBuffer = new ArrayBuffer[Byte]()
+    downFileInfo.workerDownInfo.toList.sortWith(_._1 < _._1).map(l => {
+      val buffer = l._2._3
+      fileBuffer ++= buffer
+    })
+    val buffer = fileBuffer.toArray
+    raf.write(buffer)
     raf.close()
   }
 }

@@ -1,12 +1,8 @@
 package org.gk.server.workers.down
 
-import java.io.RandomAccessFile
-
 import akka.actor.SupervisorStrategy._
 import akka.actor._
-import org.gk.server.config.cfg
 import org.gk.server.db.DML._
-import org.gk.server.workers.DownFileInfo
 import org.gk.server.workers.DownFileInfo
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
@@ -93,9 +89,7 @@ class DownMaster(downManagerActorRef: ActorRef) extends Actor with ActorLogging 
       fileHeadle.getParentFile.mkdirs()
     }
     val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd");
-    println("创建文件+" +downFileInfo.fileOS)
     raf.setLength(downFileInfo.fileLength)
-    println("xxxxx" + downFileInfo.fileLength)
     val fileBuffer = new ArrayBuffer[Byte]()
     downFileInfo.workerDownInfo.toList.sortBy(_._1).map(l => {
       val buffer = l._2._3

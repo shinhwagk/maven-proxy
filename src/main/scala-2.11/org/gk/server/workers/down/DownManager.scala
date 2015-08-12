@@ -2,12 +2,12 @@ package org.gk.server.workers.down
 
 import java.net.Socket
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor.{Actor, Props}
 import org.gk.server.db.DML
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables._
-import org.gk.server.workers.{ActorRefWokerGroups, DownFileInfo}
 import org.gk.server.workers.RepoManager.RequertFile
+import org.gk.server.workers.{ActorRefWokerGroups, DownFileInfo}
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Await

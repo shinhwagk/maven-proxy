@@ -1,22 +1,19 @@
 package org.gk.server.workers.down
 
-import java.net.URL
-import akka.actor.{ActorLogging, Actor}
+import java.io.RandomAccessFile
+import java.net.{HttpURLConnection, URL}
+
+import akka.actor.{Actor, ActorLogging, _}
 import org.gk.server.db.DML
-import org.gk.server.workers.DownFileInfo
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables._
 import org.gk.server.workers.DownFileInfo
 import org.gk.server.workers.down.DownMaster.WorkerDownSectionSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
-import java.io.RandomAccessFile
-import java.net.HttpURLConnection
-import org.gk.server.db.MetaData._
-import org.gk.server.db.Tables._
-import akka.actor._
-import org.gk.server.workers.down.DownMaster._
 import slick.driver.H2Driver.api._
-import scala.collection.mutable.ArrayBuffer
-import scala.concurrent.duration.Duration
+
 import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
  * Created by goku on 2015/7/28.
@@ -80,9 +77,6 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
     try {
       val workFileLength = downConn.getContentLength;
 
-
-
-      println(startIndex+"yyy"+endIndex+"yyy"+workFileLength + "xxxxxxxxx" + buffer.length)
       var currentLength = 0
       var start = 0
       var len = 0

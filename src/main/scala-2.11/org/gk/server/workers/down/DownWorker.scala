@@ -23,7 +23,7 @@ object DownWorker {
 
   case object Downming
 
-  case class WorkerDownSelfSection(downFileInfo: DownFileInfo, workerNumber: Int)
+  case class WorkerDownSelfSection(fileUrl:String,buffer:Array[Byte],startIndex:Int,endIndex:Int)
 
   def storeWorkFile(fileTempOS: String, startIndex: Int, buffer: Array[Byte]) = synchronized {
     val raf = new RandomAccessFile(fileTempOS, "rwd");
@@ -36,9 +36,9 @@ object DownWorker {
 class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
 
   override def receive: Actor.Receive = {
-    case WorkerDownSelfSection(downFileInfo, downWokerNumber) => {
+    case WorkerDownSelfSection(fileURL,buffer,startIndex,endIndex) => {
       //      log.debug("线程: {} 下载{};收到,开始下载{}...",thread,url,fileTmpOS)
-      down(downFileInfo, downWokerNumber)
+      sender()! WorkerDownSectionSuccess(down(fileURL,buffer,startIndex,endIndex))
       //      log.debug("线程: {} 下载{};完毕{}...",thread,url,fileTmpOS)
     }
   }
@@ -52,14 +52,10 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
     log.debug("actor:{}, postRestart parent, reason:{}", self.path, reason)
   }
 
-  def down(downFileInfo: DownFileInfo, workerNumber: Int) = {
-    val startIndex = downFileInfo.workerDownInfo(workerNumber)._1
-    val endIndex = downFileInfo.workerDownInfo(workerNumber)._2
-    val buffer = downFileInfo.workerDownInfo(workerNumber)._3
-    val url = downFileInfo.fileUrl
+  def down(fileURL:String,buffer:Array[Byte],startIndex:Int,endIndex:Int):Int= {
 
     //    log.info("线程: {},需要下载 {} bytes ...",thread,endIndex-startIndex)
-    val downUrl = new URL(url);
+    val downUrl = new URL(fileURL);
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(3000)
     downConn.setReadTimeout(3000)
@@ -92,8 +88,6 @@ class DownWorker(downMasterActorRef:ActorRef) extends Actor with ActorLogging {
 
     log.debug("ActorRef:{}; 下载完毕", self.path.name)
     downConn.disconnect()
-
-    downMasterActorRef ! WorkerDownSectionSuccess(downFileInfo,workerNumber)
-
+    1
   }
 }

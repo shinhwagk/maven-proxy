@@ -45,7 +45,6 @@ class DownManager extends Actor with akka.actor.ActorLogging {
   override def receive: Actor.Receive = {
 
     case RequertDownFile(downFileInfo) =>
-      val fileOS = downFileInfo.fileOS
       val filePath = downFileInfo.filePath
       val repoName = downFileInfo.repoName
 

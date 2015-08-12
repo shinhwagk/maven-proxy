@@ -18,7 +18,7 @@ object DownMaster {
 
   case class DownFile(fileUrl: String, file: String)
 
-  case class WorkerDownSectionSuccess(downFileInfo: DownFileInfo, workerNumber: Int)
+  case class WorkerDownSectionSuccess(success:Int)
 
 }
 
@@ -54,18 +54,18 @@ class DownMaster extends Actor with ActorLogging {
       val responseCode = downConn.getResponseCode
       responseCode match {
         case 404 =>
-          ActorRefWorkerGroups.terminator !(404, downFileInfo.socket)
+          ActorRefWorkerGroups.terminator ! (404, downFileInfo.socket)
         case 200 =>
           downFileInfo.fileLength = downConn.getContentLength
           allocationWorker(downFileInfo)
       }
       downConn.disconnect()
 
-    case WorkerDownSectionSuccess(downFileInfo, workerNumber) =>
+    case WorkerDownSectionSuccess(success:Int) =>
       val filePath = downFileInfo.filePath
       val workerSize = downFileInfo.workerDownInfo.size
 
-      workerSuccessCount += 1
+      workerSuccessCount += success
 
       println(workerSuccessCount + "/" + workerSize)
       if (workerSuccessCount == workerSize) {
@@ -78,17 +78,14 @@ class DownMaster extends Actor with ActorLogging {
 
   def allocationWorker(downFileInfo: DownFileInfo): Unit = {
 
-    val file = downFileInfo.filePath
-    val fileUrl = downFileInfo.fileUrl
-    val fileLength = downFileInfo.fileLength
-    val filePath = downFileInfo.filePath
-    val downWokerAmount = downFileInfo.workerNumber
+//    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
 
-
-    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-
-    for (i <- 1 to downWokerAmount) {
-      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(downFileInfo, i)
+    for (i <- 1 to downFileInfo.workerNumber) {
+      val startIndex = downFileInfo.workerDownInfo(i)._1
+      val endIndex = downFileInfo.workerDownInfo(i)._2
+      val buffer = downFileInfo.workerDownInfo(i)._3
+      val fileURL = downFileInfo.fileUrl
+      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(fileURL,buffer,startIndex,endIndex)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
   }

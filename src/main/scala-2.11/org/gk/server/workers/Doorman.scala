@@ -43,7 +43,7 @@ case class DownFileInfo(s: Socket) {
 
   lazy val workerNumber: Int = getDownWorkerNumber
 
-  lazy val workerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWorkerDownRangeInfo
+  lazy val workerDownInfoworkerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWorkerDownRangeInfo
 
   private def getDownWorkerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes

@@ -48,6 +48,7 @@ class DownMaster extends Actor with ActorLogging {
       val downUrl = new URL(fileUrl);
       val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
       val responseCode = downConn.getResponseCode
+      log.info("测试下载地址:{}.ResponseCode",downUrl)
       responseCode match {
         case 404 =>
         //          ActorRefWorkerGroups.terminator ! (404, downFileInfo.socket)

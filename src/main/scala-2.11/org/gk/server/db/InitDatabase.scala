@@ -35,7 +35,7 @@ object InitDatabase {
     val insert = DBIO.seq(
       repositoryTable +=("central", "https://repo.maven.apache.org/maven2", 1, true),
       repositoryTable +=("cloudera", "https://repository.cloudera.com/artifactory/cloudera-repos", 2, true),
-      repositoryTable +=("apache", "http://repository.apache.org/snapshots/", 3, true)
+      repositoryTable +=("apache-snapshots", "http://repository.apache.org/snapshots", 3, true)
     )
     Await.result(db.run(insert), Duration.Inf)
   }

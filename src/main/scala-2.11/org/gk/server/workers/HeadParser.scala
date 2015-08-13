@@ -32,6 +32,7 @@ import HeadParser._
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     var a: Map[String, String] = Map.empty
     var templine = br.readLine()
+    println(templine+"    head")
     val b = templine.split(" ")
     a += ("PATH" -> b(1))
 

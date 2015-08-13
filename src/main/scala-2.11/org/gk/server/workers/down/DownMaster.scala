@@ -4,33 +4,72 @@ import java.net.{HttpURLConnection, URL}
 
 import akka.actor.SupervisorStrategy._
 import akka.actor._
+import org.gk.server.config.cfg
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables
+import org.gk.server.workers.ActorRefWorkerGroups
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
-import org.gk.server.workers.{ActorRefWorkerGroups, DownFileInfo}
+import slick.driver.H2Driver.api._
 
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Await
 import scala.concurrent.duration._
 
 /**
  * Created by goku on 2015/7/28.
  */
 object DownMaster {
-
   case class DownFile(fileUrl: String, file: String)
-
-  case class WorkerDownSectionSuccess(success:Int)
-
+  case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
+  case class Download(filePath: String)
 }
 
-case class Download(downFileInfo: DownFileInfo)
 
-case class RequertGetFile(downFileInfo: DownFileInfo)
 
 class DownMaster extends Actor with ActorLogging {
 
   import DownMaster._
 
   var workerSuccessCount: Int = _
+  var fileUrlLength: Int = _
+  var fileUrl: String = _
+  lazy val workerAmount: Int = getDownWorkerNumber
+  var filePath: String = _
+  var downSuccessCount: Int = _
+  lazy val fileOS = cfg.getLocalMainDir + filePath
+  var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
+
+  override def receive: Receive = {
+    case Download(filePath) =>
+      println("进入下载")
+      fileUrl = getFileUrl(filePath)
+      this.filePath = filePath
+      val downUrl = new URL(fileUrl);
+      val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+      val responseCode = downConn.getResponseCode
+      responseCode match {
+        case 404 =>
+        //          ActorRefWorkerGroups.terminator ! (404, downFileInfo.socket)
+        case 200 =>
+          fileUrlLength = downConn.getContentLength
+          startWorkerDown
+      }
+      downConn.disconnect()
+
+    case WorkerDownSectionSuccess(workerNumber, fileSectionBuffer) =>
+      workerSuccessCount += 1
+      downSuccessSectionBufferMap += (workerNumber -> fileSectionBuffer)
+      println(workerSuccessCount + "/" + workerAmount)
+      if (workerSuccessCount == workerAmount) {
+        log.info("文件:{}.下载完毕",filePath)
+        storeWorkFile
+        ActorRefWorkerGroups.downManager ! DownFileSuccess(filePath)
+      }
+    case Terminated(actorRef) =>
+      println(actorRef.path.name + "被中置")
+  }
+
 
   override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 50, withinTimeRange = 60 seconds) {
     case _: Exception => Restart
@@ -45,66 +84,46 @@ class DownMaster extends Actor with ActorLogging {
     log.debug("actor:{}, postRestart parent, reason:{}", self.path, reason)
   }
 
-  override def receive: Receive = {
-    case Download(downFileInfo) =>
-      println("进入下载")
-      val url = downFileInfo.fileUrl
-      val downUrl = new URL(url);
-      val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-      val responseCode = downConn.getResponseCode
-      responseCode match {
-        case 404 =>
-          ActorRefWorkerGroups.terminator ! (404, downFileInfo.socket)
-        case 200 =>
-          downFileInfo.fileLength = downConn.getContentLength
-          allocationWorker(downFileInfo)
-      }
-      downConn.disconnect()
-
-    case WorkerDownSectionSuccess(success:Int) =>
-      val filePath = downFileInfo.filePath
-      val workerSize = downFileInfo.workerDownInfo.size
-
-      workerSuccessCount += success
-
-      println(workerSuccessCount + "/" + workerSize)
-      if (workerSuccessCount == workerSize) {
-        storeWorkFile(downFileInfo)
-        ActorRefWorkerGroups.downManager ! DownFileSuccess(filePath)
-      }
-    case Terminated(actorRef) =>
-      println(actorRef.path.name + "被中置")
-  }
-
-  def allocationWorker(downFileInfo: DownFileInfo): Unit = {
-
-//    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-
-    for (i <- 1 to downFileInfo.workerNumber) {
-      val startIndex = downFileInfo.workerDownInfo(i)._1
-      val endIndex = downFileInfo.workerDownInfo(i)._2
-      val buffer = downFileInfo.workerDownInfo(i)._3
-      val fileURL = downFileInfo.fileUrl
-      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(fileURL,buffer,startIndex,endIndex)
+  def startWorkerDown: Unit = {
+    //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
+    println(workerAmount)
+    for (i <- 1 to workerAmount) {
+      val endLength = fileUrlLength % workerAmount
+      val step = (fileUrlLength - endLength) / workerAmount
+      val startIndex: Int = (i - 1) * step
+      val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
+      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
   }
 
-  def storeWorkFile(downFileInfo: DownFileInfo) = {
+  def storeWorkFile = {
     import java.io._
-    val fileHeadle = new File(downFileInfo.fileOS)
+    val fileHeadle = new File(fileOS)
     if (!fileHeadle.getParentFile.exists()) {
       fileHeadle.getParentFile.mkdirs()
     }
-    val raf = new RandomAccessFile(downFileInfo.fileOS, "rwd")
-    raf.setLength(downFileInfo.fileLength)
+    val raf = new RandomAccessFile(fileOS, "rwd")
+    raf.setLength(fileUrlLength)
     val fileBuffer = new ArrayBuffer[Byte]()
-    downFileInfo.workerDownInfo.toList.sortBy(_._1).map(l => {
-      val buffer = l._2._3
+    downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
+      val buffer = l._2
       fileBuffer ++= buffer
     })
     val buffer = fileBuffer.toArray
     raf.write(buffer)
     raf.close()
+  }
+
+  private def getFileUrl(filePath: String): String = {
+    val repoName = filePath.split("/")(1)
+    val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
+    filePath.replace("/" + repoName + "/", repoUrl + "/")
+  }
+
+  private def getDownWorkerNumber: Int = {
+    val processForBytes = cfg.getPerProcessForBytes
+    println(fileUrlLength + "xxx" + processForBytes)
+    if (fileUrlLength >= processForBytes) fileUrlLength / processForBytes else 1
   }
 }

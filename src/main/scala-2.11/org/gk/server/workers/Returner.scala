@@ -6,40 +6,21 @@ import java.util.Date
 import akka.actor.{Props, Actor}
 import java.net.Socket
 
+import org.gk.server.config.cfg
+
 
 /**
  * Created by gk on 15/7/26.
  */
 
-case class RuntrunFile(downFileInfo:DownFileInfo)
+case class RuntrunFile(filePath:String)
 class Returner extends Actor with akka.actor.ActorLogging{
 
   val terminator = context.actorOf(Props[Terminator])
 
   override def receive: Receive = {
-    case RuntrunFile(downFileInfo) => {
-      val fileOS = downFileInfo.fileOS
-      val socket = downFileInfo.socket
-      log.info("准备发送文件{}。。。",fileOS)
-      val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
-      val downFileLength = bis.available();
-      val bos = new BufferedOutputStream(socket.getOutputStream());
-
-      bos.write(getHeaderBytes(downFileLength));
-
-      val buffer = new Array[Byte](downFileLength);
-      bis.read(buffer, 0, downFileLength);
-      bos.write(buffer);
-      bos.flush();
-
-      bis.close()
-      socket.close()
-      log.info("文件:{},已经返回给请求者",fileOS)
-      sender() ! "ffs"
-//      context.unwatch(sender())
-//      context.stop(sender())
-//      terminator ! socket
-    }
+    case RuntrunFile(filePath) =>
+      Doorman.DB.requertFileMap(filePath).foreach(sendFile(filePath))
   }
 
   def getHeaderBytes(fileLength:Int): Array[Byte] ={
@@ -55,4 +36,28 @@ class Returner extends Actor with akka.actor.ActorLogging{
     sb.append("\n");
     sb.toString().getBytes
   }
+
+  def sendFile(filePath:String)(socket:Socket) = {
+    val fileOS = cfg.getLocalMainDir + filePath
+    log.info("准备发送文件{}。。。",fileOS)
+    val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
+    val downFileLength = bis.available();
+    val bos = new BufferedOutputStream(socket.getOutputStream());
+
+    bos.write(getHeaderBytes(downFileLength));
+
+    val buffer = new Array[Byte](downFileLength);
+    bis.read(buffer, 0, downFileLength);
+    bos.write(buffer);
+    bos.flush();
+
+    bis.close()
+    socket.close()
+    log.info("文件:{},已经返回给请求者",fileOS)
+    sender() ! "ffs"
+    context.unwatch(sender())
+    context.stop(sender())
+    terminator ! socket
+  }
+
 }

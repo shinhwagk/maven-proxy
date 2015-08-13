@@ -3,33 +3,27 @@ package org.gk.server.workers
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.Socket
 
-import akka.actor.{Props, Actor}
+import akka.actor.Actor
+import org.gk.server.workers.Doorman.StoreRequert
 import org.gk.server.workers.RepoManager.RequertFile
-import slick.driver.H2Driver.api._
-import slick.dbio.DBIO
-import slick.jdbc.meta.MTable
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
-
-import scala.concurrent.Await
 
 /**
  * Created by goku on 2015/7/27.
  */
 
-case class RequertParserHead(downFileInfo: DownFileInfo)
+object HeadParser{
+
+
+  case class RequertFilePath(socket: Socket)
+
+}
+
 
 class HeadParser extends Actor with akka.actor.ActorLogging {
-
+import HeadParser._
   override def receive: Receive = {
-    case RequertParserHead(downFileInfo) => {
-      log.info("headParser收到请求....")
-      downFileInfo.headInfo = getHeadInfo(downFileInfo.socket)
-      val file = downFileInfo.filePath
-      log.info("headParser解析出需要下载的文件:{}....", file)
-      log.info("headParser发送请求给RepoManager")
-
-      ActorRefWorkerGroups.repoManager ! RequertFile(downFileInfo)
+    case RequertFilePath(socket: Socket) => {
+      sender() ! StoreRequert(getFilePath(socket),socket)
     }
   }
 
@@ -54,5 +48,12 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
       templine = br.readLine()
     }
     a
+  }
+
+  def getFilePath(socket: Socket): String = {
+    val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
+    val templine = br.readLine()
+    val b = templine.split(" ")
+    b(1)
   }
 }

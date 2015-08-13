@@ -3,7 +3,7 @@ package org.gk.server.workers
 import java.io.File
 
 import akka.actor.{Actor, Props}
-import org.gk.server.workers.RepoManager.RequertFile
+import org.gk.server.config.cfg
 import org.gk.server.workers.down.DownManager.RequertDownFile
 
 /**
@@ -11,17 +11,20 @@ import org.gk.server.workers.down.DownManager.RequertDownFile
  */
 object RepoManager {
 
-  case class RequertFile(downFileInfo: DownFileInfo)
+  case class RequertFile(filePath: String)
 
 }
 
 class RepoManager extends Actor with akka.actor.ActorLogging {
 
+  import RepoManager._
+
   override def receive: Receive = {
 
-    case RequertFile(downFileInfo) =>
+    case RequertFile(filePath: String) =>
 
-      val fileOS = downFileInfo.fileOS
+      val fileOS = cfg.getLocalMainDir + filePath
+
       /**
        * 判断文件是否已经缓存在本地仓库
        */
@@ -29,12 +32,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
         case true =>
           log.info("文件:{} 存在本地,准备返回给请求者...", fileOS)
 
-          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(downFileInfo)
+          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(filePath)
 
         case false =>
-          log.info("文件:{} 不在本地...", fileOS)
-
-          ActorRefWorkerGroups.downManager ! RequertDownFile(downFileInfo)
+          ActorRefWorkerGroups.downManager ! RequertDownFile(filePath)
       }
   }
 

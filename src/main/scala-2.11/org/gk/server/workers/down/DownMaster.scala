@@ -20,11 +20,14 @@ import scala.concurrent.duration._
  * Created by goku on 2015/7/28.
  */
 object DownMaster {
-  case class DownFile(fileUrl: String, file: String)
-  case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
-  case class Download(filePath: String)
-}
 
+  case class DownFile(fileUrl: String, file: String)
+
+  case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
+
+  case class Download(filePath: String)
+
+}
 
 
 class DownMaster extends Actor with ActorLogging {
@@ -48,10 +51,10 @@ class DownMaster extends Actor with ActorLogging {
       val downUrl = new URL(fileUrl);
       val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
       val responseCode = downConn.getResponseCode
-      log.info("测试下载地址:{}.ResponseCode",downUrl)
+      log.info("测试下载地址:{}.ResponseCode", downUrl)
       responseCode match {
         case 404 =>
-                  ActorRefWorkerGroups.terminator ! (404, filePath)
+          ActorRefWorkerGroups.terminator !(404, filePath)
         case 200 =>
           fileUrlLength = downConn.getContentLength
           startWorkerDown
@@ -63,7 +66,7 @@ class DownMaster extends Actor with ActorLogging {
       downSuccessSectionBufferMap += (workerNumber -> fileSectionBuffer)
       println(workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
-        log.info("文件:{}.下载完毕",filePath)
+        log.info("文件:{}.下载完毕", filePath)
         storeWorkFile
         ActorRefWorkerGroups.downManager ! DownFileSuccess(filePath)
       }

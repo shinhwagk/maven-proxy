@@ -20,22 +20,22 @@ object Doorman {
   object DB {
     private var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
 
-    def create(filePath: String, value: Socket) = synchronized{
+    def create(filePath: String, value: Socket) = synchronized {
       val socketArrayBuffer = new ArrayBuffer[Socket]()
       socketArrayBuffer += value
       requertFileMap += (filePath -> socketArrayBuffer)
     }
 
-    def insert(filePath: String, value: Socket) = synchronized{
+    def insert(filePath: String, value: Socket) = synchronized {
       val socketArrayBuffer = requertFileMap(filePath)
       socketArrayBuffer += value
     }
 
-    def delete(filePath: String) = synchronized{
+    def delete(filePath: String) = synchronized {
       requertFileMap -= (filePath)
     }
 
-    def getTable:Map[String, ArrayBuffer[Socket]]=synchronized{
+    def getTable: Map[String, ArrayBuffer[Socket]] = synchronized {
       requertFileMap
     }
   }

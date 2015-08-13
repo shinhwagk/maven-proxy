@@ -39,6 +39,8 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       } else {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
+        ActorRefWorkerGroups.terminator !(404, filePath)
+        //        context.system.scheduler.schedule(Duration.Zero, 30 second, self, RequertDownFile(filePath))
       }
 
 

@@ -97,6 +97,7 @@ class DownMaster extends Actor with ActorLogging {
       val step = (fileUrlLength - endLength) / workerAmount
       val startIndex: Int = (i - 1) * step
       val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
+      println(startWorkerDown +"~"+ endIndex +"/" + workerAmount + "/" + fileUrlLength)
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
       log.debug("线程: {} 下载请求已经发送...", i)
     }

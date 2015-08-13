@@ -18,21 +18,25 @@ object Doorman {
 
 
   object DB {
-    var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
+    private var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
 
-    def create(filePath: String, value: Socket) = {
+    def create(filePath: String, value: Socket) = synchronized{
       val socketArrayBuffer = new ArrayBuffer[Socket]()
       socketArrayBuffer += value
       requertFileMap += (filePath -> socketArrayBuffer)
     }
 
-    def insert(filePath: String, value: Socket) = {
+    def insert(filePath: String, value: Socket) = synchronized{
       val socketArrayBuffer = requertFileMap(filePath)
       socketArrayBuffer += value
     }
 
-    def delete(filePath: String) = {
+    def delete(filePath: String) = synchronized{
       requertFileMap -= (filePath)
+    }
+
+    def getTable:Map[String, ArrayBuffer[Socket]]=synchronized{
+      requertFileMap
     }
   }
 
@@ -47,7 +51,7 @@ class Doorman extends Actor {
       ActorRefWorkerGroups.headParser ! RequertFilePath(socket)
 
     case StoreRequert(filePath: String, socket: Socket) =>
-      DB.requertFileMap.contains(filePath) match {
+      DB.getTable.contains(filePath) match {
         case true =>
           DB.insert(filePath, socket)
         case false =>

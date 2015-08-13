@@ -20,7 +20,7 @@ class Returner extends Actor with akka.actor.ActorLogging{
 
   override def receive: Receive = {
     case RuntrunFile(filePath) =>
-      Doorman.DB.requertFileMap(filePath).foreach(sendFile(filePath))
+      Doorman.DB.getTable(filePath).foreach(sendFile(filePath))
   }
 
   def getHeaderBytes(fileLength:Int): Array[Byte] ={

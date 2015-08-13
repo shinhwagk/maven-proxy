@@ -51,7 +51,7 @@ class DownMaster extends Actor with ActorLogging {
       log.info("测试下载地址:{}.ResponseCode",downUrl)
       responseCode match {
         case 404 =>
-        //          ActorRefWorkerGroups.terminator ! (404, downFileInfo.socket)
+                  ActorRefWorkerGroups.terminator ! (404, filePath)
         case 200 =>
           fileUrlLength = downConn.getContentLength
           startWorkerDown

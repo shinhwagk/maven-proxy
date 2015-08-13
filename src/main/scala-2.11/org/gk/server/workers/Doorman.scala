@@ -17,9 +17,9 @@ object Doorman {
   case class StoreRequert(filePath: String, socket: Socket)
 
 
-
   object DB {
     var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
+
     def create(filePath: String, value: Socket) = {
       val socketArrayBuffer = new ArrayBuffer[Socket]()
       socketArrayBuffer += value
@@ -31,7 +31,7 @@ object Doorman {
       socketArrayBuffer += value
     }
 
-    def delete (filePath: String) = {
+    def delete(filePath: String) = {
       requertFileMap -= (filePath)
     }
   }
@@ -63,48 +63,4 @@ class Doorman extends Actor {
   }
 }
 
-//case class DownFileInfo(s: Socket) {
-//
-//  val socket: Socket = s
-//
-//  lazy val repoName: String = filePath.split("/")(1)
-//
-//  var repoUrl: String = _
-//
-//  var headInfo: Map[String, String] = _
-//
-//  lazy val filePath: String = headInfo("PATH")
-//
-//  lazy val fileUrl: String = getFileUrl
-//
-//  lazy val fileOS: String = cfg.getLocalMainDir + filePath
-//
-//  var fileLength: Int = _
-//
-//  lazy val workerNumber: Int = getDownWorkerNumber
-//
-//  lazy val workerDownInfoworkerDownInfo: Map[Int, (Int, Int, Array[Byte])] = getWorkerDownRangeInfo
-//
-//  private def getDownWorkerNumber: Int = {
-//    val processForBytes = cfg.getPerProcessForBytes
-//    if (fileLength >= processForBytes) fileLength / processForBytes else 1
-//  }
-//
-//  private def getFileUrl: String = {
-//    val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
-//    filePath.replace("/" + repoName + "/", repoUrl + "/")
-//  }
-//
-//  private def getWorkerDownRangeInfo: Map[Int, (Int, Int, Array[Byte])] = {
-//    val endLength = fileLength % workerNumber
-//    val step = (fileLength - endLength) / workerNumber
-//    var tempMap: Map[Int, (Int, Int, Array[Byte])] = Map.empty
-//    for (i <- 1 to workerNumber) {
-//      val startIndex: Int = (i - 1) * step
-//      val endIndex = if (i == workerNumber) i * step + endLength - 1 else i * step - 1
-//      tempMap += (i ->(startIndex, endIndex, new Array[Byte](endIndex - startIndex + 1)))
-//    }
-//    tempMap
-//  }
-//}
 

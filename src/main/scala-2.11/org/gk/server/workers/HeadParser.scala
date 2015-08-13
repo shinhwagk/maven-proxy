@@ -23,7 +23,9 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
 import HeadParser._
   override def receive: Receive = {
     case RequertFilePath(socket: Socket) => {
+      println("xxx22")
       sender() ! StoreRequert(getFilePath(socket),socket)
+      println("xxxx")
     }
   }
 
@@ -33,8 +35,8 @@ import HeadParser._
     var a: Map[String, String] = Map.empty
     var templine = br.readLine()
     println(templine+"    head")
-    val b = templine.split(" ")
-    a += ("PATH" -> b(1))
+//    val b = templine.split(" ")
+//    a += ("PATH" -> b(1))
 
     templine = br.readLine()
 
@@ -55,6 +57,30 @@ import HeadParser._
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     val templine = br.readLine()
     val b = templine.split(" ")
+    println(b(1))
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
     b(1)
   }
 }

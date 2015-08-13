@@ -57,7 +57,9 @@ class DownMaster extends Actor with ActorLogging {
         case 404 =>
           ActorRefWorkerGroups.terminator !(404, filePath)
         case 200 =>
+
           fileUrlLength = downConn.getContentLength
+          println("xxxxxxxxxx"+ fileUrlLength)
           startWorkerDown
       }
       downConn.disconnect()
@@ -91,16 +93,18 @@ class DownMaster extends Actor with ActorLogging {
 
   def startWorkerDown: Unit = {
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-    println(workerAmount)
-    for (i <- 1 to workerAmount) {
-      val endLength = fileUrlLength % workerAmount
-      val step = (fileUrlLength - endLength) / workerAmount
-      val startIndex: Int = (i - 1) * step
-      val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
-      println(startWorkerDown +"~"+ endIndex +"/" + workerAmount + "/" + fileUrlLength)
-      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
-      log.debug("线程: {} 下载请求已经发送...", i)
-    }
+//    for (i <- 1 to workerAmount) {
+//      val endLength = fileUrlLength % workerAmount
+//      val step = (fileUrlLength - endLength) / workerAmount
+////      val startIndex: Int = (i - 1) * step
+//      val startIndex: Int = i
+////      val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
+////      println(startIndex +"~"+ endIndex +"/" + workerAmount + "/" + fileUrlLength)
+//      val endIndex = fileUrlLength
+//      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
+      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(1, fileUrl, 0, 376)
+//      log.debug("线程: {} 下载请求已经发送...", i)
+//    }
   }
 
   def storeWorkFile = {
@@ -110,7 +114,8 @@ class DownMaster extends Actor with ActorLogging {
       fileHeadle.getParentFile.mkdirs()
     }
     val raf = new RandomAccessFile(fileOS, "rwd")
-    raf.setLength(fileUrlLength)
+//    println("aaa" + fileUrlLength)
+//    raf.setLength(fileUrlLength)
     val fileBuffer = new ArrayBuffer[Byte]()
     downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
       val buffer = l._2

@@ -53,24 +53,27 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     val endIndex = parameter.endIndex
     val workerNumber = parameter.workerNumber
 
-
-    val downUrl = new URL(fileUrl);
+    println(fileUrl)
+    val downUrl = new URL(fileUrl + "?t=" + System.currentTimeMillis());
 
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(1000)
     downConn.setReadTimeout(1000)
-    downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
-    downConn.setRequestProperty("Accept-Encoding", "gzip")
+//    downConn.setRequestProperty("ContentType", "application/octet-stream");
+    downConn.setRequestProperty("Accept", "*/*");
+//    downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
+//    downConn.setRequestProperty("Accept-Encoding", "gzip")
     downConn.setRequestProperty("Cache-control", "no-cache")
-    downConn.setRequestProperty("Cache-store", "no-cache")
+//    downConn.setRequestProperty("Cache-store", "no-cache")
     downConn.setRequestProperty("Pragma", "no-cache")
-    downConn.setRequestProperty("Expires", "0")
+//    downConn.setRequestProperty("Expires", "0")
     downConn.setRequestProperty("Connection", "Keep-Alive")
 
 
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
 
+    println(downConn.getResponseCode + "SHjiji")
     var currentLength = 0
     var start = 0
     var len = 0

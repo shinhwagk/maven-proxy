@@ -7,7 +7,7 @@ import slick.driver.H2Driver.api._
  */
 object Tables {
 
-  class Repository(tag: Tag) extends Table[(String, String, Int, Boolean)](tag, "REPOSITORY") {
+  class Repository(tag: Tag) extends Table[(String, String, Int, Boolean, Int, Int)](tag, "REPOSITORY") {
     def name = column[String]("Name", O.PrimaryKey)
 
     def url = column[String]("URL")
@@ -17,7 +17,11 @@ object Tables {
 
     def start = column[Boolean]("START")
 
-    def * = (name, url, priority, start)
+    def connTimeOut = column[Int]("CONNTIMEOUT")
+
+    def readTimeOut = column[Int]("readTIMEOUT")
+
+    def * = (name, url, priority, start, connTimeOut, readTimeOut)
   }
 
   val repositoryTable = TableQuery[Repository]

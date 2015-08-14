@@ -54,7 +54,7 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     val workerNumber = parameter.workerNumber
 
     println(fileUrl)
-    val downUrl = new URL(fileUrl + "?t=" + System.currentTimeMillis());
+    val downUrl = new URL(fileUrl);
 
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(5000)
@@ -70,9 +70,11 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     downConn.setRequestProperty("Connection", "Keep-Alive")
 
 
+
+
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
-
+    println(startIndex +"         "+ endIndex+"      "+(endIndex-startIndex) +"   "+workFileLength)
     var currentLength = 0
     var start = 0
     var len = 0

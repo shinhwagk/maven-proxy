@@ -98,6 +98,12 @@ case class Headers(bis: BufferedInputStream) {
   lazy val Head_SetCookie = getHeader("Set-Cookie")
   lazy val Head_Via = getHeader("Via")
   lazy val Head_Connection = getHeader("Connection")
+  lazy val Head_Cachecontrol = getHeader("Cache-control")
+  lazy val Head_Cachestore = getHeader("Cache-store")
+  lazy val Head_Pragma = getHeader("Pragma")
+  lazy val Head_Expires = getHeader("Expires")
+  lazy val Head_AcceptEncoding = getHeader("Accept-Encoding")
+  lazy val Head_UserAgent = getHeader("User-Agent")
 
   def getHeader(par: String): Option[String] = {
     val a = headText.split("\r\n")
@@ -109,7 +115,7 @@ case class Headers(bis: BufferedInputStream) {
     headMap.get(par)
   }
 
-  private lazy val headText = {
+  lazy val headText = {
     val tempByteBuffer = new ArrayBuffer[Byte]
     val dividingLine = ArrayBuffer(13, 10, 13, 10)
     var byteData = 0
@@ -153,9 +159,9 @@ object abc {
     val is = socket.getInputStream
     val bis = new BufferedInputStream(is)
     val aa = new Headers(bis)
-    //    println(aa.headText)
+        println(aa.headText)
     println(aa.Head_HttpResponseCode + "xxxxxx1111111111")
-    //    println(aa.aaa)
-
+    println(aa.Head_AcceptRanges + "xxxxxx1111111111")
+    println(aa.Head_ContentLength + "xxxxxx1111111111")
   }
 }

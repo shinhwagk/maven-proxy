@@ -62,12 +62,12 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     downConn.setRequestProperty("ContentType", "application/octet-stream");
     downConn.setRequestProperty("Accept", "*/*");
     downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
-    downConn.setRequestProperty("Accept-Encoding", "gzip")
-    downConn.setRequestProperty("Cache-control", "no-cache")
-    downConn.setRequestProperty("Cache-store", "no-cache")
-    downConn.setRequestProperty("Pragma", "no-cache")
-    downConn.setRequestProperty("Expires", "0")
-    downConn.setRequestProperty("Connection", "Keep-Alive")
+//    downConn.setRequestProperty("Accept-Encoding", "gzip")
+//    downConn.setRequestProperty("Cache-control", "no-cache")
+//    downConn.setRequestProperty("Cache-store", "no-cache")
+//    downConn.setRequestProperty("Pragma", "no-cache")
+//    downConn.setRequestProperty("Expires", "0")
+//    downConn.setRequestProperty("Connection", "Keep-Alive")
 
 
 
@@ -85,7 +85,7 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
         len = is.read(buffer, start, workFileLength - currentLength)
         start += len
         currentLength += len
-              log.info("{}下载完成进度:{}/{}",fileUrl,currentLength, workFileLength)
+//              log.info("{}下载完成进度:{}/{}",fileUrl,currentLength, workFileLength)
         //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
       }
     } finally is.close()

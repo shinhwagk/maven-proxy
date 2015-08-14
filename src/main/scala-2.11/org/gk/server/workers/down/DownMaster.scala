@@ -89,6 +89,7 @@ class DownMaster extends Actor with ActorLogging {
 
   def startWorkerDown: Unit = {
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
+    IF(NGXIN)
     for (i <- 1 to workerAmount) {
       val endLength = fileUrlLength % workerAmount
       val step = (fileUrlLength - endLength) / workerAmount
@@ -98,6 +99,7 @@ class DownMaster extends Actor with ActorLogging {
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
+    ELSEIF (NXUS)
   }
 
   def storeWorkFile = {

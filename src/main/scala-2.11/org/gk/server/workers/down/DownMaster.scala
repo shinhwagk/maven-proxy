@@ -67,7 +67,7 @@ class DownMaster extends Actor with ActorLogging {
     case WorkerDownSectionSuccess(workerNumber, fileSectionBuffer) =>
       workerSuccessCount += 1
       downSuccessSectionBufferMap += (workerNumber -> fileSectionBuffer)
-      println(workerSuccessCount + "/" + workerAmount)
+      println("下载完成----:"+workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", filePath)
         storeWorkFile

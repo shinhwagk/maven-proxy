@@ -93,18 +93,15 @@ class DownMaster extends Actor with ActorLogging {
 
   def startWorkerDown: Unit = {
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
-//    for (i <- 1 to workerAmount) {
-//      val endLength = fileUrlLength % workerAmount
-//      val step = (fileUrlLength - endLength) / workerAmount
-////      val startIndex: Int = (i - 1) * step
-//      val startIndex: Int = i
-////      val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
-////      println(startIndex +"~"+ endIndex +"/" + workerAmount + "/" + fileUrlLength)
-//      val endIndex = fileUrlLength
-//      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
-      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(1, fileUrl, 0, 376)
-//      log.debug("线程: {} 下载请求已经发送...", i)
-//    }
+    for (i <- 1 to workerAmount) {
+      val endLength = fileUrlLength % workerAmount
+      val step = (fileUrlLength - endLength) / workerAmount
+      val startIndex: Int = (i - 1) * step
+      val endIndex = if (i == workerAmount) i * step + endLength - 1 else i * step - 1
+      println(startIndex +"~"+ endIndex +"/" + workerAmount + "/" + fileUrlLength)
+      context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
+      log.debug("线程: {} 下载请求已经发送...", i)
+    }
   }
 
   def storeWorkFile = {

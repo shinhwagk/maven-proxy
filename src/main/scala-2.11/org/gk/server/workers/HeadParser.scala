@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
  * Created by goku on 2015/7/27.
  */
 
-object HeadParser{
+object HeadParser {
 
 
   case class RequertFilePath(socket: Socket)
@@ -22,11 +22,13 @@ object HeadParser{
 
 
 class HeadParser extends Actor with akka.actor.ActorLogging {
-import HeadParser._
+
+  import HeadParser._
+
   override def receive: Receive = {
     case RequertFilePath(socket: Socket) => {
       println("xxx22")
-      sender() ! StoreRequert(getFilePath(socket),socket)
+      sender() ! StoreRequert(getFilePath(socket), socket)
       println("xxxx")
     }
   }
@@ -36,9 +38,10 @@ import HeadParser._
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     var a: Map[String, String] = Map.empty
     var templine = br.readLine()
-    println(templine+"    head")
-//    val b = templine.split(" ")
-//    a += ("PATH" -> b(1))
+    println("xxxxxxxxxxxxxxxxx")
+    println(templine + "    head")
+    //    val b = templine.split(" ")
+    //    a += ("PATH" -> b(1))
 
     templine = br.readLine()
 
@@ -52,6 +55,7 @@ import HeadParser._
       }
       templine = br.readLine()
     }
+
     a
   }
 
@@ -59,6 +63,22 @@ import HeadParser._
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     val templine = br.readLine()
     val b = templine.split(" ")
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
+    println(br.readLine())
     b(1)
   }
 }
@@ -87,31 +107,21 @@ case class Headers(bis: BufferedInputStream) {
     }
     val headMap = headSeq.toMap
     headMap.get(par)
-
   }
 
   private lazy val headText = {
     val tempByteBuffer = new ArrayBuffer[Byte]
-    var acc = 0
+    val dividingLine = ArrayBuffer(13, 10, 13, 10)
+    var byteData = 0
     var stopMark = true
-    while (stopMark != false && acc != -1) {
-      acc = bis.read()
-      tempByteBuffer += acc.toByte
-      if (acc == 13) {
-        acc = bis.read()
-        tempByteBuffer += acc.toByte
-        if (acc == 10) {
-          acc = bis.read()
-          tempByteBuffer += acc.toByte
-          if (acc == 13) {
-            acc = bis.read()
-            tempByteBuffer += acc.toByte
-            if (acc == 10) {
-              stopMark = false
-            }
-          }
-        }
+    while (stopMark != false && byteData != -1) {
+      byteData = bis.read()
+      tempByteBuffer += byteData.toByte
+      if (tempByteBuffer.length >= 4 && tempByteBuffer.takeRight(4) == dividingLine) {
+        stopMark = false
+        tempByteBuffer.trimEnd(2);
       }
+
     }
     new String(tempByteBuffer.toArray)
   }

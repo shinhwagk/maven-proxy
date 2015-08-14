@@ -59,14 +59,14 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(5000)
     downConn.setReadTimeout(10000)
-//    downConn.setRequestProperty("ContentType", "application/octet-stream");
+    downConn.setRequestProperty("ContentType", "application/octet-stream");
     downConn.setRequestProperty("Accept", "*/*");
-//    downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
-//    downConn.setRequestProperty("Accept-Encoding", "gzip")
+    downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
+    downConn.setRequestProperty("Accept-Encoding", "gzip")
     downConn.setRequestProperty("Cache-control", "no-cache")
-//    downConn.setRequestProperty("Cache-store", "no-cache")
+    downConn.setRequestProperty("Cache-store", "no-cache")
     downConn.setRequestProperty("Pragma", "no-cache")
-//    downConn.setRequestProperty("Expires", "0")
+    downConn.setRequestProperty("Expires", "0")
     downConn.setRequestProperty("Connection", "Keep-Alive")
 
 

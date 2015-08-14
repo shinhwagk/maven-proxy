@@ -87,10 +87,6 @@ class DownMaster extends Actor with ActorLogging {
     self ! message.get.asInstanceOf[Download]
   }
 
-  override def postRestart(reason: Throwable) {
-    log.debug("actor:{}, postRestart parent, reason:{}", self.path, reason)
-  }
-
   def startWorkerDown: Unit = {
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
     for (i <- 1 to workerAmount) {

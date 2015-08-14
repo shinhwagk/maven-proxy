@@ -81,58 +81,61 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
     println(br.readLine())
     b(1)
   }
-}
 
 
-case class Headers(bis: BufferedInputStream) {
 
-  lazy val Head_Date = getHeader("Date")
-  lazy val Head_Server = getHeader("Server")
-  lazy val Head_HttpVersion = headText.split("\r\n")(0).split(" ")(0)
-  lazy val Head_HttpResponseCode = headText.split("\r\n")(0).split(" ")(1)
-  lazy val Head_HttpResponseString = headText.split("\r\n")(0).split(" ")(2)
-  lazy val Head_ContentType = getHeader("Content-Type")
-  lazy val Head_AcceptRanges = getHeader("Accept-Ranges")
-  lazy val Head_ContentLength = getHeader("Content-Length")
-  lazy val Head_ContentRange = getHeader("Content-Range")
-  lazy val Head_SetCookie = getHeader("Set-Cookie")
-  lazy val Head_Via = getHeader("Via")
-  lazy val Head_Connection = getHeader("Connection")
-  lazy val Head_Cachecontrol = getHeader("Cache-control")
-  lazy val Head_Cachestore = getHeader("Cache-store")
-  lazy val Head_Pragma = getHeader("Pragma")
-  lazy val Head_Expires = getHeader("Expires")
-  lazy val Head_AcceptEncoding = getHeader("Accept-Encoding")
-  lazy val Head_UserAgent = getHeader("User-Agent")
+  case class Headers(bis: BufferedInputStream) {
 
-  def getHeader(par: String): Option[String] = {
-    val a = headText.split("\r\n")
+    lazy val Head_Date = getHeader("Date")
+    lazy val Head_Server = getHeader("Server")
+    lazy val Head_HttpVersion = headText.split("\r\n")(0).split(" ")(0)
+    lazy val Head_HttpResponseCode = headText.split("\r\n")(0).split(" ")(1)
+    lazy val Head_HttpResponseString = headText.split("\r\n")(0).split(" ")(2)
+    lazy val Head_ContentType = getHeader("Content-Type")
+    lazy val Head_AcceptRanges = getHeader("Accept-Ranges")
+    lazy val Head_ContentLength = getHeader("Content-Length")
+    lazy val Head_ContentRange = getHeader("Content-Range")
+    lazy val Head_SetCookie = getHeader("Set-Cookie")
+    lazy val Head_Via = getHeader("Via")
+    lazy val Head_Connection = getHeader("Connection")
+    lazy val Head_Cachecontrol = getHeader("Cache-control")
+    lazy val Head_Cachestore = getHeader("Cache-store")
+    lazy val Head_Pragma = getHeader("Pragma")
+    lazy val Head_Expires = getHeader("Expires")
+    lazy val Head_AcceptEncoding = getHeader("Accept-Encoding")
+    lazy val Head_UserAgent = getHeader("User-Agent")
 
-    val headSeq = for (i <- 1 to a.length - 1) yield {
-      val cc = a(i).split(": "); (cc(0) -> cc(1))
-    }
-    val headMap = headSeq.toMap
-    headMap.get(par)
-  }
+    def getHeader(par: String): Option[String] = {
+      val a = headText.split("\r\n")
 
-  lazy val headText = {
-    val tempByteBuffer = new ArrayBuffer[Byte]
-    val dividingLine = ArrayBuffer(13, 10, 13, 10)
-    var byteData = 0
-    var stopMark = true
-    while (stopMark != false && byteData != -1) {
-      byteData = bis.read()
-      tempByteBuffer += byteData.toByte
-      if (tempByteBuffer.length >= 4 && tempByteBuffer.takeRight(4) == dividingLine) {
-        stopMark = false
-        tempByteBuffer.trimEnd(2);
+      val headSeq = for (i <- 1 to a.length - 1) yield {
+        val cc = a(i).split(": "); (cc(0) -> cc(1))
       }
-
+      val headMap = headSeq.toMap
+      headMap.get(par)
     }
-    new String(tempByteBuffer.toArray)
+
+    lazy val headText = {
+      val tempByteBuffer = new ArrayBuffer[Byte]
+      val dividingLine = ArrayBuffer(13, 10, 13, 10)
+      var byteData = 0
+      var stopMark = true
+      while (stopMark != false && byteData != -1) {
+        byteData = bis.read()
+        tempByteBuffer += byteData.toByte
+        if (tempByteBuffer.length >= 4 && tempByteBuffer.takeRight(4) == dividingLine) {
+          stopMark = false
+          tempByteBuffer.trimEnd(2);
+        }
+
+      }
+      new String(tempByteBuffer.toArray)
+    }
+    //  private lazy val headText = getHeadText
   }
-  //  private lazy val headText = getHeadText
+
 }
+
 
 
 object abc {

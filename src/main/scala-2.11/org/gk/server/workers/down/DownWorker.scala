@@ -73,7 +73,6 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
 
-    println(downConn.getResponseCode + "SHjiji")
     var currentLength = 0
     var start = 0
     var len = 0
@@ -84,7 +83,7 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
         len = is.read(buffer, start, workFileLength - currentLength)
         start += len
         currentLength += len
-        //      log.info("{}下载完成进度:{}/{}",url,currentLength, workFileLength)
+              log.info("{}下载完成进度:{}/{}",fileUrl,currentLength, workFileLength)
         //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
       }
     } finally is.close()

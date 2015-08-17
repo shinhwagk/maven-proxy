@@ -1,7 +1,7 @@
 package org.gk.server.workers
 
 import java.io._
-import java.net.{InetSocketAddress, URL, Socket}
+import java.net.{HttpURLConnection, InetSocketAddress, URL, Socket}
 
 import akka.actor.Actor
 import org.gk.server.workers.Doorman.StoreRequert
@@ -85,7 +85,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
 
 class Headers(s: Socket) {
   val socket = s
-  private val bis = new BufferedInputStream(socket.getInputStream)
+  val bis = new BufferedInputStream(socket.getInputStream)
 
 
   lazy val Head_Date = getHeader("Date")
@@ -169,6 +169,7 @@ object abc {
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Range: bytes=0-814\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
@@ -181,5 +182,18 @@ object abc {
     println(aa.Head_Path + "xxxxxx1111111111")
     println(aa.Head_First + "xxxxxx1111111111")
 
+
+    println("aaaa")
+    val downUrl = new URL(b);
+
+    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
+    downConn.setConnectTimeout(5000)
+    downConn.setReadTimeout(10000)
+//    downConn.setRequestProperty("ContentType", "application/octet-stream");
+//    downConn.setRequestProperty("Accept", "*/*");
+//    downConn.setRequestProperty("Range", "bytes=" + 0 + "-" + 800);
+//    downConn.connect()
+//    println(downConn.getResponseCode)
+    println(downConn.getContentLength)
   }
 }

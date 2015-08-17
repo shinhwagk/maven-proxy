@@ -44,10 +44,11 @@ class DownMaster extends Actor with ActorLogging {
   lazy val fileOS = cfg.getLocalMainDir + filePath
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
   var server: String = _
+  var headers:Headers = _
 
   override def receive: Receive = {
     case Download(headers) =>
-
+      this.headers = headers
       filePath = headers.Head_Path.get
       println("进入下载")
       fileUrl = getFileUrl(filePath)
@@ -91,7 +92,7 @@ class DownMaster extends Actor with ActorLogging {
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", filePath)
         storeWorkFile
-        ActorRefWorkerGroups.downManager ! DownFileSuccess(filePath)
+        ActorRefWorkerGroups.downManager ! DownFileSuccess(headers)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")

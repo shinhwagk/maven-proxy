@@ -23,7 +23,7 @@ object DownManager {
 
   case class RequertDownFile(headers: Headers)
 
-  case class DownFileSuccess(filePath: String)
+  case class DownFileSuccess(headers:Headers)
 
 }
 
@@ -55,10 +55,10 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       }
 
 
-    case DownFileSuccess(filePath) =>
+    case DownFileSuccess(headers) =>
       val downMasterActorRef = sender()
 //      context.unwatch(downMasterActorRef)
 //      context.stop(downMasterActorRef)
-    //      context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(filePath)
+          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(headers)
   }
 }

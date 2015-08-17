@@ -57,8 +57,8 @@ class DownManager extends Actor with akka.actor.ActorLogging {
 
     case DownFileSuccess(filePath) =>
       val downMasterActorRef = sender()
-      context.unwatch(downMasterActorRef)
-      context.stop(downMasterActorRef)
+//      context.unwatch(downMasterActorRef)
+//      context.stop(downMasterActorRef)
     //      context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(filePath)
   }
 }

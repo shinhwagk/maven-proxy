@@ -12,8 +12,8 @@ import java.net.Socket;
 class Terminator extends Actor with akka.actor.ActorLogging {
   override def receive: Receive = {
     case socket: Socket =>
-      context.unwatch(sender())
-      context.stop(sender())
+//      context.unwatch(sender())
+//      context.stop(sender())
       socket.close()
       log.debug("连接关闭...")
 

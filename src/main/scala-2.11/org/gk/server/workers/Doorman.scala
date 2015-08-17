@@ -51,8 +51,6 @@ class Doorman extends Actor with ActorLogging{
 
   override def receive: Receive = {
     case socket: Socket =>
-
-
       ActorRefWorkerGroups.repoManager ! RequertFile(socket)
   }
 }

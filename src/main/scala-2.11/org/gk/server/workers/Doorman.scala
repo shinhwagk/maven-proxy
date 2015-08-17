@@ -3,11 +3,12 @@ package org.gk.server.workers
 import java.io.{BufferedReader, InputStreamReader}
 import java.net.Socket
 
-import akka.actor.Actor
-import org.gk.server.workers.HeadParser.RequertFilePath
+import akka.actor.{ActorLogging, Actor}
+import akka.util.Timeout
 import org.gk.server.workers.RepoManager.RequertFile
 
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.duration._
 
 /**
  * Created by goku on 2015/7/24.
@@ -42,28 +43,17 @@ object Doorman {
 
 }
 
-class Doorman extends Actor {
 
-  import Doorman._
+//检查数据库
+class Doorman extends Actor with ActorLogging{
+
+  implicit val askTimeout = Timeout(5 seconds)
 
   override def receive: Receive = {
     case socket: Socket =>
-      ActorRefWorkerGroups.headParser ! RequertFilePath(socket)
 
-    case StoreRequert(filePath: String, socket: Socket) =>
-      DB.getTable.contains(filePath) match {
-        case true =>
-          DB.insert(filePath, socket)
-        case false =>
-          DB.create(filePath, socket)
-          ActorRefWorkerGroups.repoManager ! RequertFile(filePath)
-      }
-  }
 
-  def getFilePath(socket: Socket): String = {
-    val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
-    val templine = br.readLine()
-    templine.split(" ")(1)
+      ActorRefWorkerGroups.repoManager ! RequertFile(socket)
   }
 }
 

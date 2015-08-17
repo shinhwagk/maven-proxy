@@ -15,7 +15,6 @@ import scala.collection.mutable.ArrayBuffer
 
 object HeadParser {
 
-
   case class RequertFilePath(socket: Socket)
 
 }
@@ -27,9 +26,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
     case RequertFilePath(socket: Socket) => {
-      println("xxx22")
       sender() ! StoreRequert(getFilePath(socket), socket)
-      println("xxxx")
     }
   }
 
@@ -62,6 +59,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
   def getFilePath(socket: Socket): String = {
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     val templine = br.readLine()
+    println(templine)
     val b = templine.split(" ")
     println(br.readLine())
     println(br.readLine())
@@ -83,60 +81,75 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
   }
 
 
-
-  case class Headers(bis: BufferedInputStream) {
-
-    lazy val Head_Date = getHeader("Date")
-    lazy val Head_Server = getHeader("Server")
-    lazy val Head_HttpVersion = headText.split("\r\n")(0).split(" ")(0)
-    lazy val Head_HttpResponseCode = headText.split("\r\n")(0).split(" ")(1)
-    lazy val Head_HttpResponseString = headText.split("\r\n")(0).split(" ")(2)
-    lazy val Head_ContentType = getHeader("Content-Type")
-    lazy val Head_AcceptRanges = getHeader("Accept-Ranges")
-    lazy val Head_ContentLength = getHeader("Content-Length")
-    lazy val Head_ContentRange = getHeader("Content-Range")
-    lazy val Head_SetCookie = getHeader("Set-Cookie")
-    lazy val Head_Via = getHeader("Via")
-    lazy val Head_Connection = getHeader("Connection")
-    lazy val Head_Cachecontrol = getHeader("Cache-control")
-    lazy val Head_Cachestore = getHeader("Cache-store")
-    lazy val Head_Pragma = getHeader("Pragma")
-    lazy val Head_Expires = getHeader("Expires")
-    lazy val Head_AcceptEncoding = getHeader("Accept-Encoding")
-    lazy val Head_UserAgent = getHeader("User-Agent")
-
-    def getHeader(par: String): Option[String] = {
-      val a = headText.split("\r\n")
-
-      val headSeq = for (i <- 1 to a.length - 1) yield {
-        val cc = a(i).split(": "); (cc(0) -> cc(1))
-      }
-      val headMap = headSeq.toMap
-      headMap.get(par)
-    }
-
-    lazy val headText = {
-      val tempByteBuffer = new ArrayBuffer[Byte]
-      val dividingLine = ArrayBuffer(13, 10, 13, 10)
-      var byteData = 0
-      var stopMark = true
-      while (stopMark != false && byteData != -1) {
-        byteData = bis.read()
-        tempByteBuffer += byteData.toByte
-        if (tempByteBuffer.length >= 4 && tempByteBuffer.takeRight(4) == dividingLine) {
-          stopMark = false
-          tempByteBuffer.trimEnd(2);
-        }
-
-      }
-      new String(tempByteBuffer.toArray)
-    }
-    //  private lazy val headText = getHeadText
-  }
-
 }
 
+class Headers(s: Socket) {
+  val socket = s
+  private val bis = new BufferedInputStream(socket.getInputStream)
 
+
+  lazy val Head_Date = getHeader("Date")
+  lazy val Head_Server = getHeader("Server")
+  lazy val Head_HttpVersion = {
+    if (Head_First.startsWith("GET"))
+      Head_First.split(" ")(2)
+  }
+  lazy val Head_HttpResponseCode = Head_First.split(" ")(1)
+  lazy val Head_HttpResponseString = Head_First.split(" ")(2)
+  lazy val Head_First = headText.split("\r\n")(0)
+  lazy val Head_Method = {
+    if (Head_First.startsWith("GET"))
+      "GET"
+  }
+  lazy val Head_Path: Option[String] = {
+    if (Head_First.startsWith("GET"))
+      Some(Head_First.split(" ")(1))
+    else None
+  }
+  lazy val Head_ContentType = getHeader("Content-Type")
+  lazy val Head_AcceptRanges = getHeader("Accept-Ranges")
+  lazy val Head_ContentLength = getHeader("Content-Length")
+  lazy val Head_ContentRange = getHeader("Content-Range")
+  lazy val Head_SetCookie = getHeader("Set-Cookie")
+  lazy val Head_Via = getHeader("Via")
+  lazy val Head_Connection = getHeader("Connection")
+  lazy val Head_Cachecontrol = getHeader("Cache-control")
+  lazy val Head_Cachestore = getHeader("Cache-store")
+  lazy val Head_Pragma = getHeader("Pragma")
+  lazy val Head_Expires = getHeader("Expires")
+  lazy val Head_AcceptEncoding = getHeader("Accept-Encoding")
+  lazy val Head_UserAgent = getHeader("User-Agent")
+
+  def getHeader(par: String): Option[String] = {
+    val a = headText.split("\r\n")
+
+    val headSeq = for (i <- 1 to a.length - 1) yield {
+      val cc = a(i).split(": "); (cc(0) -> cc(1))
+    }
+    val headMap = headSeq.toMap
+    headMap.get(par)
+  }
+
+  lazy val headText = {
+    val tempByteBuffer = new ArrayBuffer[Byte]
+    val dividingLine = ArrayBuffer(13, 10, 13, 10)
+    var byteData = 0
+    var stopMark = true
+    while (stopMark != false && byteData != -1) {
+      byteData = bis.read()
+      tempByteBuffer += byteData.toByte
+      if (tempByteBuffer.length >= 4 && tempByteBuffer.takeRight(4) == dividingLine) {
+        stopMark = false
+        tempByteBuffer.trimEnd(2);
+      }
+    }
+    new String(tempByteBuffer.toArray)
+  }
+
+  def setHeader(key :String,value:String)={
+
+  }
+}
 
 object abc {
   def main(args: Array[String]) {
@@ -159,12 +172,14 @@ object abc {
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
-    val is = socket.getInputStream
-    val bis = new BufferedInputStream(is)
-    val aa = new Headers(bis)
-        println(aa.headText)
+    val aa = new Headers(socket)
+    println(aa.headText)
     println(aa.Head_HttpResponseCode + "xxxxxx1111111111")
     println(aa.Head_AcceptRanges + "xxxxxx1111111111")
     println(aa.Head_ContentLength + "xxxxxx1111111111")
+    println(aa.Head_Server + "xxxxxx1111111111")
+    println(aa.Head_Path + "xxxxxx1111111111")
+    println(aa.Head_First + "xxxxxx1111111111")
+
   }
 }

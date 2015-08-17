@@ -15,6 +15,7 @@ object ActorRefWorkerGroups {
   val repoManager = system.actorOf(Props[RepoManager], name = "RepoManager")
   val downManager = system.actorOf(Props[DownManager], name = "DownManager")
   val terminator = system.actorOf(Props[Terminator], name = "Terminator")
+  val collectors = system.actorOf(Props[Collectors], name = "Collectors")
 
   def startCommandServerActorRef={
     system.actorOf(Props[CommandServer], name = "CommandServer")

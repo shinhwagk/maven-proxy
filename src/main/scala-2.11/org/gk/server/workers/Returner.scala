@@ -13,14 +13,14 @@ import org.gk.server.config.cfg
  * Created by gk on 15/7/26.
  */
 
-case class RuntrunFile(filePath:String)
+case class RuntrunFile(headers:Headers)
 class Returner extends Actor with akka.actor.ActorLogging{
 
-  val terminator = context.actorOf(Props[Terminator])
-
   override def receive: Receive = {
-    case RuntrunFile(filePath) =>
-      Doorman.DB.getTable(filePath).foreach(sendFile(filePath))
+    case RuntrunFile(headers) =>
+      val socket = headers.socket
+      val filePath = headers.Head_Path
+      sendFile(filePath.get)(socket)
   }
 
   def getHeaderBytes(fileLength:Int): Array[Byte] ={
@@ -54,10 +54,7 @@ class Returner extends Actor with akka.actor.ActorLogging{
     bis.close()
     socket.close()
     log.info("文件:{},已经返回给请求者",fileOS)
-//    sender() ! "ffs"
-////    context.unwatch(sender())
-////    context.stop(sender())
-    terminator ! socket
+    ActorRefWorkerGroups.terminator ! socket
   }
 
 }

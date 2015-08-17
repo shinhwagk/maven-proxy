@@ -1,6 +1,7 @@
 package org.gk.server.workers
 
 import java.io.File
+import java.net.Socket
 
 import akka.actor.{Actor, Props}
 import org.gk.server.config.cfg
@@ -11,7 +12,7 @@ import org.gk.server.workers.down.DownManager.RequertDownFile
  */
 object RepoManager {
 
-  case class RequertFile(filePath: String)
+  case class RequertFile(socket:Socket)
 
 }
 
@@ -21,8 +22,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
 
-    case RequertFile(filePath: String) =>
+    case RequertFile(socket) =>
 
+      val headers = new Headers(socket)
+      val filePath = headers.Head_Path.get
       val fileOS = cfg.getLocalMainDir + filePath
 
       /**
@@ -32,10 +35,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
         case true =>
           log.info("文件:{} 存在本地,准备返回给请求者...", fileOS)
 
-          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(filePath)
+          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(headers)
 
         case false =>
-          ActorRefWorkerGroups.downManager ! RequertDownFile(filePath)
+          ActorRefWorkerGroups.downManager ! RequertDownFile(headers)
       }
   }
 

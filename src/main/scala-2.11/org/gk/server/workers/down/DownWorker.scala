@@ -71,7 +71,6 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
 
 
 
-
     val is = downConn.getInputStream();
     val workFileLength = downConn.getContentLength;
     println(startIndex +"         "+ endIndex+"      "+(endIndex-startIndex) +"   "+workFileLength)

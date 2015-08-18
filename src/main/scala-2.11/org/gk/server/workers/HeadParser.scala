@@ -122,7 +122,7 @@ class Headers(s: Socket) {
 
   def getHeader(par: String): Option[String] = {
     val a = headText.split("\r\n")
-
+    println(a(0))
     val headSeq = for (i <- 1 to a.length - 1) yield {
       val cc = a(i).split(": "); (cc(0) -> cc(1))
     }

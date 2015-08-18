@@ -17,37 +17,12 @@ object Doorman {
 
   case class StoreRequert(filePath: String, socket: Socket)
 
-
-  object DB {
-    private var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
-
-    def create(filePath: String, value: Socket) = synchronized {
-      val socketArrayBuffer = new ArrayBuffer[Socket]()
-      socketArrayBuffer += value
-      requertFileMap += (filePath -> socketArrayBuffer)
-    }
-
-    def insert(filePath: String, value: Socket) = synchronized {
-      val socketArrayBuffer = requertFileMap(filePath)
-      socketArrayBuffer += value
-    }
-
-    def delete(filePath: String) = synchronized {
-      requertFileMap -= (filePath)
-    }
-
-    def getTable: Map[String, ArrayBuffer[Socket]] = synchronized {
-      requertFileMap
-    }
-  }
-
 }
 
 
 //检查数据库
 class Doorman extends Actor with ActorLogging{
 
-  implicit val askTimeout = Timeout(5 seconds)
 
   override def receive: Receive = {
     case socket: Socket =>

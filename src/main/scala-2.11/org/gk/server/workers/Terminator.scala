@@ -24,7 +24,7 @@ class Terminator extends Actor with akka.actor.ActorLogging {
   def file404(socket: Socket): Unit = {
    println("close")
     val out = new PrintWriter(socket.getOutputStream())
-    out.println("HTTP/1.1 404 Not found"); //返回应答消息,并结束应答
+    out.println("HTTP/1.0 404 Not found"); //返回应答消息,并结束应答
     out.println(); // 根据 HTTP 协议, 空行将结束头信息
     out.close();
     socket.close()

@@ -61,22 +61,6 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
     val templine = br.readLine()
     println(templine)
     val b = templine.split(" ")
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
-    println(br.readLine())
     b(1)
   }
 }
@@ -160,10 +144,10 @@ object abc {
     println(" xx");
 
     val socket = new Socket();
-    val address = new InetSocketAddress(host, 80);
+    val address = new InetSocketAddress(host, 9995);
     socket.connect(address);
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
-    bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("HEAD " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Accept-Encoding: gzip\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Expires: 0\r\n"); // 请求头信息发送结束标志

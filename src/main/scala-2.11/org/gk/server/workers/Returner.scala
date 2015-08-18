@@ -23,15 +23,15 @@ class Returner extends Actor with akka.actor.ActorLogging{
 
   def getHeaderBytes(fileLength:Int): Array[Byte] ={
     val sb = new StringBuilder();
-    sb.append("HTTP/1.1 200 OK\n");
+    sb.append("HTTP/1.1 200 OK\r\n");
     //    sb.append("Content-Type: application/java-archive\n");
-    sb.append("Content-Type: application/octet-stream\n");
-    sb.append("Date: " + new Date() + "\n");
-    sb.append("Content-Length: " + (fileLength) + "\n");
-    sb.append("Accept-Ranges: bytes\n");
-    sb.append("Connection: Keep-Alive\n")
-    sb.append("Keep-Alive: true\n");
-    sb.append("\n");
+    sb.append("Content-Type: application/octet-stream\r\n");
+    sb.append("Date: " + new Date() + "\r\n");
+    sb.append("Content-Length: " + (fileLength) + "\r\n");
+    sb.append("Accept-Ranges: bytes\r\n");
+    sb.append("Connection: Keep-Alive\r\n")
+    sb.append("Keep-Alive: true\r\n");
+    sb.append("\r\n");
     sb.toString().getBytes
   }
 

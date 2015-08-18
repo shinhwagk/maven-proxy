@@ -8,7 +8,7 @@ import akka.actor._
 import org.gk.server.config.cfg
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
-import org.gk.server.workers.{RequestHeaders, ActorRefWorkerGroups}
+import org.gk.server.workers.{RequestHeader, RequestHeaders, ActorRefWorkerGroups}
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 import slick.driver.H2Driver.api._
@@ -26,7 +26,7 @@ object DownMaster {
 
   case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
 
-  case class Download(socket: Socket, fileUrl: String, filePath: String)
+  case class Download(requestHeader: RequestHeader, fileUrl: String)
 
 }
 
@@ -48,13 +48,12 @@ class DownMaster extends Actor with ActorLogging {
   var requertSocket: Socket = _
 
   override def receive: Receive = {
-    case Download(socket, fileUrl, filePath) =>
-      this.requertSocket = socket
-      this.filePath = filePath
+    case Download(requestHeader, fileUrl) =>
+      this.requertSocket = requestHeader.socket
       println("进入下载")
       this.fileUrl = fileUrl
 
-      println(filePath+"  "+fileUrl)
+      println("xxx  "+fileUrl)
 
       val url = new URL(fileUrl);
       val host = url.getHost();
@@ -63,13 +62,24 @@ class DownMaster extends Actor with ActorLogging {
       responseSocket.connect(address);
 
       val bufferedWriter = new BufferedWriter(new OutputStreamWriter(responseSocket.getOutputStream(), "UTF8"));
-      bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
-      bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
-      bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
-      bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
+
+      requestHeader.headerList.foreach(p=>{
+        p match {
+          case _ if p.startsWith("GET") =>
+            bufferedWriter.write("GET " + url.getFile + " "+p.split(" ")(2)+"\r\n")
+          case _ if p.startsWith("HEAD") =>
+            bufferedWriter.write("HEAD " + url.getFile + " "+p.split(" ")(2)+"\r\n")
+          case _ if p.startsWith("Host")=>
+            bufferedWriter.write("Host: " + host + "\r\n");
+          case _ =>
+            bufferedWriter.write(p+"\r\n")
+        }
+      })
+      bufferedWriter.write("\r\n");
       bufferedWriter.flush()
       val aa = new RequestHeaders(responseSocket)
       server = aa.Head_Server.get
+      println(aa.headText)
 
       aa.Head_HttpResponseCode.toInt match {
         case 404 =>

@@ -33,7 +33,6 @@ class DownManager extends Actor with akka.actor.ActorLogging {
   override def receive: Actor.Receive = {
 
     case RequertDownFile(requestHeader) =>
-      println("xxxx")
       val filePath = requestHeader.filePath
       val repoName = filePath.split("/")(1)
       val socket = requestHeader.socket
@@ -41,7 +40,7 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
 
       if (repoEnabledCount > 0) {
-        context.watch(context.actorOf(Props[DownMaster])) ! Download(socket, fileUrl, filePath)
+        context.watch(context.actorOf(Props[DownMaster])) ! Download(requestHeader, fileUrl)
       } else {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")

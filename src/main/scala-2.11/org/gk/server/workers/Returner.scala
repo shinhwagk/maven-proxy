@@ -13,14 +13,12 @@ import org.gk.server.config.cfg
  * Created by gk on 15/7/26.
  */
 
-case class RuntrunFile(headers:Headers)
+case class RuntrunFile(socket:Socket,fileOS:String)
 class Returner extends Actor with akka.actor.ActorLogging{
 
   override def receive: Receive = {
-    case RuntrunFile(headers) =>
-      val socket = headers.socket
-      val filePath = headers.Head_Path
-      sendFile(filePath.get)(socket)
+    case RuntrunFile(socket,fileOS) =>
+      sendFile(fileOS)(socket)
   }
 
   def getHeaderBytes(fileLength:Int): Array[Byte] ={

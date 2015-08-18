@@ -26,7 +26,7 @@ object DownMaster {
 
   case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
 
-  case class Download(headers: Headers)
+  case class Download(socket: Socket, fileUrl: String, filePath: String)
 
 }
 
@@ -44,46 +44,40 @@ class DownMaster extends Actor with ActorLogging {
   lazy val fileOS = cfg.getLocalMainDir + filePath
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
   var server: String = _
-  var headers:Headers = _
+  var headers: Headers = _
+  var requertSocket: Socket = _
 
   override def receive: Receive = {
-    case Download(headers) =>
-      this.headers = headers
-      filePath = headers.Head_Path.get
+    case Download(socket, fileUrl, filePath) =>
+      this.requertSocket = socket
+      this.filePath = filePath
       println("进入下载")
-      fileUrl = getFileUrl(filePath)
-      //      val downUrl = new URL(fileUrl);
-      //      val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-      //      val responseCode = downConn.getResponseCode
-      //      log.info("测试下载地址:{}.ResponseCode", downUrl)
-      //      println(downUrl)
+      this.fileUrl = fileUrl
+
+      println(filePath+"  "+fileUrl)
 
       val url = new URL(fileUrl);
       val host = url.getHost();
-      val socket = new Socket();
+      val responseSocket = new Socket();
       val address = new InetSocketAddress(host, 80);
-      socket.connect(address);
-      val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
+      responseSocket.connect(address);
+
+      val bufferedWriter = new BufferedWriter(new OutputStreamWriter(responseSocket.getOutputStream(), "UTF8"));
       bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
       bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
       bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
       bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
       bufferedWriter.flush()
-      val aa = new Headers(socket)
-      val responseCode = aa.Head_HttpResponseCode.toInt
-      println(aa.Head_HttpResponseCode + "werwerwerewe" + url)
+      val aa = new Headers(responseSocket)
       server = aa.Head_Server.get
 
-      responseCode match {
+      aa.Head_HttpResponseCode.toInt match {
         case 404 =>
-          ActorRefWorkerGroups.terminator ! (404, headers.socket)
+          ActorRefWorkerGroups.terminator !(404, headers.socket)
         case 200 =>
-
           fileUrlLength = aa.Head_ContentLength.get.toInt
-          println("xxxxxxxxxx" + fileUrlLength)
           startWorkerDown
       }
-      socket.close()
 
     case WorkerDownSectionSuccess(workerNumber, fileSectionBuffer) =>
       workerSuccessCount += 1
@@ -91,8 +85,8 @@ class DownMaster extends Actor with ActorLogging {
       println("下载完成----:" + workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", filePath)
-        storeWorkFile
-        ActorRefWorkerGroups.downManager ! DownFileSuccess(headers)
+        val fileOS = storeWorkFile
+        ActorRefWorkerGroups.downManager ! DownFileSuccess(requertSocket,fileOS)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
@@ -109,7 +103,6 @@ class DownMaster extends Actor with ActorLogging {
   }
 
   def startWorkerDown: Unit = {
-    println("xxxxxxxx1111" + workerAmount)
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
     for (i <- 1 to workerAmount) {
       val endLength = fileUrlLength % workerAmount
@@ -128,14 +121,14 @@ class DownMaster extends Actor with ActorLogging {
     }
   }
 
-  def storeWorkFile = {
+  def storeWorkFile:String = {
     import java.io._
-    val fileHeadleTemp = new File(fileOS+".temp")
+    val fileHeadleTemp = new File(fileOS + ".temp")
     val fileHeadle = new File(fileOS)
     if (!fileHeadle.getParentFile.exists()) {
       fileHeadle.getParentFile.mkdirs()
     }
-    val raf = new RandomAccessFile(fileOS+".temp", "rwd")
+    val raf = new RandomAccessFile(fileOS + ".temp", "rwd")
     val fileBuffer = new ArrayBuffer[Byte]()
     downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
       val buffer = l._2
@@ -146,13 +139,9 @@ class DownMaster extends Actor with ActorLogging {
     raf.close()
 
     fileHeadleTemp.renameTo(fileHeadle)
+    fileOS
   }
 
-  private def getFileUrl(filePath: String): String = {
-    val repoName = filePath.split("/")(1)
-    val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
-    filePath.replace("/" + repoName + "/", repoUrl + "/")
-  }
 
   private def getDownWorkerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes

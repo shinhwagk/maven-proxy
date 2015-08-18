@@ -79,8 +79,6 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
     println(br.readLine())
     b(1)
   }
-
-
 }
 
 class Headers(s: Socket) {
@@ -102,7 +100,6 @@ class Headers(s: Socket) {
       "GET"
   }
   lazy val Head_Path: Option[String] = {
-    println(Head_First)
     if (Head_First.startsWith("GET") || Head_First.startsWith("HEAD"))
       Some(Head_First.split(" ")(1))
     else None
@@ -124,6 +121,7 @@ class Headers(s: Socket) {
   def getHeader(par: String): Option[String] = {
     val a = headText.split("\r\n")
     val headSeq = for (i <- 1 to a.length - 1) yield {
+      println(a(i))
       val cc = a(i).split(": "); (cc(0) -> cc(1))
     }
     val headMap = headSeq.toMap

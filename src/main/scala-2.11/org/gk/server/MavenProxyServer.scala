@@ -8,7 +8,7 @@ import org.gk.server.workers._
 /**
  * Created by gk on 15/7/21.
  */
-object ProxyServer extends App {
+object MavenProxyServer extends App {
 
   val ss = new ServerSocket(cfg.getMavenProxyServicePost);
 
@@ -20,6 +20,7 @@ object ProxyServer extends App {
 
   while (true) {
     val socket = ss.accept()
+
     ActorRefWorkerGroups.doorman ! socket
   }
 }

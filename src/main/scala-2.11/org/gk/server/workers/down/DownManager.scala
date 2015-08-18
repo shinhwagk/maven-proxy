@@ -3,16 +3,14 @@ package org.gk.server.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
-import org.gk.server.db.MetaData._
-import org.gk.server.db.Tables._
-import org.gk.server.workers.Collectors.DBFileInsert
-import org.gk.server.workers.down.DownMaster.Download
-import org.gk.server.workers.{Headers, ActorRefWorkerGroups, Returner, RuntrunFile}
-import slick.driver.H2Driver.api._
-import scala.concurrent.duration._
 import akka.util.Timeout
-import akka.event.LoggingReceive
-import akka.pattern.{ask, pipe}
+import org.gk.server.db.MetaData._
+import org.gk.server.db.Tables
+import org.gk.server.db.Tables._
+import org.gk.server.workers.down.DownMaster.Download
+import org.gk.server.workers.{ActorRefWorkerGroups, Headers, Returner, RuntrunFile}
+import slick.driver.H2Driver.api._
+
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
@@ -23,7 +21,7 @@ object DownManager {
 
   case class RequertDownFile(headers: Headers)
 
-  case class DownFileSuccess(headers:Headers)
+  case class DownFileSuccess(socket: Socket, fileOS: String)
 
 }
 
@@ -31,9 +29,6 @@ import org.gk.server.workers.down.DownManager._
 
 class DownManager extends Actor with akka.actor.ActorLogging {
 
-  import context.dispatcher
-
-  implicit val askTimeout = Timeout(5 seconds)
 
   override def receive: Actor.Receive = {
 
@@ -41,13 +36,11 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       val filePath = headers.Head_Path.get
       val repoName = filePath.split("/")(1)
       val socket = headers.socket
-
+      val fileUrl = getFileUrl(filePath)
       val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
 
       if (repoEnabledCount > 0) {
-        ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
-          case "Ok" => Download(headers)
-        } pipeTo context.watch(context.actorOf(Props[DownMaster]))
+        context.watch(context.actorOf(Props[DownMaster])) ! Download(socket, fileUrl, filePath)
       } else {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
@@ -55,10 +48,13 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       }
 
 
-    case DownFileSuccess(headers) =>
-      val downMasterActorRef = sender()
-//      context.unwatch(downMasterActorRef)
-//      context.stop(downMasterActorRef)
-          context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(headers)
+    case DownFileSuccess(socket, fileOS) =>
+      context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(socket, fileOS)
+  }
+
+  private def getFileUrl(filePath: String): String = {
+    val repoName = filePath.split("/")(1)
+    val repoUrl = Await.result(db.run(Tables.repositoryTable.filter(_.name === repoName).map(_.url).result), Duration.Inf).head
+    filePath.replace("/" + repoName + "/", repoUrl + "/")
   }
 }

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="maven-proxy.iws" />
@@ -50,8 +52,8 @@
       <file leaf-file-name="HeadParser.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7407407">
-              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.75706214">
+              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
               <folding>
                 <element signature="e#31#47#0" expanded="true" />
               </folding>
@@ -59,13 +61,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownManager.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownManager.scala">
+      <file leaf-file-name="Doorman.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="35" column="35" selection-start-line="35" selection-start-column="35" selection-end-line="35" selection-end-column="35" />
+              <caret line="27" column="45" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
               <folding>
-                <element signature="e#36#58#0" expanded="true" />
+                <element signature="e#31#81#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -75,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/RepoManager.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="31" selection-start-line="57" selection-start-column="31" selection-end-line="57" selection-end-column="31" />
+              <caret line="36" column="27" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
               <folding>
                 <element signature="e#31#50#0" expanded="true" />
               </folding>
@@ -83,26 +85,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownMaster.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownMaster.scala">
+      <file leaf-file-name="MavenProxyServer.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="44" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="44" />
-              <folding>
-                <element signature="e#36#87#0" expanded="true" />
-              </folding>
+              <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="httpPorxyServer.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala">
+      <file leaf-file-name="ActorRefWorkerGroups.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/ActorRefWorkerGroups.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="3" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
-              <folding>
-                <element signature="e#23#51#0" expanded="true" />
-              </folding>
+              <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -167,16 +165,16 @@
         <option value="$PROJECT_DIR$/src/main/resources/application.conf" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownWorker.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Terminator.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" />
         <option value="$PROJECT_DIR$/src/test/scala-2.11/fileWriter.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/FileWriterTest.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Returner.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownMaster.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownManager.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/RepoManager.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/ActorRefWorkerGroups.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" />
       </list>
     </option>
@@ -369,6 +367,44 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="HeadParser.scala" />
+              <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maven-proxy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-2.11" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="workers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Doorman.scala" />
               <option name="myItemType" value="org.jetbrains.plugins.scala.components.ScalaDefsProjectViewProvider$ScalaFileTreeNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -939,12 +975,6 @@
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
     </task>
-    <task id="LOCAL-00076" summary="0.9.6 完善代码，测试完成">
-      <created>1439357311419</created>
-      <option name="number" value="00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1439357311419</updated>
-    </task>
     <task id="LOCAL-00077" summary="0.9.6 完善代码，测试完成">
       <created>1439365261771</created>
       <option name="number" value="00077" />
@@ -1233,7 +1263,13 @@
       <option name="project" value="LOCAL" />
       <updated>1439878302027</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="0.9.9.2 增加http代理">
+      <created>1439879119417</created>
+      <option name="number" value="00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1439879119417</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1257,7 +1293,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2849224" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.72205734" sideWeight="0.4978678" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.345977" sideWeight="0.71162045" order="11" side_tool="false" content_ui="tabs" x="1915" y="11" width="1917" height="833" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5597701" sideWeight="0.71162045" order="11" side_tool="false" content_ui="tabs" x="1915" y="11" width="1917" height="833" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32873562" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25266525" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1670,24 +1706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="47" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
-          <folding>
-            <element signature="e#31#81#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/FileWriterTest.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1695,14 +1713,6 @@
           <folding>
             <element signature="e#23#56#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/ActorRefWorkerGroups.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1726,16 +1736,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/RepoManager.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="31" selection-start-line="57" selection-start-column="31" selection-end-line="57" selection-end-column="31" />
-          <folding>
-            <element signature="e#31#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/down/DownManager.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1746,10 +1746,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/MavenProxyServer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/ActorRefWorkerGroups.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/Doorman.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="45" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
+          <folding>
+            <element signature="e#31#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/RepoManager.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="27" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
+          <folding>
+            <element signature="e#31#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7407407">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.75706214">
+          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
           <folding>
             <element signature="e#31#47#0" expanded="true" />
           </folding>

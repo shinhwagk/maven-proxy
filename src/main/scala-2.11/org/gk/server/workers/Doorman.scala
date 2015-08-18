@@ -23,7 +23,6 @@ object Doorman {
 //检查数据库
 class Doorman extends Actor with ActorLogging{
 
-
   override def receive: Receive = {
     case socket: Socket =>
       ActorRefWorkerGroups.repoManager ! RequertFile(socket)

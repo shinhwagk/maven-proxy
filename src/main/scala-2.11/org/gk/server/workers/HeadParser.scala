@@ -140,11 +140,9 @@ class Headers(s: Socket) {
         tempByteBuffer.trimEnd(2);
       }
     }
-    new String(tempByteBuffer.toArray)
-  }
-
-  def setHeader(key :String,value:String)={
-
+    val a = new String(tempByteBuffer.toArray)
+//    println(a)
+    a
   }
 }
 
@@ -186,11 +184,11 @@ object abc {
     val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
     downConn.setConnectTimeout(5000)
     downConn.setReadTimeout(10000)
-//    downConn.setRequestProperty("ContentType", "application/octet-stream");
-//    downConn.setRequestProperty("Accept", "*/*");
-//    downConn.setRequestProperty("Range", "bytes=" + 0 + "-" + 800);
-//    downConn.connect()
-//    println(downConn.getResponseCode)
+    //    downConn.setRequestProperty("ContentType", "application/octet-stream");
+    //    downConn.setRequestProperty("Accept", "*/*");
+    //    downConn.setRequestProperty("Range", "bytes=" + 0 + "-" + 800);
+    //    downConn.connect()
+    //    println(downConn.getResponseCode)
     println(downConn.getContentLength)
   }
 }

@@ -20,7 +20,6 @@ object MavenProxyServer extends App {
 
   while (true) {
     val socket = ss.accept()
-
     ActorRefWorkerGroups.doorman ! socket
   }
 }

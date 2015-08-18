@@ -76,7 +76,7 @@ class DownMaster extends Actor with ActorLogging {
 
       responseCode match {
         case 404 =>
-          ActorRefWorkerGroups.terminator !(404, filePath)
+          ActorRefWorkerGroups.terminator ! (404, aa.socket)
         case 200 =>
 
           fileUrlLength = aa.Head_ContentLength.get.toInt
@@ -130,13 +130,12 @@ class DownMaster extends Actor with ActorLogging {
 
   def storeWorkFile = {
     import java.io._
+    val fileHeadleTemp = new File(fileOS+".temp")
     val fileHeadle = new File(fileOS)
     if (!fileHeadle.getParentFile.exists()) {
       fileHeadle.getParentFile.mkdirs()
     }
-    val raf = new RandomAccessFile(fileOS, "rwd")
-    //    println("aaa" + fileUrlLength)
-    //    raf.setLength(fileUrlLength)
+    val raf = new RandomAccessFile(fileOS+".temp", "rwd")
     val fileBuffer = new ArrayBuffer[Byte]()
     downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
       val buffer = l._2
@@ -145,6 +144,8 @@ class DownMaster extends Actor with ActorLogging {
     val buffer = fileBuffer.toArray
     raf.write(buffer)
     raf.close()
+
+    fileHeadleTemp.renameTo(fileHeadle)
   }
 
   private def getFileUrl(filePath: String): String = {

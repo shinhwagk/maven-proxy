@@ -71,7 +71,7 @@ class DownMaster extends Actor with ActorLogging {
       bufferedWriter.flush()
       val aa = new Headers(socket)
       val responseCode = aa.Head_HttpResponseCode.toInt
-      println(aa.Head_HttpResponseCode + "werwerwerewe")
+      println(aa.Head_HttpResponseCode + "werwerwerewe" + url)
       server = aa.Head_Server.get
 
       responseCode match {

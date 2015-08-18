@@ -11,6 +11,7 @@ import org.gk.server.config.cfg
 import org.gk.server.workers.Collectors.DBFileInsert
 import org.gk.server.workers.down.DownManager.RequertDownFile
 
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration._
 
 /**
@@ -65,5 +66,20 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
     println("检测文件是否存在")
     val fileHeadle = new File(fileOS)
     fileHeadle.exists()
+  }
+
+
+  def aaa(socket: Socket) = {
+    val is = socket.getInputStream
+    val headersBufferInt = new ArrayBuffer[Int]
+    var a = is.read()
+    while (a != -1) {
+      headersBufferInt += a
+      a = is.read()
+    }
+    val headersBufferByte = headersBufferInt.toArray.map(_.toByte)
+    headersBufferByte.
+
+
   }
 }

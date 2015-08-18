@@ -27,10 +27,8 @@ object httpPorxyServer {
         headersBuffer += a
         a = bis.read()
       }
-      val b = headersBuffer.toArray
-      val c = b.map(_.toByte)
-      println(new String(c))
-      println("")
+      val b = headersBuffer
+      println(b.takeRight(10))
     }
   }
 }

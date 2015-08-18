@@ -35,8 +35,7 @@ class Returner extends Actor with akka.actor.ActorLogging{
     sb.toString().getBytes
   }
 
-  def sendFile(filePath:String)(socket:Socket) = {
-    val fileOS = cfg.getLocalMainDir + filePath
+  def sendFile(fileOS:String)(socket:Socket) = {
     log.info("准备发送文件{}。。。",fileOS)
     val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
     val downFileLength = bis.available();

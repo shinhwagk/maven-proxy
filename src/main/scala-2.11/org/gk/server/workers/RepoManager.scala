@@ -55,7 +55,6 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
         case false =>
           ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
             case "Ok" =>
-              println(headers.Head_First)
               RequertDownFile(headers)
           } pipeTo ActorRefWorkerGroups.downManager
       }

@@ -164,7 +164,7 @@ object abc {
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Range: bytes=0-814\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Range: bytes=0-200\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
@@ -172,7 +172,7 @@ object abc {
     println(aa.headText)
     println(aa.Head_HttpResponseCode + "xxxxxx1111111111")
     println(aa.Head_AcceptRanges + "xxxxxx1111111111")
-    println(aa.Head_ContentLength + "xxxxxx1111111111")
+    println(aa.Head_ContentLength + "222")
     println(aa.Head_Server + "xxxxxx1111111111")
     println(aa.Head_Path + "xxxxxx1111111111")
     println(aa.Head_First + "xxxxxx1111111111")

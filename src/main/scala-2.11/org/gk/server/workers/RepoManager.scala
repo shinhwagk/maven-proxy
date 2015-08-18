@@ -41,7 +41,6 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
        **/
       FileWriterTest.insert(headers)
       val filePath = headers.Head_Path.get
-      println(filePath)
       val fileOS = cfg.getLocalMainDir + filePath
 
       /**
@@ -55,7 +54,9 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
 
         case false =>
           ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
-            case "Ok" => RequertDownFile(headers)
+            case "Ok" =>
+              println(headers.Head_First)
+              RequertDownFile(headers)
           } pipeTo ActorRefWorkerGroups.downManager
       }
   }

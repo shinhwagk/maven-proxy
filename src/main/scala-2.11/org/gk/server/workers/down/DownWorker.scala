@@ -83,7 +83,8 @@ val url = new URL(fileUrl);
 
     val socket = new Socket();
     val address = new InetSocketAddress(host, 80);
-    socket.connect(address);
+    socket.setSoTimeout(5000)
+    socket.connect(address,5000);
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志

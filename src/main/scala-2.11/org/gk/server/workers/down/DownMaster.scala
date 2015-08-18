@@ -76,7 +76,7 @@ class DownMaster extends Actor with ActorLogging {
 
       responseCode match {
         case 404 =>
-          ActorRefWorkerGroups.terminator ! (404, aa.socket)
+          ActorRefWorkerGroups.terminator ! (404, headers.socket)
         case 200 =>
 
           fileUrlLength = aa.Head_ContentLength.get.toInt

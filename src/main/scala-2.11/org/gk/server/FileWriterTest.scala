@@ -12,6 +12,8 @@ object FileWriterTest {
   def insert(headers:Headers): Unit ={
     headers.headText.split("\r\n").foreach(p=>{
       writer.write(p+"\r\n")
+      writer.write("\r\n")
+      writer.write("\r\n")
     })
   }
 }

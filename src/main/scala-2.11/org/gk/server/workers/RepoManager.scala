@@ -4,6 +4,7 @@ import java.io.File
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
+import org.gk.server.FileWriterTest
 import org.gk.server.config.cfg
 import org.gk.server.workers.down.DownManager.RequertDownFile
 
@@ -25,6 +26,10 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
     case RequertFile(socket) =>
 
       val headers = new Headers(socket)
+      /**
+       * 查看head
+       * */
+      FileWriterTest.insert(headers)
       val filePath = headers.Head_Path.get
       val fileOS = cfg.getLocalMainDir + filePath
 

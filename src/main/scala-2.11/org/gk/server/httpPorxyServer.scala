@@ -16,22 +16,21 @@ import scala.collection.mutable.ArrayBuffer
 object httpPorxyServer {
   val ss = new ServerSocket(9996);
 
+  def main(args: Array[String]) {
+    while (true) {
+      val socket = ss.accept()
+      val bis = new BufferedInputStream(socket.getInputStream)
 
-  println("系统已经启动...")
-
-  while (true) {
-    val socket = ss.accept()
-    val bis = new BufferedInputStream(socket.getInputStream)
-
-    val headersBuffer = new ArrayBuffer[Int]
-    var a = bis.read()
-    while (a != -1) {
-      headersBuffer += a
-      a = bis.read()
+      val headersBuffer = new ArrayBuffer[Int]
+      var a = bis.read()
+      while (a != -1) {
+        headersBuffer += a
+        a = bis.read()
+      }
+      val b = headersBuffer.toArray
+      val c = b.map(_.toByte)
+      println(new String(c))
+      println("")
     }
-    val b = headersBuffer.toArray
-    val c = b.map(_.toByte)
-    println(new String(c))
-    println("")
   }
 }

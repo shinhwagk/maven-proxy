@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="012bbba3-28b3-4459-a512-207980f491bd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala" afterPath="$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -131,8 +130,8 @@
       <file leaf-file-name="httpPorxyServer.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9029851">
-              <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.75373137">
+              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding>
                 <element signature="e#23#57#0" expanded="true" />
               </folding>
@@ -1058,12 +1057,6 @@
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
     </task>
-    <task id="LOCAL-00080" summary="0.9.7 完善流程,测试通过">
-      <created>1439393116380</created>
-      <option name="number" value="00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1439393116382</updated>
-    </task>
     <task id="LOCAL-00081" summary="0.9.8 简化流程,测试">
       <created>1439442763914</created>
       <option name="number" value="00081" />
@@ -1352,7 +1345,13 @@
       <option name="project" value="LOCAL" />
       <updated>1439880106935</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="0.9.9.2 增加http代理">
+      <created>1439881613009</created>
+      <option name="number" value="00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1439881613009</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1867,8 +1866,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9029851">
-          <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.75373137">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding>
             <element signature="e#23#57#0" expanded="true" />
           </folding>

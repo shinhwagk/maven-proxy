@@ -130,8 +130,8 @@
       <file leaf-file-name="httpPorxyServer.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.75373137">
-              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.22014925">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding>
                 <element signature="e#23#57#0" expanded="true" />
               </folding>
@@ -650,27 +650,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
   </component>
-  <component name="RunManager" selected="Application.abc">
-    <configuration default="false" name="DML" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="org.gk.server.db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="org.gk.server.db.DML" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="maven-proxy" />
-      <envs />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Application.httpPorxyServer">
     <configuration default="false" name="Control" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -739,6 +719,26 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="org.gk.server.workers.abc" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="maven-proxy" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="httpPorxyServer" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.gk.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="org.gk.server.httpPorxyServer" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -986,19 +986,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Application.bbbb" />
       <item index="1" class="java.lang.String" itemvalue="Application.Proxy (1)" />
-      <item index="2" class="java.lang.String" itemvalue="Application.DML" />
-      <item index="3" class="java.lang.String" itemvalue="Application.Control" />
-      <item index="4" class="java.lang.String" itemvalue="Application.client" />
-      <item index="5" class="java.lang.String" itemvalue="Application.client (1)" />
-      <item index="6" class="java.lang.String" itemvalue="Application.abc" />
+      <item index="2" class="java.lang.String" itemvalue="Application.Control" />
+      <item index="3" class="java.lang.String" itemvalue="Application.client" />
+      <item index="4" class="java.lang.String" itemvalue="Application.client (1)" />
+      <item index="5" class="java.lang.String" itemvalue="Application.abc" />
+      <item index="6" class="java.lang.String" itemvalue="Application.httpPorxyServer" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.abc" />
-        <item index="1" class="java.lang.String" itemvalue="Application.client (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Application.client" />
-        <item index="3" class="java.lang.String" itemvalue="Application.Control" />
-        <item index="4" class="java.lang.String" itemvalue="Application.DML" />
+        <item index="0" class="java.lang.String" itemvalue="Application.httpPorxyServer" />
+        <item index="1" class="java.lang.String" itemvalue="Application.abc" />
+        <item index="2" class="java.lang.String" itemvalue="Application.client (1)" />
+        <item index="3" class="java.lang.String" itemvalue="Application.client" />
+        <item index="4" class="java.lang.String" itemvalue="Application.Control" />
       </list>
     </recent_temporary>
   </component>
@@ -1056,12 +1056,6 @@
       <created>1438567264606</created>
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
-    </task>
-    <task id="LOCAL-00081" summary="0.9.8 简化流程,测试">
-      <created>1439442763914</created>
-      <option name="number" value="00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1439442763914</updated>
     </task>
     <task id="LOCAL-00082" summary="0.9.8 简化流程,测试">
       <created>1439442788306</created>
@@ -1351,7 +1345,13 @@
       <option name="project" value="LOCAL" />
       <updated>1439881613009</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="0.9.9.2 增加http代理">
+      <created>1439881702053</created>
+      <option name="number" value="00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1439881702053</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1866,8 +1866,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/httpPorxyServer.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75373137">
-          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.22014925">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
             <element signature="e#23#57#0" expanded="true" />
           </folding>

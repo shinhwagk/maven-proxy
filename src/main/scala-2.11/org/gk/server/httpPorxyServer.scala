@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
  * Created by goku on 2015/8/18.
  */
 object httpPorxyServer {
-  val ss = new ServerSocket(9996);
+  val ss = new ServerSocket(9994);
 
   def main(args: Array[String]) {
     while (true) {

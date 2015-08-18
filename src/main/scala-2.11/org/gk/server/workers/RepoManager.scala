@@ -69,17 +69,4 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
   }
 
 
-  def aaa(socket: Socket) = {
-    val is = socket.getInputStream
-    val headersBufferInt = new ArrayBuffer[Int]
-    var a = is.read()
-    while (a != -1) {
-      headersBufferInt += a
-      a = is.read()
-    }
-    val headersBufferByte = headersBufferInt.toArray.map(_.toByte)
-    headersBufferByte.
-
-
-  }
 }

@@ -36,10 +36,9 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
     case RequertFile(requestHeader) =>
       println("33")
       val filePath = requestHeader.filePath
-      println("33")
       val socket = requestHeader.socket
       val fileOS = cfg.getLocalMainDir + filePath
-      println(fileOS)
+
       /**
        * 判断文件是否已经缓存在本地仓库
        */
@@ -50,13 +49,11 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
           context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(socket, fileOS)
 
         case false =>
-//          ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
-//            case "Ok" => {
-//              println("xxx")
-//              RequertDownFile(requestHeader)
-//            }
-//          } pipeTo
-            ActorRefWorkerGroups.downManager ! RequertDownFile(requestHeader)
+          ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
+            case "Ok" => {
+              RequertDownFile(requestHeader)
+            }
+          } pipeTo ActorRefWorkerGroups.downManager
       }
   }
 

@@ -149,7 +149,7 @@ class RequestHeaders(s: Socket) {
 object abc {
   def main(args: Array[String]) {
 //    val b = "https://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
-    val b = "https://repo.maven.apache.org/maven2/HTTPClient/HTTPClient/0.3-3/HTTPClient-0.3-3.jar"
+    val b = "http://127.0.0.1:9995/apache-snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/gemfire-core-1.0.0-incubating-20150813.110411-49.jar"
     val url = new URL(b);
     val host = url.getHost();
     val port = url.getDefaultPort()

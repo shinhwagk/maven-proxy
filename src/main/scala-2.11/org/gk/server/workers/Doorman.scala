@@ -37,18 +37,17 @@ case class RequestHeader(s: Socket) {
   private val bis = new BufferedInputStream(socket.getInputStream)
 
   private lazy val headerBytes: Array[Byte] = {
-    println("xxx")
-    val tempByteBuffer = ArrayBuffer[Int](0)
-    while (tempByteBuffer.last != -1) {
+    val tempByteBuffer = new ArrayBuffer[Int]
+    val dividingLine = ArrayBuffer(13, 10, 13, 10)
+    while (tempByteBuffer.takeRight(4) != dividingLine) {
       tempByteBuffer += bis.read()
     }
-    tempByteBuffer.trimEnd(3)
-    tempByteBuffer.trimStart(1)
-
+    tempByteBuffer.trimEnd(4)
     tempByteBuffer.map(_.toByte).toArray
   }
 
   lazy val headerString: String = {
+    println("xxx")
     val a = new String(headerBytes)
     println(a)
     a

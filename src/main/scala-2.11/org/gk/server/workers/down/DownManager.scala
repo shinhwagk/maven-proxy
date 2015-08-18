@@ -3,12 +3,11 @@ package org.gk.server.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
-import akka.util.Timeout
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
 import org.gk.server.db.Tables._
-import org.gk.server.workers.down.DownMaster.Download
 import org.gk.server.workers._
+import org.gk.server.workers.down.DownMaster.Download
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Await
@@ -33,18 +32,16 @@ class DownManager extends Actor with akka.actor.ActorLogging {
   override def receive: Actor.Receive = {
 
     case RequertDownFile(requestHeader) =>
-      val filePath = requestHeader.filePath
-      val repoName = filePath.split("/")(1)
-      val socket = requestHeader.socket
-      val fileUrl = getFileUrl(filePath)
+      val repoName = requestHeader.filePath.split("/")(1)
+      val fileUrl = getFileUrl(requestHeader.filePath)
       val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
 
-      if (repoEnabledCount > 0) {
+      if (repoEnabledCount > 0)
         context.watch(context.actorOf(Props[DownMaster])) ! Download(requestHeader, fileUrl)
-      } else {
+      else {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
-        ActorRefWorkerGroups.terminator !(404, socket)
+        ActorRefWorkerGroups.terminator !(404, requestHeader.socket)
       }
 
 

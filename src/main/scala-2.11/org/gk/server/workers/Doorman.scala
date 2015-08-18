@@ -23,7 +23,6 @@ class Doorman extends Actor with ActorLogging{
 
   override def receive: Receive = {
     case socket: Socket =>
-      println("xx")
       val requestHeader = RequestHeader(socket)
       ActorRefWorkerGroups.repoManager ! RequertFile(requestHeader)
   }
@@ -38,7 +37,7 @@ case class RequestHeader(s: Socket) {
 
   private lazy val headerBytes: Array[Byte] = {
     val tempByteBuffer = new ArrayBuffer[Int]
-    val dividingLine = ArrayBuffer(13, 10, 13, 10)
+    val dividingLine = ArrayBuffer(13, 10, 13, 10)//\n\r
     while (tempByteBuffer.takeRight(4) != dividingLine) {
       tempByteBuffer += bis.read()
     }
@@ -46,14 +45,11 @@ case class RequestHeader(s: Socket) {
     tempByteBuffer.map(_.toByte).toArray
   }
 
-  lazy val headerString: String = {
-    println("xxx")
-    val a = new String(headerBytes)
-    println(a)
-    a
+  val headerString: String = {
+    new String(headerBytes)
   }
 
-  lazy val headerList: List[String] = headerString.split("\r\n").toList
+  val headerList: List[String] = headerString.split("\r\n").toList
 
-  lazy val filePath = headerList.find(p => p.startsWith("GET") || p.startsWith("HEAD")).get.split(" ")(1)
+  val filePath = headerList.find(p => p.startsWith("GET") || p.startsWith("HEAD")).get.split(" ")(1)
 }

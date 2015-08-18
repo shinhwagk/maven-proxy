@@ -13,11 +13,11 @@ import scala.collection.mutable.ArrayBuffer
 
 object Collectors {
 
-  case class DBFileInsert(filePath: String, value: Socket)
+  case class DBFileInsert(fileOS: String, value: Socket)
 
-  case class DBFileCreate(filePath: String, value: Socket)
+  case class DBFileCreate(fileOS: String, value: Socket)
 
-  case class DBFileDelete(filePath: String)
+  case class DBFileDelete(fileOS: String)
 
   case class FilePathSocketArray(filePath:String)
 
@@ -28,25 +28,25 @@ class Collectors extends Actor {
   private var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
 
   override def receive: Receive = {
-    case DBFileInsert(filePath, value) =>
-      if(requertFileMap.contains(filePath)){
-        val socketArrayBuffer = requertFileMap(filePath)
+    case DBFileInsert(fileOS, value) =>
+      if(requertFileMap.contains(fileOS)){
+        val socketArrayBuffer = requertFileMap(fileOS)
         socketArrayBuffer += value
         sender() ! "Ok"
       }else{
         val socketArrayBuffer = new ArrayBuffer[Socket]()
         socketArrayBuffer += value
-        requertFileMap += (filePath -> socketArrayBuffer)
+        requertFileMap += (fileOS -> socketArrayBuffer)
         sender() ! "Ok"
       }
 
-    case DBFileDelete(filePath) =>
-      requertFileMap -= (filePath)
+    case DBFileDelete(fileOS) =>
+      requertFileMap -= (fileOS)
       sender() ! "Ok"
 
-    case FilePathSocketArray(filePath) =>
-      val socketArrayBuffer = requertFileMap(filePath)
-      requertFileMap -= (filePath)
+    case FilePathSocketArray(fileOS) =>
+      val socketArrayBuffer = requertFileMap(fileOS)
+      requertFileMap -= (fileOS)
       sender() ! socketArrayBuffer
   }
 }

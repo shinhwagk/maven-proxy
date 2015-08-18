@@ -8,7 +8,7 @@ import akka.actor._
 import org.gk.server.config.cfg
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
-import org.gk.server.workers.{Headers, ActorRefWorkerGroups}
+import org.gk.server.workers.{RequestHeaders, ActorRefWorkerGroups}
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 import slick.driver.H2Driver.api._
@@ -44,7 +44,7 @@ class DownMaster extends Actor with ActorLogging {
   lazy val fileOS = cfg.getLocalMainDir + filePath
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
   var server: String = _
-  var headers: Headers = _
+  var headers: RequestHeaders = _
   var requertSocket: Socket = _
 
   override def receive: Receive = {
@@ -68,7 +68,7 @@ class DownMaster extends Actor with ActorLogging {
       bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
       bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
       bufferedWriter.flush()
-      val aa = new Headers(responseSocket)
+      val aa = new RequestHeaders(responseSocket)
       server = aa.Head_Server.get
 
       aa.Head_HttpResponseCode.toInt match {

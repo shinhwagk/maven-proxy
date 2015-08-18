@@ -4,7 +4,7 @@ import java.io.{OutputStreamWriter, BufferedWriter, RandomAccessFile}
 import java.net.{InetSocketAddress, Socket, HttpURLConnection, URL}
 
 import akka.actor.{Actor, ActorLogging, _}
-import org.gk.server.workers.Headers
+import org.gk.server.workers.RequestHeaders
 import org.gk.server.workers.down.DownMaster.WorkerDownSectionSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 
@@ -92,7 +92,7 @@ val url = new URL(fileUrl);
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
-    val aa = new Headers(socket)
+    val aa = new RequestHeaders(socket)
     val is = aa.bis
 /***/
 

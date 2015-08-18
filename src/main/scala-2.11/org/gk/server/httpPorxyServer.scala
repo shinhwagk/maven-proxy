@@ -5,7 +5,7 @@ import java.net.ServerSocket
 
 import org.gk.server.config.cfg
 import org.gk.server.workers.down.DownMaster.Download
-import org.gk.server.workers.{Headers, ActorRefWorkerGroups}
+import org.gk.server.workers.{RequestHeaders, ActorRefWorkerGroups}
 import org.gk.server.workers.down.DownManager.RequertDownFile
 
 import scala.collection.mutable.ArrayBuffer

@@ -81,7 +81,7 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
   }
 }
 
-class Headers(s: Socket) {
+class RequestHeaders(s: Socket) {
   val socket = s
   val bis = new BufferedInputStream(socket.getInputStream)
 
@@ -141,14 +141,15 @@ class Headers(s: Socket) {
       }
     }
     val a = new String(tempByteBuffer.toArray)
-//    println(a)
+    //    println(a)
     a
   }
 }
 
 object abc {
   def main(args: Array[String]) {
-    val b = "https://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
+//    val b = "https://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
+    val b = "https://repo.maven.apache.org/maven2/HTTPClient/HTTPClient/0.3-3/HTTPClient-0.3-3.jar"
     val url = new URL(b);
     val host = url.getHost();
     val port = url.getDefaultPort()
@@ -163,19 +164,18 @@ object abc {
     socket.connect(address);
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Range: bytes=0-200\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Accept-Encoding: gzip\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Expires: 0\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Pragma: no-cache\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Cache-store: no-store\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Cache-control: no-cache\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
-    val aa = new Headers(socket)
+    val aa = new RequestHeaders(socket)
     println(aa.headText)
-    println(aa.Head_HttpResponseCode + "xxxxxx1111111111")
-    println(aa.Head_AcceptRanges + "xxxxxx1111111111")
-    println(aa.Head_ContentLength + "222")
-    println(aa.Head_Server + "xxxxxx1111111111")
-    println(aa.Head_Path + "xxxxxx1111111111")
-    println(aa.Head_First + "xxxxxx1111111111")
+
 
 
     println("aaaa")
@@ -192,3 +192,5 @@ object abc {
     println(downConn.getContentLength)
   }
 }
+
+

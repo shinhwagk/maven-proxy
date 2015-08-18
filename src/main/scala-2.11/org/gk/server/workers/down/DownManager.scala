@@ -8,7 +8,7 @@ import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
 import org.gk.server.db.Tables._
 import org.gk.server.workers.down.DownMaster.Download
-import org.gk.server.workers.{ActorRefWorkerGroups, Headers, Returner, RuntrunFile}
+import org.gk.server.workers._
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Await
@@ -19,7 +19,7 @@ import scala.concurrent.duration._
  */
 object DownManager {
 
-  case class RequertDownFile(headers: Headers)
+  case class RequertDownFile(requestHeader: RequestHeader)
 
   case class DownFileSuccess(socket: Socket, fileOS: String)
 
@@ -32,10 +32,11 @@ class DownManager extends Actor with akka.actor.ActorLogging {
 
   override def receive: Actor.Receive = {
 
-    case RequertDownFile(headers) =>
-      val filePath = headers.Head_Path.get
+    case RequertDownFile(requestHeader) =>
+      println("xxxx")
+      val filePath = requestHeader.filePath
       val repoName = filePath.split("/")(1)
-      val socket = headers.socket
+      val socket = requestHeader.socket
       val fileUrl = getFileUrl(filePath)
       val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
 

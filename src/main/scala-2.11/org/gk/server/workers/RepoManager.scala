@@ -19,7 +19,7 @@ import scala.concurrent.duration._
  */
 object RepoManager {
 
-  case class RequertFile(socket: Socket)
+  case class RequertFile(requestHeader: RequestHeader)
 
 }
 
@@ -33,17 +33,13 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
 
-    case RequertFile(socket) =>
-
-      val headers = new Headers(socket)
-
-      /**
-       * 查看head
-       **/
-      FileWriterTest.insert(headers)
-      val filePath = headers.Head_Path.get
+    case RequertFile(requestHeader) =>
+      println("33")
+      val filePath = requestHeader.filePath
+      println("33")
+      val socket = requestHeader.socket
       val fileOS = cfg.getLocalMainDir + filePath
-
+      println(fileOS)
       /**
        * 判断文件是否已经缓存在本地仓库
        */
@@ -54,10 +50,13 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
           context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(socket, fileOS)
 
         case false =>
-          ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
-            case "Ok" =>
-              RequertDownFile(headers)
-          } pipeTo ActorRefWorkerGroups.downManager
+//          ActorRefWorkerGroups.collectors ? DBFileInsert(filePath, socket) map {
+//            case "Ok" => {
+//              println("xxx")
+//              RequertDownFile(requestHeader)
+//            }
+//          } pipeTo
+            ActorRefWorkerGroups.downManager ! RequertDownFile(requestHeader)
       }
   }
 

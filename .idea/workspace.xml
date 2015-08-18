@@ -50,8 +50,8 @@
       <file leaf-file-name="HeadParser.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.86296296">
-              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.4962963">
+              <caret line="105" column="67" selection-start-line="105" selection-start-column="67" selection-end-line="105" selection-end-column="67" />
               <folding>
                 <element signature="e#31#47#0" expanded="true" />
               </folding>
@@ -1217,12 +1217,6 @@
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
     </task>
-    <task id="LOCAL-00069" summary="0.9.4 增加动态仓库增删改">
-      <created>1439350532721</created>
-      <option name="number" value="00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1439350532721</updated>
-    </task>
     <task id="LOCAL-00070" summary="0.9.5 改进文件存储磁盘,测试">
       <created>1439350674465</created>
       <option name="number" value="00070" />
@@ -1511,7 +1505,13 @@
       <option name="project" value="LOCAL" />
       <updated>1439862100654</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL-00118" summary="0.9.9.1 同时兼容nexus/nginx/apache">
+      <created>1439862253349</created>
+      <option name="number" value="00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1439862253349</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2012,8 +2012,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala-2.11/org/gk/server/workers/HeadParser.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.86296296">
-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.4962963">
+          <caret line="105" column="67" selection-start-line="105" selection-start-column="67" selection-end-line="105" selection-end-column="67" />
           <folding>
             <element signature="e#31#47#0" expanded="true" />
           </folding>

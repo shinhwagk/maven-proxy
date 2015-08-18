@@ -103,7 +103,7 @@ class Headers(s: Socket) {
   }
   lazy val Head_Path: Option[String] = {
     println(Head_First)
-    if (Head_First.startsWith("GET"))
+    if (Head_First.startsWith("GET") || Head_First.startsWith("HEAD"))
       Some(Head_First.split(" ")(1))
     else None
   }

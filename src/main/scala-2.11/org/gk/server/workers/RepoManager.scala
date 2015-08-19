@@ -6,7 +6,7 @@ import akka.actor.{Actor, Props}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
 import org.gk.server.config.cfg
-import org.gk.server.workers.Collectors.DBFileInsert
+import org.gk.server.workers.Collectors.JoinFileDownRequestSet
 import org.gk.server.workers.down.DownManager.RequertDownFile
 
 import scala.concurrent.duration._
@@ -32,16 +32,13 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
 
     case RequertFile(requestHeader) =>
 
-      val socket = requestHeader.socket
-      val fileOS = cfg.getLocalMainDir + requestHeader.filePath
-
       /**
        * 判断文件是否已经缓存在本地仓库
        */
-      if (decodeFileLocalRepoExists(fileOS))
-        context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(socket, fileOS)
+      if (decodeFileLocalRepoExists(requestHeader.filePath))
+        context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(requestHeader.socket, requestHeader.filePath)
       else
-        ActorRefWorkerGroups.collectors ? DBFileInsert(fileOS, socket) map {
+        ActorRefWorkerGroups.collectors ? JoinFileDownRequestSet(cfg.getLocalMainDir + requestHeader.filePath, requestHeader.socket) map {
           case "Ok" => {
             RequertDownFile(requestHeader)
           }
@@ -49,7 +46,5 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
   }
 
   //查看文件是否存在本地仓库
-  def decodeFileLocalRepoExists(fileOS: String): Boolean = {
-    new File(fileOS).exists()
-  }
+  def decodeFileLocalRepoExists(filePath: String): Boolean = new File(cfg.getLocalMainDir + filePath).exists()
 }

@@ -3,7 +3,7 @@ package org.gk.server.workers
 import java.net.Socket
 
 import akka.actor.Actor
-import org.gk.server.workers.Collectors.{DBFileCreate, DBFileDelete, DBFileInsert, FilePathSocketArray}
+import org.gk.server.workers.Collectors._
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 
 object Collectors {
 
-  case class DBFileInsert(fileOS: String, value: Socket)
+  case class JoinFileDownRequestSet(fileOS: String, value: Socket)
 
   case class DBFileCreate(fileOS: String, value: Socket)
 
@@ -28,21 +28,16 @@ class Collectors extends Actor {
   private var requertFileMap: Map[String, ArrayBuffer[Socket]] = Map.empty
 
   override def receive: Receive = {
-    case DBFileInsert(fileOS, value) =>
+    case JoinFileDownRequestSet(fileOS, value) =>
       if(requertFileMap.contains(fileOS)){
         val socketArrayBuffer = requertFileMap(fileOS)
         socketArrayBuffer += value
-        sender() ! "Ok"
       }else{
         val socketArrayBuffer = new ArrayBuffer[Socket]()
         socketArrayBuffer += value
         requertFileMap += (fileOS -> socketArrayBuffer)
         sender() ! "Ok"
       }
-
-    case DBFileDelete(fileOS) =>
-      requertFileMap -= (fileOS)
-      sender() ! "Ok"
 
     case FilePathSocketArray(fileOS) =>
       val socketArrayBuffer = requertFileMap(fileOS)

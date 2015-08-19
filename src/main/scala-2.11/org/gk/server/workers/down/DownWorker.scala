@@ -54,55 +54,30 @@ class DownWorker(downMasterActorRef: ActorRef) extends Actor with ActorLogging {
     val endIndex = parameter.endIndex
     val workerNumber = parameter.workerNumber
 
-//    println(fileUrl)
-//    val downUrl = new URL(fileUrl);
-//
-//    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-//    downConn.setConnectTimeout(5000)
-//    downConn.setReadTimeout(10000)
-//    downConn.setRequestProperty("ContentType", "application/octet-stream");
-//    downConn.setRequestProperty("Accept", "*/*");
-//    println(startIndex+"  "+endIndex)
-//    downConn.setRequestProperty("Range", "bytes=" + startIndex + "-" + endIndex);
-//    downConn.setRequestProperty("Accept-Encoding", "gzip")
-//    downConn.setRequestProperty("Cache-control", "no-cache")
-//    downConn.setRequestProperty("Cache-store", "no-cache")
-//    downConn.setRequestProperty("Pragma", "no-cache")
-//    downConn.setRequestProperty("Expires", "0")
-//    downConn.setRequestProperty("Connection", "Keep-Alive")
-
-/***/
-val url = new URL(fileUrl);
+    val url = new URL(fileUrl);
     val host = url.getHost();
     val port = url.getDefaultPort()
-    println(url.getPort())
-    println("Host Name = " + host);
-    println("port = " + port);
-    println("File URI = " + url.getFile());
-    println(" xx");
 
     val socket = new Socket();
     val address = new InetSocketAddress(host, 80);
-    socket.setSoTimeout(5000)
-    socket.connect(address,5000);
+    socket.setSoTimeout(20000)
+    socket.connect(address, 10000);
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("GET " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("ContentType: application/octet-stream\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Range: bytes=" + startIndex + "-" + endIndex+"\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Accept: */*\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Range: bytes=" + startIndex + "-" + endIndex + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
     val aa = new RequestHeaders(socket)
     val is = aa.bis
-/***/
 
 
-
-
-//    val is = downConn.getInputStream();
+    //    val is = downConn.getInputStream();
     val workFileLength = aa.Head_ContentLength.get.toInt;
 
-    println(startIndex +"         "+ endIndex+"      "+(endIndex-startIndex) +"   "+workFileLength)
+//    println(startIndex + "         " + endIndex + "      " + (endIndex - startIndex) + "   " + workFileLength)
     var currentLength = 0
     var start = 0
     var len = 0
@@ -113,13 +88,13 @@ val url = new URL(fileUrl);
         len = is.read(buffer, start, workFileLength - currentLength)
         start += len
         currentLength += len
-//              log.info("{}下载完成进度:{}/{}",fileUrl,currentLength, workFileLength)
+        //              log.info("{}下载完成进度:{}/{}",fileUrl,currentLength, workFileLength)
         //      log.debug("线程: {};下载文件{}，进度 {}/{} ...",thread,url,currentLength,workFileLength)
       }
     } finally is.close()
 
     //    log.info("ActorRef:{}; 下载完毕", self.path.name)
-//    downConn.disconnect()
+    //    downConn.disconnect()
     (workerNumber, buffer)
   }
 }

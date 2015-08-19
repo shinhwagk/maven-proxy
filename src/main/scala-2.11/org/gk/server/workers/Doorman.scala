@@ -11,23 +11,13 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * Created by goku on 2015/7/24.
  */
-object Doorman {
 
-  case class StoreRequert(filePath: String, socket: Socket)
-
-}
-
-
-//检查数据库
-class Doorman extends Actor with ActorLogging{
+class Doorman extends Actor with ActorLogging {
 
   override def receive: Receive = {
-    case socket: Socket =>
-      val requestHeader = RequestHeader(socket)
-      ActorRefWorkerGroups.repoManager ! RequertFile(requestHeader)
+    case socket: Socket => ActorRefWorkerGroups.repoManager ! RequertFile(RequestHeader(socket))
   }
 }
-
 
 case class RequestHeader(s: Socket) {
 
@@ -37,7 +27,7 @@ case class RequestHeader(s: Socket) {
 
   private lazy val headerBytes: Array[Byte] = {
     val tempByteBuffer = new ArrayBuffer[Int]
-    val dividingLine = ArrayBuffer(13, 10, 13, 10)//\n\r
+    val dividingLine = ArrayBuffer(13, 10, 13, 10) //\n\r
     while (tempByteBuffer.takeRight(4) != dividingLine) {
       tempByteBuffer += bis.read()
     }
@@ -45,11 +35,11 @@ case class RequestHeader(s: Socket) {
     tempByteBuffer.map(_.toByte).toArray
   }
 
-  val headerString: String = {
+  lazy val headerString: String = {
     new String(headerBytes)
   }
 
-  val headerList: List[String] = headerString.split("\r\n").toList
+  lazy val headerList: List[String] = headerString.split("\r\n").toList
 
-  val filePath = headerList.find(p => p.startsWith("GET") || p.startsWith("HEAD")).get.split(" ")(1)
+  lazy val filePath = headerString.split("\r\n")(0).split(" ")(1)
 }

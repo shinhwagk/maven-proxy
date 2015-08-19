@@ -34,12 +34,9 @@ class CommandClient extends Actor {
       commandServer ! deleteRepository(repoName)
     }
     case "list" => {
-//      self ! "add"
-//println("xxxxxx")
       commandServer ! listRepository
     }
     case "ok" =>
-      println("aaaaa")
       context.system.shutdown()
       System.exit(0)
     case a:List[(String,String,Int,Boolean)]=>

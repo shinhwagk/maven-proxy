@@ -1,20 +1,16 @@
 package org.gk.server.workers.down
 
-import java.io.{OutputStreamWriter, BufferedWriter}
-import java.net.{InetSocketAddress, Socket, HttpURLConnection, URL}
+import java.io.{BufferedWriter, OutputStreamWriter, File,RandomAccessFile}
+import java.net.{InetSocketAddress, Socket, URL}
 
 import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.server.config.cfg
-import org.gk.server.db.MetaData._
-import org.gk.server.db.Tables
-import org.gk.server.workers.{RequestHeader, RequestHeaders, ActorRefWorkerGroups}
 import org.gk.server.workers.down.DownManager.DownFileSuccess
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
-import slick.driver.H2Driver.api._
+import org.gk.server.workers.{ActorRefWorkerGroups, RequestHeaders}
 
 import scala.collection.mutable.ArrayBuffer
-import scala.concurrent.Await
 import scala.concurrent.duration._
 
 /**
@@ -26,10 +22,9 @@ object DownMaster {
 
   case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
 
-  case class Download(requestHeader: RequestHeader, fileUrl: String)
+  case class Download(requestHeader: List[String], fileUrl: String, fileOS: String)
 
 }
-
 
 class DownMaster extends Actor with ActorLogging {
 
@@ -39,22 +34,16 @@ class DownMaster extends Actor with ActorLogging {
   var fileUrlLength: Int = _
   var fileUrl: String = _
   lazy val workerAmount: Int = getDownWorkerNumber
-  var filePath: String = _
   var downSuccessCount: Int = _
-  lazy val fileOS = cfg.getLocalMainDir + filePath
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
   var server: String = _
-  var headers: RequestHeaders = _
-  var requertSocket: Socket = _
+  var fileOS: String = _
 
   override def receive: Receive = {
-    case Download(requestHeader, fileUrl) =>
-      this.requertSocket = requestHeader.socket
-      println("进入下载")
+    case Download(headerList, fileUrl, fileOS) =>
+      headerList.foreach(println)
       this.fileUrl = fileUrl
-
-      println("xxx  "+fileUrl)
-
+      this.fileOS = fileOS
       val url = new URL(fileUrl);
       val host = url.getHost();
       val responseSocket = new Socket();
@@ -63,16 +52,16 @@ class DownMaster extends Actor with ActorLogging {
 
       val bufferedWriter = new BufferedWriter(new OutputStreamWriter(responseSocket.getOutputStream(), "UTF8"));
 
-      requestHeader.headerList.foreach(p=>{
+      headerList.foreach(p => {
         p match {
           case _ if p.startsWith("GET") =>
-            bufferedWriter.write("GET " + url.getFile + " "+p.split(" ")(2)+"\r\n")
+            bufferedWriter.write("GET " + url.getFile + " " + p.split(" ")(2) + "\r\n")
           case _ if p.startsWith("HEAD") =>
-            bufferedWriter.write("HEAD " + url.getFile + " "+p.split(" ")(2)+"\r\n")
-          case _ if p.startsWith("Host")=>
+            bufferedWriter.write("HEAD " + url.getFile + " " + p.split(" ")(2) + "\r\n")
+          case _ if p.startsWith("Host") =>
             bufferedWriter.write("Host: " + host + "\r\n");
           case _ =>
-            bufferedWriter.write(p+"\r\n")
+            bufferedWriter.write(p + "\r\n")
         }
       })
       bufferedWriter.write("\r\n");
@@ -83,7 +72,7 @@ class DownMaster extends Actor with ActorLogging {
 
       aa.Head_HttpResponseCode.toInt match {
         case 404 =>
-          ActorRefWorkerGroups.terminator !(404, headers.socket)
+        //          ActorRefWorkerGroups.terminator !(404, headers.socket)
         case 200 =>
           fileUrlLength = aa.Head_ContentLength.get.toInt
           startWorkerDown
@@ -94,9 +83,9 @@ class DownMaster extends Actor with ActorLogging {
       downSuccessSectionBufferMap += (workerNumber -> fileSectionBuffer)
       println("下载完成----:" + workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
-        log.info("文件:{}.下载完毕", filePath)
-        val fileOS = storeWorkFile
-        ActorRefWorkerGroups.downManager ! DownFileSuccess(requertSocket,fileOS)
+        log.info("文件:{}.下载完毕", fileOS)
+        storeWorkFile(fileOS)
+        ActorRefWorkerGroups.downManager ! DownFileSuccess(fileOS)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
@@ -125,14 +114,14 @@ class DownMaster extends Actor with ActorLogging {
         if (i == workerAmount) i * step + endLength - 1 else i * step - 1
       }
 
-      println(startIndex + "~" + endIndex + "/" + workerAmount + "/" + fileUrlLength)
+//      println(startIndex + "~" + endIndex + "/" + workerAmount + "/" + fileUrlLength)
       context.watch(context.actorOf(Props(new DownWorker(self)))) ! WorkerDownSelfSection(i, fileUrl, startIndex, endIndex)
       log.debug("线程: {} 下载请求已经发送...", i)
     }
   }
 
-  def storeWorkFile:String = {
-    import java.io._
+  def storeWorkFile(fileOS: String) = {
+
     val fileHeadleTemp = new File(fileOS + ".temp")
     val fileHeadle = new File(fileOS)
     if (!fileHeadle.getParentFile.exists()) {
@@ -155,7 +144,7 @@ class DownMaster extends Actor with ActorLogging {
 
   private def getDownWorkerNumber: Int = {
     val processForBytes = cfg.getPerProcessForBytes
-    println(fileUrlLength + "xxx" + processForBytes)
+//    println(fileUrlLength + "xxx" + processForBytes)
     if (fileUrlLength >= processForBytes) fileUrlLength / processForBytes else 1
   }
 }

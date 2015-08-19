@@ -1,11 +1,9 @@
 package org.gk.server.workers
 
 import java.io._
-import java.net.{HttpURLConnection, InetSocketAddress, URL, Socket}
+import java.net.{HttpURLConnection, InetSocketAddress, Socket, URL}
 
 import akka.actor.Actor
-import org.gk.server.workers.Doorman.StoreRequert
-import org.gk.server.workers.RepoManager.RequertFile
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -26,17 +24,14 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
     case RequertFilePath(socket: Socket) => {
-      sender() ! StoreRequert(getFilePath(socket), socket)
+//      sender() ! StoreRequert(getFilePath(socket), socket)
     }
   }
-
 
   def getHeadInfo(socket: Socket): Map[String, String] = {
     val br = new BufferedReader(new InputStreamReader(socket.getInputStream))
     var a: Map[String, String] = Map.empty
     var templine = br.readLine()
-    println("xxxxxxxxxxxxxxxxx")
-    println(templine + "    head")
     //    val b = templine.split(" ")
     //    a += ("PATH" -> b(1))
 
@@ -68,7 +63,6 @@ class HeadParser extends Actor with akka.actor.ActorLogging {
 class RequestHeaders(s: Socket) {
   val socket = s
   val bis = new BufferedInputStream(socket.getInputStream)
-
 
   lazy val Head_Date = getHeader("Date")
   lazy val Head_Server = getHeader("Server")

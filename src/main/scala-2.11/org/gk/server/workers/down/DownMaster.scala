@@ -6,7 +6,7 @@ import java.net.{InetSocketAddress, Socket, URL}
 import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.server.config.cfg
-import org.gk.server.workers.down.DownManager.DownFileSuccess
+import org.gk.server.workers.down.DownManager.{DownFileFaile, DownFileSuccess}
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 import org.gk.server.workers.{ActorRefWorkerGroups, RequestHeaders}
 
@@ -71,7 +71,7 @@ class DownMaster extends Actor with ActorLogging {
 
       aa.Head_HttpResponseCode.toInt match {
         case 404 =>
-        //          ActorRefWorkerGroups.terminator !(404, headers.socket)
+          ActorRefWorkerGroups.downManager ! DownFileFaile(fileOS)
         case 200 =>
           fileUrlLength = aa.Head_ContentLength.get.toInt
           startWorkerDown

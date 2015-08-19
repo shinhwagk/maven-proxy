@@ -33,6 +33,8 @@ object DownManager {
 
   case class DownFileSuccess(fileOS: String)
 
+  case class DownFileFaile(fileOS: String)
+
 }
 
 import org.gk.server.workers.down.DownManager._
@@ -53,7 +55,7 @@ class DownManager extends Actor with akka.actor.ActorLogging {
       val repoEnabledCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).filter(_.start === true).length.result), Duration.Inf)
 
       if (repoEnabledCount > 0)
-        context.watch(context.actorOf(Props[DownMaster])) ! Download(requestHeader.headerList, fileUrl,fileOS)
+        context.watch(context.actorOf(Props[DownMaster])) ! Download(requestHeader.headerList, fileUrl, fileOS)
       else {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
@@ -65,6 +67,13 @@ class DownManager extends Actor with akka.actor.ActorLogging {
         case socketArrayBuffer: ArrayBuffer[Socket] =>
           socketArrayBuffer.foreach(p => {
             context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(p, fileOS)
+          })
+      }
+    case DownFileFaile(fileOS) =>
+      ActorRefWorkerGroups.collectors ? FilePathSocketArray(fileOS) map {
+        case socketArrayBuffer: ArrayBuffer[Socket] =>
+          socketArrayBuffer.foreach(p => {
+            ActorRefWorkerGroups.terminator !(404, p)
           })
       }
   }

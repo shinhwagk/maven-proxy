@@ -36,7 +36,9 @@ case class RequestHeader(s: Socket) {
   }
 
   lazy val headerString: String = {
-    new String(headerBytes)
+    val a = new String(headerBytes)
+    println(a)
+    a
   }
 
   lazy val headerList: List[String] = headerString.split("\r\n").toList

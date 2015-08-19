@@ -31,14 +31,15 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
   override def receive: Receive = {
 
     case RequertFile(requestHeader) =>
+      val fileOS = cfg.getLocalMainDir + requestHeader.filePath
 
       /**
        * 判断文件是否已经缓存在本地仓库
        */
-      if (decodeFileLocalRepoExists(requestHeader.filePath))
-        context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(requestHeader.socket, requestHeader.filePath)
+      if (decodeFileLocalRepoExists(fileOS))
+        context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(requestHeader.socket, fileOS)
       else
-        ActorRefWorkerGroups.collectors ? JoinFileDownRequestSet(cfg.getLocalMainDir + requestHeader.filePath, requestHeader.socket) map {
+        ActorRefWorkerGroups.collectors ? JoinFileDownRequestSet(fileOS, requestHeader.socket) map {
           case "Ok" => {
             RequertDownFile(requestHeader)
           }
@@ -46,5 +47,5 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
   }
 
   //查看文件是否存在本地仓库
-  def decodeFileLocalRepoExists(filePath: String): Boolean = new File(cfg.getLocalMainDir + filePath).exists()
+  def decodeFileLocalRepoExists(fileOS: String): Boolean = new File(fileOS).exists()
 }

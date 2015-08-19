@@ -41,7 +41,6 @@ class DownMaster extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Download(headerList, fileUrl, fileOS) =>
-      headerList.foreach(println)
       this.fileUrl = fileUrl
       this.fileOS = fileOS
       val url = new URL(fileUrl);

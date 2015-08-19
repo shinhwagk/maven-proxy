@@ -17,7 +17,6 @@ class Returner extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
     case RuntrunFile(socket, fileOS) =>
-      println(fileOS)
       sendFile(fileOS,socket)
   }
 

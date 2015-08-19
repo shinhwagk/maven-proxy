@@ -10,13 +10,11 @@ import org.gk.server.workers.down.{DownMaster, DownManager}
  */
 object ActorRefWorkerGroups {
   val system = ActorSystem("MavenProxyServer", ConfigFactory.load("server"))
-  val doorman = system.actorOf(Props[Doorman], name = "Doorman")
-  val headParser = system.actorOf(Props[HeadParser], name = "HeadParser")
   val repoManager = system.actorOf(Props[RepoManager], name = "RepoManager")
   val downManager = system.actorOf(Props[DownManager], name = "DownManager")
   val terminator = system.actorOf(Props[Terminator], name = "Terminator")
-  val collectors = system.actorOf(Props[Collectors], name = "Collectors")
   val downMaster = system.actorOf(Props[DownMaster], name = "DownMaster")
+  val anteroom = system.actorOf(Props[Anteroom], name = "Anteroom")
 
   def startCommandServerActorRef={
     system.actorOf(Props[CommandServer], name = "CommandServer")

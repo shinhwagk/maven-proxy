@@ -1,21 +1,17 @@
 package org.gk.server.workers.down
 
-import java.net.Socket
-
 import akka.actor.{Actor, Props}
-import akka.pattern.ask
 import akka.util.Timeout
 import org.gk.server.config.cfg
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
 import org.gk.server.db.Tables._
-import org.gk.server.workers.Collectors.FilePathSocketArray
+import org.gk.server.tool.RequestHeader
 import org.gk.server.workers._
 import org.gk.server.workers.down.DownManager.RequertDownFile
 import org.gk.server.workers.down.DownMaster.Download
 import slick.driver.H2Driver.api._
 
-import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
@@ -26,18 +22,9 @@ object DownManager {
 
   case class RequertDownFile(requestHeader: RequestHeader)
 
-  case class DownFileSuccess(fileOS: String)
-
-  case class DownFileFaile(fileOS: String)
-
 }
 
-import org.gk.server.workers.down.DownManager._
-
 class DownManager extends Actor with akka.actor.ActorLogging {
-  implicit val askTimeout = Timeout(5 seconds)
-
-  import context.dispatcher
 
   override def receive: Actor.Receive = {
 
@@ -55,21 +42,6 @@ class DownManager extends Actor with akka.actor.ActorLogging {
         val repoDisableCount = Await.result(db.run(repositoryTable.filter(_.name === repoName).length.result), Duration.Inf)
         if (repoDisableCount > 0) println("仓库" + repoName + "存在,但没有开启") else println("仓库不存在")
         ActorRefWorkerGroups.terminator !(404, requestHeader.socket)
-      }
-
-    case DownFileSuccess(fileOS) =>
-      ActorRefWorkerGroups.collectors ? FilePathSocketArray(fileOS) map {
-        case socketArrayBuffer: ArrayBuffer[Socket] =>
-          socketArrayBuffer.foreach(p => {
-            context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(p, fileOS)
-          })
-      }
-    case DownFileFaile(fileOS) =>
-      ActorRefWorkerGroups.collectors ? FilePathSocketArray(fileOS) map {
-        case socketArrayBuffer: ArrayBuffer[Socket] =>
-          socketArrayBuffer.foreach(p => {
-            ActorRefWorkerGroups.terminator !(404, p)
-          })
       }
   }
 

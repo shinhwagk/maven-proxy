@@ -19,7 +19,6 @@ object MavenProxyServer extends App {
   println("系统已经启动...")
 
   while (true) {
-    val socket = ss.accept()
-    ActorRefWorkerGroups.doorman ! socket
+    ActorRefWorkerGroups.repoManager ! ss.accept()
   }
 }

@@ -5,22 +5,31 @@ import java.net.Socket
 import java.util.Date
 
 import akka.actor.Actor
+import org.gk.server.workers.Returner.RuntrunFile
 
 
 /**
  * Created by gk on 15/7/26.
  */
 
-case class RuntrunFile(socket: Socket, fileOS: String)
+object Returner {
+
+  case class RuntrunFile(socket: Socket, fileOS: String)
+
+}
 
 class Returner extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
     case RuntrunFile(socket, fileOS) =>
-      sendFile(fileOS,socket)
+      val fileHeadler = new File(fileOS)
+      if (fileHeadler.exists())
+        sendFile(fileOS, socket)
+      else
+        ActorRefWorkerGroups.terminator !(404, socket)
   }
 
-  def sendFile(fileOS: String,socket: Socket) = {
+  def sendFile(fileOS: String, socket: Socket) = {
     val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
     val bos = new BufferedOutputStream(socket.getOutputStream());
 

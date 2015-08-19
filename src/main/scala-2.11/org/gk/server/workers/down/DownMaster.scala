@@ -1,12 +1,12 @@
 package org.gk.server.workers.down
 
-import java.io.{BufferedWriter, OutputStreamWriter, File,RandomAccessFile}
+import java.io.{BufferedWriter, File, OutputStreamWriter, RandomAccessFile}
 import java.net.{InetSocketAddress, Socket, URL}
 
 import akka.actor.SupervisorStrategy._
 import akka.actor._
 import org.gk.server.config.cfg
-import org.gk.server.workers.down.DownManager.{DownFileFaile, DownFileSuccess}
+import org.gk.server.workers.Anteroom.LeaveAnteroom
 import org.gk.server.workers.down.DownWorker.WorkerDownSelfSection
 import org.gk.server.workers.{ActorRefWorkerGroups, RequestHeaders}
 
@@ -40,6 +40,7 @@ class DownMaster extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Download(headerList, fileUrl, fileOS) =>
+      println(fileUrl + "yyyyyyyyyy")
       this.fileUrl = fileUrl
       this.fileOS = fileOS
       val url = new URL(fileUrl);
@@ -70,7 +71,7 @@ class DownMaster extends Actor with ActorLogging {
 
       aa.Head_HttpResponseCode.toInt match {
         case 404 =>
-          ActorRefWorkerGroups.downManager ! DownFileFaile(fileOS)
+          ActorRefWorkerGroups.anteroom ! LeaveAnteroom(fileOS)
         case 200 =>
           val fileUrlLength = aa.Head_ContentLength.get.toInt
           workerAmount = getDownWorkerNumber(fileUrlLength)
@@ -84,7 +85,7 @@ class DownMaster extends Actor with ActorLogging {
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", fileOS)
         storeWorkFile(fileOS)
-        ActorRefWorkerGroups.downManager ! DownFileSuccess(fileOS)
+        ActorRefWorkerGroups.anteroom ! LeaveAnteroom(fileOS)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")

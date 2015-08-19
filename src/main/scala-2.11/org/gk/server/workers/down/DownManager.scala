@@ -3,23 +3,18 @@ package org.gk.server.workers.down
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
+import akka.pattern.ask
 import akka.util.Timeout
+import org.gk.server.config.cfg
 import org.gk.server.db.MetaData._
 import org.gk.server.db.Tables
 import org.gk.server.db.Tables._
 import org.gk.server.workers.Collectors.FilePathSocketArray
 import org.gk.server.workers._
+import org.gk.server.workers.down.DownManager.RequertDownFile
 import org.gk.server.workers.down.DownMaster.Download
 import slick.driver.H2Driver.api._
 
-import akka.actor.{Actor, Props}
-import akka.pattern.{ask, pipe}
-import akka.util.Timeout
-import org.gk.server.config.cfg
-import org.gk.server.workers.Collectors.JoinFileDownRequestSet
-import org.gk.server.workers.down.DownManager.RequertDownFile
-
-import scala.concurrent.duration._
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Await
 import scala.concurrent.duration._

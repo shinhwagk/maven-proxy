@@ -31,9 +31,8 @@ class DownMaster extends Actor with ActorLogging {
   import DownMaster._
 
   var workerSuccessCount: Int = _
-  var fileUrlLength: Int = _
   var fileUrl: String = _
-  lazy val workerAmount: Int = getDownWorkerNumber
+  var workerAmount: Int = _
   var downSuccessCount: Int = _
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
   var server: String = _
@@ -73,8 +72,9 @@ class DownMaster extends Actor with ActorLogging {
         case 404 =>
           ActorRefWorkerGroups.downManager ! DownFileFaile(fileOS)
         case 200 =>
-          fileUrlLength = aa.Head_ContentLength.get.toInt
-          startWorkerDown
+          val fileUrlLength = aa.Head_ContentLength.get.toInt
+          workerAmount = getDownWorkerNumber(fileUrlLength)
+          startWorkerDown(fileUrlLength)
       }
 
     case WorkerDownSectionSuccess(workerNumber, fileSectionBuffer) =>
@@ -100,7 +100,7 @@ class DownMaster extends Actor with ActorLogging {
     self ! message.get.asInstanceOf[Download]
   }
 
-  def startWorkerDown: Unit = {
+  def startWorkerDown(fileUrlLength:Int): Unit = {
     //    log.info("待下载文件{},需要下载 {},需要线程数量{}...", fileUrl, fileLength, downWokerAmount)
     for (i <- 1 to workerAmount) {
       val endLength = fileUrlLength % workerAmount
@@ -141,7 +141,7 @@ class DownMaster extends Actor with ActorLogging {
   }
 
 
-  private def getDownWorkerNumber: Int = {
+  private def getDownWorkerNumber(fileUrlLength:Int): Int = {
     val processForBytes = cfg.getPerProcessForBytes
 //    println(fileUrlLength + "xxx" + processForBytes)
     if (fileUrlLength >= processForBytes) fileUrlLength / processForBytes else 1

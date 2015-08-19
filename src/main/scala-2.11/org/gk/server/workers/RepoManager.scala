@@ -36,14 +36,18 @@ class RepoManager extends Actor with akka.actor.ActorLogging {
       /**
        * 判断文件是否已经缓存在本地仓库
        */
-      if (decodeFileLocalRepoExists(fileOS))
+      println("判断文件: " + fileOS + "是否存在本地仓库")
+      if (decodeFileLocalRepoExists(fileOS)) {
         context.watch(context.actorOf(Props[Returner])) ! RuntrunFile(requestHeader.socket, fileOS)
-      else
+      }
+      else {
+        println(fileOS + "不存在本地...需要下载")
         ActorRefWorkerGroups.collectors ? JoinFileDownRequestSet(fileOS, requestHeader.socket) map {
           case "Ok" => {
             RequertDownFile(requestHeader)
           }
         } pipeTo ActorRefWorkerGroups.downManager
+      }
   }
 
   //查看文件是否存在本地仓库

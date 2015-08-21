@@ -126,8 +126,8 @@ class RequestHeaders(s: Socket) {
 
 object abc {
   def main(args: Array[String]) {
-//    val b = "https://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
-    val b = "http://127.0.0.1:9995/apache-snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/gemfire-core-1.0.0-incubating-20150813.110411-49.jar"
+    val b = "http://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
+//    val b = "http://127.0.0.1:9995/apache-snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/gemfire-core-1.0.0-incubating-20150813.110411-49.jar"
     val url = new URL(b);
     val host = url.getHost();
     val port = url.getDefaultPort()
@@ -138,36 +138,29 @@ object abc {
     println(" xx");
 
     val socket = new Socket();
-    val address = new InetSocketAddress(host, 9995);
+    val address = new InetSocketAddress(host, 80);
     socket.connect(address);
     val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
     bufferedWriter.write("HEAD " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Accept-Encoding: gzip\r\n"); // 请求头信息发送结束标志
+//    bufferedWriter.write("Accept-Encoding: gzip\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Expires: 0\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Pragma: no-cache\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Cache-store: no-store\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Cache-control: no-cache\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
+    bufferedWriter.write("Range: bytes=10-19\r\n"); // 请求头信息发送结束标志
     bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
     bufferedWriter.flush()
     val aa = new RequestHeaders(socket)
     println(aa.headText)
+    println(aa.Head_ContentLength)
 
+    print(new String(Array(socket.getInputStream.read().toByte)))
+    print(new String(Array(socket.getInputStream.read().toByte)))
+    print(new String(Array(socket.getInputStream.read().toByte)))
+    print(new String(Array(socket.getInputStream.read().toByte)))
 
-
-    println("aaaa")
-    val downUrl = new URL(b);
-
-    val downConn = downUrl.openConnection().asInstanceOf[HttpURLConnection];
-    downConn.setConnectTimeout(5000)
-    downConn.setReadTimeout(10000)
-    //    downConn.setRequestProperty("ContentType", "application/octet-stream");
-    //    downConn.setRequestProperty("Accept", "*/*");
-    //    downConn.setRequestProperty("Range", "bytes=" + 0 + "-" + 800);
-    //    downConn.connect()
-    //    println(downConn.getResponseCode)
-    println(downConn.getContentLength)
   }
 }
 

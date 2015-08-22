@@ -3,11 +3,13 @@ package org.gk.server.workers
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
+import org.gk.download.DownManager
+import org.gk.maven.Returner
 import org.gk.server.config.cfg
 import org.gk.server.tool.RequestHeader
 import org.gk.server.workers.Anteroom._
-import org.gk.server.workers.Returner.RuntrunFile
-import org.gk.server.workers.down.DownManager.RequertDownFile
+import Returner.RuntrunFile
+import DownManager.RequertDownFile
 
 import scala.collection.mutable.ArrayBuffer
 

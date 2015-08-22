@@ -1,6 +1,7 @@
-package org.gk.server
+package org.gk.maven
 
 import java.net.ServerSocket
+
 import org.gk.server.config.cfg
 import org.gk.server.workers._
 

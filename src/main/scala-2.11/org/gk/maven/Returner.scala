@@ -1,11 +1,11 @@
-package org.gk.server.workers
+package org.gk.maven
 
 import java.io.{BufferedInputStream, BufferedOutputStream, File, FileInputStream}
 import java.net.Socket
 import java.util.Date
 
 import akka.actor.Actor
-import org.gk.server.workers.Returner.RuntrunFile
+import org.gk.server.workers.ActorRefWorkerGroups
 
 
 /**
@@ -21,7 +21,7 @@ object Returner {
 class Returner extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
-    case RuntrunFile(socket, fileOS) =>
+    case (socket:Socket, fileOS:String) =>
       val fileHeadler = new File(fileOS)
       if (fileHeadler.exists())
         sendFile(fileOS, socket)

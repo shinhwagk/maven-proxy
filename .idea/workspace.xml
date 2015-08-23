@@ -1091,12 +1091,6 @@
       <option name="number" value="Default" />
       <updated>1438567264606</updated>
     </task>
-    <task id="LOCAL-00096" summary="0.9.8 简化流程,测试">
-      <created>1439524134663</created>
-      <option name="number" value="00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1439524134663</updated>
-    </task>
     <task id="LOCAL-00097" summary="0.9.8 简化流程,测试">
       <created>1439529396386</created>
       <option name="number" value="00097" />
@@ -1385,7 +1379,13 @@
       <option name="project" value="LOCAL" />
       <updated>1440372588491</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="0.9.9.3 分离仓库管理，代理，下载3个部分">
+      <created>1440372699685</created>
+      <option name="number" value="00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1440372699686</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="TodoView">

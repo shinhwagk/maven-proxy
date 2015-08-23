@@ -35,6 +35,7 @@ class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: 
 
   override def receive: Actor.Receive = {
     case WorkerDownSelfSection(fileWorkerBuffer, downSuccessAmount) => {
+
       val httpConn = new URL(fileURL).openConnection.asInstanceOf[HttpURLConnection]
       val startIndex = (workerNumber - 1) * step - downSuccessAmount
 
@@ -48,6 +49,7 @@ class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: 
         val bis = new BufferedInputStream(httpConn.getInputStream)
         while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
           fileWorkerBuffer += bis.read().toByte
+          downSuccessAmount += 1
         }
         fileWorkerBuffer.trimEnd(1)
 
@@ -61,6 +63,7 @@ class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: 
         val bis = new BufferedInputStream(httpConn.getInputStream)
         while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
           fileWorkerBuffer += bis.read().toByte
+          downSuccessAmount += 1
         }
         fileWorkerBuffer.trimEnd(1)
       }

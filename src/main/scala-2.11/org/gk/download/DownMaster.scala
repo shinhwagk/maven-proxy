@@ -5,10 +5,10 @@ import java.net.{HttpURLConnection, URL}
 
 import akka.actor.SupervisorStrategy._
 import akka.actor._
-import org.gk.download.DownWorker
+import org.gk.download.DownMaster.{Download, WorkerDownSectionSuccess}
+import org.gk.download.DownWorker.WorkerDownSelfSection
 import org.gk.server.workers.ActorRefWorkerGroups
 import org.gk.server.workers.Anteroom.LeaveAnteroom
-import DownWorker.WorkerDownSelfSection
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration._
@@ -24,14 +24,13 @@ object DownMaster {
 
 }
 
-class DownMaster(fileURL:String,fileOS:String) extends Actor with ActorLogging {
-
-  import DownMaster._
+class DownMaster(downManagerActorRef: ActorRef, filePath: String, fileURL: String, fileOS: Option[String]) extends Actor with ActorLogging {
 
   val httpConn = new URL(fileURL).openConnection.asInstanceOf[HttpURLConnection]
   httpConn.setConnectTimeout(2000)
   httpConn.setReadTimeout(2000)
   httpConn.setRequestMethod("HEAD")
+  httpConn.setRequestProperty("Range", "bytes=0-1")
 
   var workerSuccessCount: Int = _
   val workerAmount: Int = Runtime.getRuntime.availableProcessors() * 2
@@ -41,14 +40,16 @@ class DownMaster(fileURL:String,fileOS:String) extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Download =>
-
       httpConn.getResponseCode match {
-        case 200 =>
+        case 206 =>
           val fileLength = httpConn.getContentLength
-          (1 to workerAmount).foreach(p=>{
-            val fileWorkerBuffer = fileBuffer(p-1)
-            context.actorOf(Props(new DownWorker(self,workerAmount,p,fileURL,fileLength))) ! WorkerDownSelfSection(fileWorkerBuffer,0)
-          })
+          if (fileLength == 2) {
+            (1 to workerAmount).foreach(p => {
+              val fileWorkerBuffer = fileBuffer(p - 1)
+              context.actorOf(Props(new DownWorker(self, workerAmount, p, fileURL, fileLength))) ! WorkerDownSelfSection(fileWorkerBuffer, 0)
+            })
+          }
+
         case _ =>
           println(httpConn.getResponseCode)
       }
@@ -59,8 +60,10 @@ class DownMaster(fileURL:String,fileOS:String) extends Actor with ActorLogging {
       println("下载完成----:" + workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", fileOS)
-        storeWorkFile(fileOS)
-        ActorRefWorkerGroups.anteroom ! LeaveAnteroom(fileOS)
+        if (fileOS != None) {
+          storeWorkFile(fileOS.get)
+        }
+        ActorRefWorkerGroups.anteroom ! LeaveAnteroom(fileOS.get)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")

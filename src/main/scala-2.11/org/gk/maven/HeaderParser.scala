@@ -4,6 +4,7 @@ import java.io.BufferedInputStream
 import java.net.Socket
 
 import akka.actor.Actor
+import org.gk.maven.RepoManager.SreachFile
 import org.gk.server.workers.ActorRefWorkerGroups
 
 import scala.collection.mutable.ArrayBuffer
@@ -14,7 +15,9 @@ import scala.collection.mutable.ArrayBuffer
 class HeaderParser extends Actor {
   override def receive: Receive = {
     case socket: Socket =>
-      ActorRefWorkerGroups.repoManager ! (socket,getFilePath(socket))
+      val filePath = getFilePath(socket)
+      ActorRefWorkerGroups.repoManager ! SreachFile(socket, filePath)
+      println("请求:" + filePath)
   }
 
 

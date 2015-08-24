@@ -3,13 +3,11 @@ package org.gk.server.workers
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
-import org.gk.download.DownManager
 import org.gk.maven.Returner
+import org.gk.maven.Returner.RuntrunFile
 import org.gk.server.config.cfg
 import org.gk.server.tool.RequestHeader
 import org.gk.server.workers.Anteroom._
-import Returner.RuntrunFile
-import DownManager.RequertDownFile
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -43,7 +41,7 @@ class Anteroom extends Actor {
         val socketArrayBuffer = new ArrayBuffer[Socket]()
         socketArrayBuffer += socket
         requertFileMap += (fileOS -> socketArrayBuffer)
-        ActorRefWorkerGroups.downManager ! RequertDownFile(requestHeader)
+        //        ActorRefWorkerGroups.downManager ! RequertDownFile(requestHeader)
       }
 
     case LeaveAnteroom(fileOS) =>

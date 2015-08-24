@@ -14,7 +14,7 @@ object ActorRefWorkerGroups {
   val repoManager = system.actorOf(Props[RepoManager], name = "RepoManager")
   val downManager = system.actorOf(Props[DownManager], name = "DownManager")
   val terminator = system.actorOf(Props[Terminator], name = "Terminator")
-  val downMaster = system.actorOf(Props[DownMaster], name = "DownMaster")
+  //  val downMaster = system.actorOf(Props[DownMaster], name = "DownMaster")
   val anteroom = system.actorOf(Props[Anteroom], name = "Anteroom")
   val headerParser = system.actorOf(Props[HeaderParser], name = "HeaderParser")
   val returner = system.actorOf(Props[Returner], name = "Returner")

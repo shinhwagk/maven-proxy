@@ -49,7 +49,7 @@ class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: 
         val bis = new BufferedInputStream(httpConn.getInputStream)
         while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
           fileWorkerBuffer += bis.read().toByte
-          downSuccessAmount += 1
+          //          downSuccessAmount += 1
         }
         fileWorkerBuffer.trimEnd(1)
 
@@ -63,7 +63,7 @@ class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: 
         val bis = new BufferedInputStream(httpConn.getInputStream)
         while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
           fileWorkerBuffer += bis.read().toByte
-          downSuccessAmount += 1
+          //          downSuccessAmount += 1
         }
         fileWorkerBuffer.trimEnd(1)
       }

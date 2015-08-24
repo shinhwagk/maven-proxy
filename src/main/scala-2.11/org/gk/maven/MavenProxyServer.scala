@@ -16,10 +16,11 @@ object MavenProxyServer extends App {
   import org.gk.server.db._
 
   InitDatabase.initMavenProxy
-  ActorRefWorkerGroups.startCommandServerActorRef
+  //  ActorRefWorkerGroups.startCommandServerActorRef
   println("系统已经启动...")
 
   while (true) {
-    ActorRefWorkerGroups.repoManager ! ss.accept()
+    ActorRefWorkerGroups.headerParser ! ss.accept()
+    println("收到请求....")
   }
 }

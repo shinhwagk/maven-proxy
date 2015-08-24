@@ -1,11 +1,10 @@
-package org.gk.maven
+package org.gk.repository
 
-import java.io.{BufferedInputStream, BufferedOutputStream, File, FileInputStream}
+import java.io.BufferedOutputStream
 import java.net.Socket
 import java.util.Date
 
 import akka.actor.Actor
-import org.gk.server.workers.ActorRefWorkerGroups
 
 
 /**
@@ -21,30 +20,18 @@ object Returner {
 class Returner extends Actor with akka.actor.ActorLogging {
 
   override def receive: Receive = {
-    case (socket:Socket, fileOS:String) =>
-      val fileHeadler = new File(fileOS)
-      if (fileHeadler.exists())
-        sendFile(fileOS, socket)
-      else
-        ActorRefWorkerGroups.terminator !(404, socket)
+    case (socket: Socket, fileArrayByte: Array[Byte]) =>
+      sendFile(socket, fileArrayByte)
   }
 
-  def sendFile(fileOS: String, socket: Socket) = {
-    val bis = new BufferedInputStream(new FileInputStream(new File(fileOS)));
+  def sendFile(socket: Socket, fileArrayByte: Array[Byte]) = {
     val bos = new BufferedOutputStream(socket.getOutputStream());
 
-    val fileLength = bis.available();
-    val buffer = new Array[Byte](fileLength);
-
-    bis.read(buffer);
-
-    bos.write(getHeaderBytes(fileLength));
-    bos.write(buffer);
+    bos.write(getHeaderBytes(fileArrayByte.length));
+    bos.write(fileArrayByte);
     bos.flush();
-
-    bis.close()
     bos.close()
-    ActorRefWorkerGroups.terminator ! socket
+    //    ActorRefWorkerGroups.terminator ! socket
   }
 
   def getHeaderBytes(fileLength: Int): Array[Byte] = {
@@ -59,5 +46,4 @@ class Returner extends Actor with akka.actor.ActorLogging {
     sb.append("\r\n");
     sb.toString().getBytes
   }
-
 }

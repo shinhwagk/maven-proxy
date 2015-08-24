@@ -5,10 +5,9 @@ import java.net.{HttpURLConnection, URL}
 
 import akka.actor.SupervisorStrategy._
 import akka.actor._
+import org.gk.download.DownManager.{DownSuccess, DownFailure}
 import org.gk.download.DownMaster.{Download, WorkerDownSectionSuccess}
 import org.gk.download.DownWorker.WorkerDownSelfSection
-import org.gk.server.workers.ActorRefWorkerGroups
-import org.gk.server.workers.Anteroom.LeaveAnteroom
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.duration._
@@ -20,38 +19,36 @@ object DownMaster {
 
   case class WorkerDownSectionSuccess(workerNumber: Int, Buffer: Array[Byte])
 
-  object Download
+  case class Download()
 
 }
 
-class DownMaster(downManagerActorRef: ActorRef, filePath: String, fileURL: String, fileOS: Option[String]) extends Actor with ActorLogging {
+class DownMaster(downManagerActorRef: ActorRef, fileUrl: String, fileOS: Option[String]) extends Actor with ActorLogging {
 
-  val httpConn = new URL(fileURL).openConnection.asInstanceOf[HttpURLConnection]
-  httpConn.setConnectTimeout(2000)
-  httpConn.setReadTimeout(2000)
-  httpConn.setRequestMethod("HEAD")
-  httpConn.setRequestProperty("Range", "bytes=0-1")
-
+  val httpConn = new URL(fileUrl).openConnection.asInstanceOf[HttpURLConnection]
+  httpConn.setConnectTimeout(10000)
+  httpConn.setReadTimeout(10000)
+  httpConn.setRequestProperty("Cache-Control", "no-cache")
+  httpConn.setRequestProperty("Expires", "0")
+  httpConn.setRequestProperty("Pragma", "no-cache")
+  val fileLength = httpConn.getContentLength
   var workerSuccessCount: Int = _
   val workerAmount: Int = Runtime.getRuntime.availableProcessors() * 2
   val fileBuffer = new Array[ArrayBuffer[Byte]](workerAmount)
   var downSuccessCount: Int = _
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
 
+  println(httpConn.getResponseCode)
+  println(fileLength)
+
   override def receive: Receive = {
     case Download =>
       httpConn.getResponseCode match {
-        case 206 =>
-          val fileLength = httpConn.getContentLength
-          if (fileLength == 2) {
-            (1 to workerAmount).foreach(p => {
-              val fileWorkerBuffer = fileBuffer(p - 1)
-              context.actorOf(Props(new DownWorker(self, workerAmount, p, fileURL, fileLength))) ! WorkerDownSelfSection(fileWorkerBuffer, 0)
-            })
-          }
+        case 200 =>
+          workerDown01(fileLength)
 
         case _ =>
-          println(httpConn.getResponseCode)
+          downManagerActorRef ! DownFailure(fileUrl, httpConn.getResponseCode)
       }
 
     case WorkerDownSectionSuccess(workerNumber, fileSectionBuffer) =>
@@ -60,10 +57,8 @@ class DownMaster(downManagerActorRef: ActorRef, filePath: String, fileURL: Strin
       println("下载完成----:" + workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
         log.info("文件:{}.下载完毕", fileOS)
-        if (fileOS != None) {
-          storeWorkFile(fileOS.get)
-        }
-        ActorRefWorkerGroups.anteroom ! LeaveAnteroom(fileOS.get)
+        if (fileOS != None) storeWorkFile(fileOS.get)
+        downManagerActorRef ! DownSuccess(fileUrl, fileSectionBuffer)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
@@ -76,7 +71,7 @@ class DownMaster(downManagerActorRef: ActorRef, filePath: String, fileURL: Strin
 
   override def preRestart(reason: Throwable, message: Option[Any]) {
     println("actor:" + self.path + ", preRestart parent, reason:" + reason + ", message:" + message)
-    self ! Download
+    self ! message.get.asInstanceOf[Download]
   }
 
 
@@ -101,4 +96,23 @@ class DownMaster(downManagerActorRef: ActorRef, filePath: String, fileURL: Strin
     fileOS
   }
 
+  def workerDown01(fileLength: Int) = {
+    (1 to workerAmount).foreach(p => {
+      val endLength = fileLength % workerAmount
+      val step = (fileLength - endLength) / workerAmount
+      val startIndex = (p - 1) * step
+      val endIndex = if (p != workerAmount) (p) * step - 1 else (p) * step - 1 + endLength
+      context.actorOf(Props(new DownWorker(self, p))) ! WorkerDownSelfSection(fileUrl, startIndex, endIndex)
+    })
+  }
+
+  def workerDown02(fileLength: Int) = {
+    (1 to workerAmount).foreach(p => {
+      val endLength = fileLength % workerAmount
+      val step = (fileLength - endLength) / workerAmount
+      val startIndex = (p - 1) * step
+      val endIndex = if (p != workerAmount) (p) * step else (p) * step + endLength
+      context.actorOf(Props(new DownWorker(self, p))) ! WorkerDownSelfSection(fileUrl, startIndex, endIndex)
+    })
+  }
 }

@@ -1,11 +1,11 @@
 package org.gk.download
 
-import java.io.{BufferedInputStream, BufferedWriter, OutputStreamWriter, RandomAccessFile}
-import java.net.{HttpURLConnection, InetSocketAddress, Socket, URL}
+import java.io.{BufferedInputStream, RandomAccessFile}
+import java.net.{HttpURLConnection, URL}
 
 import akka.actor.{Actor, ActorLogging, _}
+import org.gk.download.DownMaster.WorkerDownSectionSuccess
 import org.gk.download.DownWorker.WorkerDownSelfSection
-import org.gk.server.workers.RequestHeaders
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -17,7 +17,7 @@ object DownWorker {
 
   case object Downming
 
-  case class WorkerDownSelfSection(fileWorkerBuffer: ArrayBuffer[Byte], downSuccessNumber: Int)
+  case class WorkerDownSelfSection(fileUrl: String, startIndex: Int, endIndex: Int)
 
   def storeWorkFile(fileTempOS: String, startIndex: Int, buffer: Array[Byte]) = synchronized {
     val raf = new RandomAccessFile(fileTempOS, "rwd");
@@ -27,47 +27,27 @@ object DownWorker {
   }
 }
 
-class DownWorker(downMasterActorRef: ActorRef, workerAmount: Int, workerNumber: Int, fileURL: String, fileLength: Int) extends Actor with ActorLogging {
-
-  val endLength = fileLength % workerAmount
-  val step = (fileLength - endLength) / workerAmount
-
+class DownWorker(downMasterActorRef: ActorRef, workerNumber: Int) extends Actor with ActorLogging {
 
   override def receive: Actor.Receive = {
-    case WorkerDownSelfSection(fileWorkerBuffer, downSuccessAmount) => {
+    case WorkerDownSelfSection(fileUrl, startIndex, endIndex) => {
 
-      val httpConn = new URL(fileURL).openConnection.asInstanceOf[HttpURLConnection]
-      val startIndex = (workerNumber - 1) * step - downSuccessAmount
 
-      if (workerAmount != workerNumber) {
-
-        val endIndex = workerNumber * step
-
-        httpConn.setRequestProperty(s"Range",s"bytes=$startIndex-$endIndex")
-        val workerFilrLength = httpConn.getContentLength
-
-        val bis = new BufferedInputStream(httpConn.getInputStream)
-        while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
-          fileWorkerBuffer += bis.read().toByte
-          //          downSuccessAmount += 1
-        }
-        fileWorkerBuffer.trimEnd(1)
-
-        if ((endIndex - startIndex) != workerFilrLength) {
-          fileWorkerBuffer.trimEnd(1)
-        }
-      }else{
-        httpConn.setRequestProperty(s"Range",s"bytes=$startIndex-")
-        val workerFilrLength = httpConn.getContentLength
-
-        val bis = new BufferedInputStream(httpConn.getInputStream)
-        while (fileWorkerBuffer.takeRight(1) != ArrayBuffer(-1)) {
-          fileWorkerBuffer += bis.read().toByte
-          //          downSuccessAmount += 1
-        }
-        fileWorkerBuffer.trimEnd(1)
+      val httpConn = new URL(fileUrl).openConnection.asInstanceOf[HttpURLConnection]
+      httpConn.setConnectTimeout(5000)
+      httpConn.setReadTimeout(5000)
+      httpConn.setRequestProperty("Range", s"bytes=$startIndex-$endIndex")
+      val fileWorkerBuffer = ArrayBuffer[Int]()
+      val bis = new BufferedInputStream(httpConn.getInputStream)
+      val dividingLine = ArrayBuffer(-1) //\n\r
+      while (fileWorkerBuffer.takeRight(1) != dividingLine) {
+        fileWorkerBuffer += bis.read()
+        println(workerNumber + "----" + startIndex + "------------" + endIndex + " -----" + httpConn.getContentLength + "////" + fileWorkerBuffer.length)
       }
-      //      log.debug("线程: {} 下载{};收到,开始下载...",workerNumber,fileURL)
+
+      fileWorkerBuffer.trimEnd(1)
+      downMasterActorRef ! WorkerDownSectionSuccess(workerNumber, fileWorkerBuffer.map(_.toByte).toArray)
+
     }
   }
 

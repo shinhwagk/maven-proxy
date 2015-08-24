@@ -4,7 +4,6 @@ import java.net.ServerSocket
 
 import org.gk.server.config.cfg
 import org.gk.server.tool.RequestHeader
-import org.gk.server.workers.ActorRefWorkerGroups
 import org.gk.server.workers.Anteroom.JoinAnteroom
 
 /**
@@ -13,7 +12,7 @@ import org.gk.server.workers.Anteroom.JoinAnteroom
 object HttpProxy {
   val ss = new ServerSocket(cfg.getMavenProxyServicePost + 1);
   def main(args: Array[String]) {
-    while(true)
-      ActorRefWorkerGroups.anteroom ! JoinAnteroom(RequestHeader(ss.accept()))
+    //    while(true)
+    //      ActorRefWorkerGroups.anteroom ! JoinAnteroom(RequestHeader(ss.accept()))
   }
 }

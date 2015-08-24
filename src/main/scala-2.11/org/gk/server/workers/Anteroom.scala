@@ -3,8 +3,8 @@ package org.gk.server.workers
 import java.net.Socket
 
 import akka.actor.{Actor, Props}
-import org.gk.maven.Returner
-import org.gk.maven.Returner.RuntrunFile
+import org.gk.repository.Returner
+import org.gk.repository.Returner.RuntrunFile
 import org.gk.server.config.cfg
 import org.gk.server.tool.RequestHeader
 import org.gk.server.workers.Anteroom._

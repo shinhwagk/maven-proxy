@@ -10,7 +10,7 @@ object MavenProxyMain extends App {
   val system = ActorSystem("MavenProxyServer", ConfigFactory.load("server"))
   val mavenRepository = system.actorOf(Props[MavenRepository], name = "MavenRepository")
   val mavenHttpproxy = system.actorOf(Props[MavenHttpProxy], name = "MavenHttpProxy")
-
+  val headerParser = system.actorOf(Props[HeaderParser], name = "HeaderParser")
 
   import org.gk.server.db._
 

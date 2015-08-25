@@ -55,6 +55,5 @@ class ProxyMain extends Actor {
         context.actorOf(Props(new Returner)) !(p, fileArrayByte)
       })
       anteroom -= (fileUrl)
-
   }
 }

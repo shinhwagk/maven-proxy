@@ -28,8 +28,8 @@ class HeaderParser extends Actor {
     case (socket: Socket, "proxy") =>
       val requestLine = getFilePath(socket)
       proxyMain !(socket, requestLine)
+      println("proxy受到")
   }
-
 
   def getFilePath(socket: Socket): String = {
     val bis = new BufferedInputStream(socket.getInputStream)

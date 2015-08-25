@@ -9,16 +9,15 @@ import akka.actor.Actor
  */
 class ProxyTypeConnectClient extends Actor {
   override def receive: Receive = {
-    case (in: InputStream, out: OutputStream) =>
+    case (clientIn: InputStream, out: OutputStream) =>
       println("客户端发送给服务点")
-      var buffer = in.read()
+      var buffer = clientIn.read()
       while (true) {
         println("客户端发送给服务点" + buffer)
         out.write(buffer)
         out.flush()
-        buffer = in.read()
-
-        println("客户端" + buffer)
+        buffer = clientIn.read()
+        println(clientIn.available() + "客户端可用")
 
       }
       println("客户端发送给服务点结束:" + buffer)

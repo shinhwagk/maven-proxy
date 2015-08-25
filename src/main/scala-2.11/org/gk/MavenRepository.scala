@@ -10,8 +10,6 @@ import org.gk.server.config.cfg
  */
 class MavenRepository extends Actor {
 
-  val headerParser = context.actorOf(Props[HeaderParser], name = "HeaderParser")
-
   var ss: ServerSocket = _
 
   override def receive: Receive = {
@@ -20,7 +18,7 @@ class MavenRepository extends Actor {
 
       while (true) {
         val socket = ss.accept()
-        headerParser !(socket, "repo")
+        MavenProxyMain.headerParser !(socket, "repo")
         println("收到请求repo....")
       }
 

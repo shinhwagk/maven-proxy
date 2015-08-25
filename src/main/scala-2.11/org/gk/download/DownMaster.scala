@@ -1,6 +1,6 @@
 package org.gk.download
 
-import java.io.{File, RandomAccessFile}
+import java.io.{FileOutputStream, File, RandomAccessFile}
 import java.net.{HttpURLConnection, URL}
 
 import akka.actor.SupervisorStrategy._
@@ -29,24 +29,34 @@ class DownMaster(downManagerActorRef: ActorRef, fileUrl: String, fileOS: Option[
   httpConn.setConnectTimeout(10000)
   httpConn.setReadTimeout(10000)
   httpConn.setRequestProperty("Cache-Control", "no-cache")
+  httpConn.setRequestProperty("Cache-store", "no-store");
   httpConn.setRequestProperty("Expires", "0")
   httpConn.setRequestProperty("Pragma", "no-cache")
-  val fileLength = httpConn.getContentLength
+  httpConn.setRequestProperty("Range", "bytes=0-1")
+
+
+
   var workerSuccessCount: Int = _
-  val workerAmount: Int = Runtime.getRuntime.availableProcessors() * 2
+  val workerAmount: Int = Runtime.getRuntime.availableProcessors() * 3
   val fileBuffer = new Array[ArrayBuffer[Byte]](workerAmount)
   var downSuccessCount: Int = _
   var downSuccessSectionBufferMap: Map[Int, Array[Byte]] = Map.empty
 
-  println(httpConn.getResponseCode)
-  println(fileLength)
-
   override def receive: Receive = {
     case Download =>
       httpConn.getResponseCode match {
-        case 200 =>
-          workerDown01(fileLength)
-
+        case 206 =>
+          val fileLength = httpConn.getHeaderField("Content-Range").split("/")(1).toInt
+          val workerAlgorithm = httpConn.getHeaderField("Content-Length").toInt
+          workerAlgorithm match {
+            case 2 =>
+              workerDown01(fileLength)
+            case 1 =>
+              workerDown02(fileLength)
+          }
+        case 404 =>
+          println("sssssssssss")
+          downManagerActorRef ! DownFailure(fileUrl, httpConn.getResponseCode)
         case _ =>
           downManagerActorRef ! DownFailure(fileUrl, httpConn.getResponseCode)
       }
@@ -56,9 +66,16 @@ class DownMaster(downManagerActorRef: ActorRef, fileUrl: String, fileOS: Option[
       downSuccessSectionBufferMap += (workerNumber -> fileSectionBuffer)
       println("下载完成----:" + workerSuccessCount + "/" + workerAmount)
       if (workerSuccessCount == workerAmount) {
+        val fileBuffer = new ArrayBuffer[Byte]()
+        downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
+          val buffer = l._2
+          fileBuffer ++= buffer
+        })
+        val buffer = fileBuffer.toArray
         log.info("文件:{}.下载完毕", fileOS)
-        if (fileOS != None) storeWorkFile(fileOS.get)
-        downManagerActorRef ! DownSuccess(fileUrl, fileSectionBuffer)
+        println(fileOS)
+        if (fileOS != None) storeWorkFile
+        downManagerActorRef ! DownSuccess(fileUrl, buffer)
       }
     case Terminated(actorRef) =>
       println(actorRef.path.name + "被中置")
@@ -75,25 +92,17 @@ class DownMaster(downManagerActorRef: ActorRef, fileUrl: String, fileOS: Option[
   }
 
 
-  def storeWorkFile(fileOS: String) = {
+  def storeWorkFile = {
+    val fileHeadle = new File(fileOS.get)
+    if (!fileHeadle.getParentFile.exists()) fileHeadle.getParentFile.mkdirs()
 
-    val fileHeadleTemp = new File(fileOS + ".temp")
-    val fileHeadle = new File(fileOS)
-    if (!fileHeadle.getParentFile.exists()) {
-      fileHeadle.getParentFile.mkdirs()
-    }
-    val raf = new RandomAccessFile(fileOS + ".temp", "rwd")
+    val fops = new FileOutputStream(fileHeadle);
     val fileBuffer = new ArrayBuffer[Byte]()
     downSuccessSectionBufferMap.toList.sortBy(_._1).map(l => {
-      val buffer = l._2
-      fileBuffer ++= buffer
+      fileBuffer ++= l._2
     })
-    val buffer = fileBuffer.toArray
-    raf.write(buffer)
-    raf.close()
-
-    fileHeadleTemp.renameTo(fileHeadle)
-    fileOS
+    fops.write(fileBuffer.toArray)
+    fops.close()
   }
 
   def workerDown01(fileLength: Int) = {

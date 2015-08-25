@@ -127,40 +127,49 @@ class RequestHeaders(s: Socket) {
 object abc {
   def main(args: Array[String]) {
     val b = "http://repository.apache.org/content/groups/snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/maven-metadata.xml"
-//    val b = "http://127.0.0.1:9995/apache-snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/gemfire-core-1.0.0-incubating-20150813.110411-49.jar"
-    val url = new URL(b);
-    val host = url.getHost();
-    val port = url.getDefaultPort()
-    println(url.getPort())
-    println("Host Name = " + host);
-    println("port = " + port);
-    println("File URI = " + url.getFile());
-    println(" xx");
-
-    val socket = new Socket();
-    val address = new InetSocketAddress(host, 80);
-    socket.connect(address);
-    val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
-    bufferedWriter.write("HEAD " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
-//    bufferedWriter.write("Accept-Encoding: gzip\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Expires: 0\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Pragma: no-cache\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Cache-store: no-store\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Cache-control: no-cache\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("Range: bytes=10-19\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
-    bufferedWriter.flush()
-    val aa = new RequestHeaders(socket)
-    println(aa.headText)
-    println(aa.Head_ContentLength)
-
-    print(new String(Array(socket.getInputStream.read().toByte)))
-    print(new String(Array(socket.getInputStream.read().toByte)))
-    print(new String(Array(socket.getInputStream.read().toByte)))
-    print(new String(Array(socket.getInputStream.read().toByte)))
-
+    ////    val b = "http://127.0.0.1:9995/apache-snapshots/org/apache/geode/gemfire-core/1.0.0-incubating-SNAPSHOT/gemfire-core-1.0.0-incubating-20150813.110411-49.jar"
+    //    val url = new URL(b);
+    //    val host = url.getHost();
+    //    val port = url.getDefaultPort()
+    //    println(url.getPort())
+    //    println("Host Name = " + host);
+    //    println("port = " + port);
+    //    println("File URI = " + url.getFile());
+    //    println(" xx");
+    //
+    //    val socket = new Socket();
+    //    val address = new InetSocketAddress(host, 80);
+    //    socket.connect(address);
+    //    val bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
+    //    bufferedWriter.write("HEAD " + url.getFile() + " HTTP/1.1\r\n"); // 请求头信息发送结束标志
+    ////    bufferedWriter.write("Accept-Encocmd
+    // ding: gzip\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Connection: Keep-Alive\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Expires: 0\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Pragma: no-cache\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Cache-store: no-store\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Cache-control: no-cache\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Host: " + host + "\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("Range: bytes=10-19\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.write("\r\n"); // 请求头信息发送结束标志
+    //    bufferedWriter.flush()
+    //    val aa = new RequestHeaders(socket)
+    //    println(aa.headText)
+    //    println(aa.Head_ContentLength)
+    //
+    //    print(new String(Array(socket.getInputStream.read().toByte)))
+    //    print(new String(Array(socket.getInputStream.read().toByte)))
+    //    print(new String(Array(socket.getInputStream.read().toByte)))
+    //    print(new String(Array(socket.getInputStream.read().toByte)))
+    val httpConn = new URL(b).openConnection.asInstanceOf[HttpURLConnection]
+    httpConn.setConnectTimeout(10000)
+    httpConn.setReadTimeout(10000)
+    httpConn.setRequestProperty("Cache-Control", "no-cache")
+    httpConn.setRequestProperty("Expires", "0")
+    httpConn.setRequestProperty("Pragma", "no-cache")
+    httpConn.setRequestProperty("Range", "bytes=0-1")
+    httpConn.setRequestProperty("Cache-store", "no-store");
+    println(httpConn.getHeaderFields.get("Content-Range").get(0))
   }
 }
 

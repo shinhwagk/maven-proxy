@@ -8,8 +8,8 @@ import com.typesafe.config.ConfigFactory
  */
 object MavenProxyMain extends App {
   val system = ActorSystem("MavenProxyServer", ConfigFactory.load("server"))
-  system.actorOf(Props[MavenRepository], name = "MavenRepository")
-  system.actorOf(Props[MavenHttpProxy], name = "MavenHttpProxy")
+  val mavenRepository = system.actorOf(Props[MavenRepository], name = "MavenRepository")
+  val mavenHttpproxy = system.actorOf(Props[MavenHttpProxy], name = "MavenHttpProxy")
 
 
   import org.gk.server.db._
@@ -18,4 +18,6 @@ object MavenProxyMain extends App {
   println("系统已经启动...")
 
 
+  mavenRepository ! "start"
+  mavenHttpproxy ! "start"
 }

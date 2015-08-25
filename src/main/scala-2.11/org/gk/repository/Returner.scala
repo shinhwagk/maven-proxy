@@ -26,12 +26,10 @@ class Returner extends Actor with akka.actor.ActorLogging {
 
   def sendFile(socket: Socket, fileArrayByte: Array[Byte]) = {
     val bos = new BufferedOutputStream(socket.getOutputStream());
-
     bos.write(getHeaderBytes(fileArrayByte.length));
     bos.write(fileArrayByte);
     bos.flush();
     bos.close()
-    //    ActorRefWorkerGroups.terminator ! socket
   }
 
   def getHeaderBytes(fileLength: Int): Array[Byte] = {

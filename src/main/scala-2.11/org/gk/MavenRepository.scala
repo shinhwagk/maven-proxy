@@ -1,9 +1,8 @@
 package org.gk
 
-import java.net.{Socket, ServerSocket}
+import java.net.ServerSocket
 
-import akka.actor.{Props, Actor}
-import org.gk.repository.HeaderParser
+import akka.actor.{Actor, Props}
 import org.gk.server.config.cfg
 
 /**
@@ -13,14 +12,19 @@ class MavenRepository extends Actor {
 
   val headerParser = context.actorOf(Props[HeaderParser], name = "HeaderParser")
 
-  val ss = new ServerSocket(cfg.getMavenProxyServicePost);
-
-  while (true) {
-    headerParser !(ss.accept(), "repo")
-    println("收到请求repo....")
-  }
+  var ss: ServerSocket = _
 
   override def receive: Receive = {
-    case socket: Socket =>
+    case "start" =>
+      ss = new ServerSocket(cfg.getMavenProxyServicePost);
+
+      while (true) {
+        val socket = ss.accept()
+        headerParser !(socket, "repo")
+        println("收到请求repo....")
+      }
+
+    case "stop" =>
+      ss.close()
   }
 }

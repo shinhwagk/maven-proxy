@@ -34,18 +34,23 @@ class DownWorker(downMasterActorRef: ActorRef, workerNumber: Int) extends Actor 
 
 
       val httpConn = new URL(fileUrl).openConnection.asInstanceOf[HttpURLConnection]
-      httpConn.setConnectTimeout(5000)
-      httpConn.setReadTimeout(5000)
+      httpConn.setConnectTimeout(10000)
+      httpConn.setReadTimeout(10000)
+      httpConn.setRequestProperty("Cache-Control", "no-cache")
+      httpConn.setRequestProperty("Cache-store", "no-store");
+      httpConn.setRequestProperty("Expires", "0")
+      httpConn.setRequestProperty("Pragma", "no-cache")
       httpConn.setRequestProperty("Range", s"bytes=$startIndex-$endIndex")
-      val fileWorkerBuffer = ArrayBuffer[Int]()
+
+      val fileWorkerBuffer = ArrayBuffer(0)
       val bis = new BufferedInputStream(httpConn.getInputStream)
-      val dividingLine = ArrayBuffer(-1) //\n\r
-      while (fileWorkerBuffer.takeRight(1) != dividingLine) {
+      while (fileWorkerBuffer.last != -1) {
         fileWorkerBuffer += bis.read()
-        println(workerNumber + "----" + startIndex + "------------" + endIndex + " -----" + httpConn.getContentLength + "////" + fileWorkerBuffer.length)
       }
 
       fileWorkerBuffer.trimEnd(1)
+      fileWorkerBuffer.trimStart(1)
+
       downMasterActorRef ! WorkerDownSectionSuccess(workerNumber, fileWorkerBuffer.map(_.toByte).toArray)
 
     }

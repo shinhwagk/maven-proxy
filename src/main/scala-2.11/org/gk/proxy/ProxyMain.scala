@@ -23,13 +23,31 @@ class ProxyMain extends Actor {
           println("GET请求....")
           if (anteroom.contains(requestLine.split(" ")(1))) {
             anteroom(requestLine.split(" ")(1)) += socket
-
           } else {
             anteroom += (requestLine.split(" ")(1) -> ArrayBuffer(socket))
             downManager ! requestLine.split(" ")(1)
           }
 
         case "CONNECT" =>
+          val sstring = "HTTP/1.1 200 Connection Established\r\n\r\n".getBytes;
+
+          val requestURL = requestLine.split(" ")(1)
+          val url = requestURL.split(":")(0)
+          val post = requestURL.split(":")(1).toInt
+          val serverSocket = new Socket(url, post)
+          //          serverSocket.setSoTimeout(100000)
+
+          val socketClientIn = socket.getInputStream
+          val socketClientOut = socket.getOutputStream
+          val socketServerIn = serverSocket.getInputStream
+          val socketServerOut = serverSocket.getOutputStream
+
+          socketClientOut.write(sstring)
+          socketClientOut.flush()
+
+          context.actorOf(Props[ProxyTypeConnectClient]) !(socketClientIn, socketServerOut)
+
+          context.actorOf(Props[ProxyTypeConnectServer]) !(socketServerIn, socketClientOut)
       }
 
     case DownSuccess(fileUrl: String, fileArrayByte: Array[Byte]) =>

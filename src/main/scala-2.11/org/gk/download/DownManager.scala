@@ -1,6 +1,7 @@
 package org.gk.download
 
-import akka.actor.{Actor, ActorRef, Props}
+import akka.actor._
+import com.typesafe.config.ConfigFactory
 import org.gk.download.DownManager.{DownFailure, DownSuccess}
 import org.gk.download.DownMaster.Download
 
@@ -13,6 +14,27 @@ object DownManager {
   case class DownSuccess(fileUrl: String, fileArrayByte: Array[Byte])
 
   case class DownFailure(fileUrl: String, code: Int)
+
+  def main(args: Array[String]) {
+    val system = ActorSystem("DownloasServer")
+    //    val url = scala.io.StdIn.readLine()
+    //    val fileOS = scala.io.StdIn.readLine()
+    system.actorOf(Props[Down]) !("https://codeload.github.com/apache/incubator-zeppelin/zip/master", Some("/tmp/xxx.zip"))
+
+  }
+
+
+  class Down extends Actor {
+    override def receive: Actor.Receive = {
+      case (url: String, fileOS: Option[String]) => {
+        context.actorOf(Props(new DownManager(self))) !(url, fileOS)
+
+      }
+      case DownSuccess(fileUrl, fileArrayByte) => {
+        println("haha")
+      }
+    }
+  }
 
 }
 

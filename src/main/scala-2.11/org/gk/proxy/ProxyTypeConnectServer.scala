@@ -19,10 +19,6 @@ class ProxyTypeConnectServer extends Actor {
         buffer = in.read()
 
         println(in.available() + "服务端可用")
-        if (in.available() == 0) {
-          println("dfdfd")
-          Thread.sleep(3000)
-        }
       }
       println("服务点发送给服务点结束:" + buffer)
   }

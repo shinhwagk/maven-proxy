@@ -34,7 +34,7 @@ class DownMaster(downManagerActorRef: ActorRef, fileUrl: String, fileOS: Option[
   httpConn.setRequestProperty("Pragma", "no-cache")
   httpConn.setRequestProperty("Range", "bytes=0-1")
 
-
+  println(httpConn.getResponseCode)
 
   var workerSuccessCount: Int = _
   val workerAmount: Int = Runtime.getRuntime.availableProcessors() * 3
